@@ -1,4 +1,4 @@
-using API.Clients;
+ï»¿using API.Clients;
 using DTOs;
 using System;
 using System.ComponentModel;
@@ -7,13 +7,13 @@ using System.Windows.Forms;
 
 namespace WIndowsForm
 {
-    public partial class Form1 : Form
+    public partial class FormUsuarios : Form
     {
         private readonly UsuarioApiClient _apiClient;
         private readonly Form _menuPrincipal;
         private BindingList<UsuarioDto> _usuarios = new BindingList<UsuarioDto>();
 
-        public Form1(Form menuPrincipal = null)
+        public FormUsuarios(Form menuPrincipal = null)
         {
             InitializeComponent();
             _menuPrincipal = menuPrincipal;
@@ -24,97 +24,24 @@ namespace WIndowsForm
                 Debug.WriteLine($"Conectando a API en: {apiUrl}");
                 _apiClient = new UsuarioApiClient(apiUrl);
 
-                ConfigureForm();
-                this.Load += Form1_Load;
+                // Configurar DataGridView
+                dataGridViewUsuarios.DataSource = _usuarios;
+
+                // Asignar eventos
+                this.Load += FormUsuarios_Load;
+                btnNuevo.Click += (s, e) => CrearNuevoUsuario();
+                btnEditar.Click += (s, e) => EditarUsuarioSeleccionado(dataGridViewUsuarios);
+                btnEliminar.Click += (s, e) => EliminarUsuarioSeleccionado(dataGridViewUsuarios);
+                btnVolver.Click += (s, e) => VolverAlMenu();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al inicializar: {ex.Message}",
-                    "Error de inicialización", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "Error de inicializaciÃ³n", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void ConfigureForm()
-        {
-            this.Text = "Gestión de Usuarios";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            // Panel superior para DataGridView
-            Panel gridPanel = new Panel
-            {
-                Dock = DockStyle.Fill,
-                Padding = new Padding(10)
-            };
-
-            // DataGridView para mostrar usuarios
-            DataGridView dataGridViewUsuarios = new DataGridView
-            {
-                Name = "dataGridViewUsuarios",
-                Dock = DockStyle.Fill,
-                DataSource = _usuarios,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                MultiSelect = false,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
-
-            // Panel de botones
-            Panel buttonPanel = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 60
-            };
-
-            Button btnNuevo = new Button
-            {
-                Text = "Nuevo Usuario",
-                Width = 120,
-                Location = new Point(10, 15)
-            };
-
-            Button btnEditar = new Button
-            {
-                Text = "Editar",
-                Width = 100,
-                Location = new Point(140, 15)
-            };
-
-            Button btnEliminar = new Button
-            {
-                Text = "Eliminar",
-                Width = 100,
-                Location = new Point(250, 15)
-            };
-
-            Button btnVolver = new Button
-            {
-                Text = "Volver al Menú",
-                Width = 120,
-                Location = new Point(gridPanel.Width - 140, 15),
-                Anchor = AnchorStyles.Right
-            };
-
-            // Eventos
-            btnNuevo.Click += (s, e) => CrearNuevoUsuario();
-            btnEditar.Click += (s, e) => EditarUsuarioSeleccionado(dataGridViewUsuarios);
-            btnEliminar.Click += (s, e) => EliminarUsuarioSeleccionado(dataGridViewUsuarios);
-            btnVolver.Click += (s, e) => VolverAlMenu();
-
-            // Agregar controles
-            buttonPanel.Controls.Add(btnNuevo);
-            buttonPanel.Controls.Add(btnEditar);
-            buttonPanel.Controls.Add(btnEliminar);
-            buttonPanel.Controls.Add(btnVolver);
-
-            gridPanel.Controls.Add(dataGridViewUsuarios);
-
-            this.Controls.Add(gridPanel);
-            this.Controls.Add(buttonPanel);
-        }
-
-        private async void Form1_Load(object sender, EventArgs e)
+        private async void FormUsuarios_Load(object sender, EventArgs e)
         {
             await LoadUsuariosAsync();
         }
@@ -176,7 +103,7 @@ namespace WIndowsForm
             if (dataGridView.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Seleccione un usuario para editar",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "InformaciÃ³n", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -216,7 +143,7 @@ namespace WIndowsForm
             if (dataGridView.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Seleccione un usuario para eliminar",
-                    "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "InformaciÃ³n", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -229,8 +156,8 @@ namespace WIndowsForm
             }
 
             var resultado = MessageBox.Show(
-                $"¿Está seguro que desea eliminar al usuario {usuarioSeleccionado.Nombre} {usuarioSeleccionado.Apellido}?",
-                "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                $"Â¿EstÃ¡ seguro que desea eliminar al usuario {usuarioSeleccionado.Nombre} {usuarioSeleccionado.Apellido}?",
+                "Confirmar eliminaciÃ³n", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (resultado == DialogResult.Yes)
             {

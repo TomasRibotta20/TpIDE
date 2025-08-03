@@ -24,7 +24,16 @@ namespace WIndowsForm
                 Debug.WriteLine($"Conectando a API en: {apiUrl}");
                 _apiClient = new EspecialidadApiClient(apiUrl);
 
-                ConfigureForm();
+                // Configurar DataGridView
+                dataGridViewEspecialidades.DataSource = _especialidades;
+
+                // Asignar eventos a botones
+                btnNueva.Click += (s, e) => CrearNuevaEspecialidad();
+                btnEditar.Click += (s, e) => EditarEspecialidadSeleccionada(dataGridViewEspecialidades);
+                btnEliminar.Click += (s, e) => EliminarEspecialidadSeleccionada(dataGridViewEspecialidades);
+                btnVolver.Click += (s, e) => VolverAlMenu();
+
+                // Suscribir al evento Load
                 this.Load += FormEspecialidades_Load;
             }
             catch (Exception ex)
@@ -32,86 +41,6 @@ namespace WIndowsForm
                 MessageBox.Show($"Error al inicializar: {ex.Message}",
                     "Error de inicialización", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void ConfigureForm()
-        {
-            this.Text = "Gestión de Especialidades";
-            this.Size = new Size(800, 600);
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            // Panel superior para DataGridView
-            Panel gridPanel = new Panel
-            {
-                Dock = DockStyle.Fill,
-                Padding = new Padding(10)
-            };
-
-            // DataGridView para mostrar especialidades
-            DataGridView dataGridViewEspecialidades = new DataGridView
-            {
-                Name = "dataGridViewEspecialidades",
-                Dock = DockStyle.Fill,
-                DataSource = _especialidades,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                MultiSelect = false,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
-
-            // Panel de botones
-            Panel buttonPanel = new Panel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 60
-            };
-
-            Button btnNueva = new Button
-            {
-                Text = "Nueva Especialidad",
-                Width = 140,
-                Location = new Point(10, 15)
-            };
-
-            Button btnEditar = new Button
-            {
-                Text = "Editar",
-                Width = 100,
-                Location = new Point(160, 15)
-            };
-
-            Button btnEliminar = new Button
-            {
-                Text = "Eliminar",
-                Width = 100,
-                Location = new Point(270, 15)
-            };
-
-            Button btnVolver = new Button
-            {
-                Text = "Volver al Menú",
-                Width = 120,
-                Location = new Point(gridPanel.Width - 140, 15),
-                Anchor = AnchorStyles.Right
-            };
-
-            // Eventos
-            btnNueva.Click += (s, e) => CrearNuevaEspecialidad();
-            btnEditar.Click += (s, e) => EditarEspecialidadSeleccionada(dataGridViewEspecialidades);
-            btnEliminar.Click += (s, e) => EliminarEspecialidadSeleccionada(dataGridViewEspecialidades);
-            btnVolver.Click += (s, e) => VolverAlMenu();
-
-            // Agregar controles
-            buttonPanel.Controls.Add(btnNueva);
-            buttonPanel.Controls.Add(btnEditar);
-            buttonPanel.Controls.Add(btnEliminar);
-            buttonPanel.Controls.Add(btnVolver);
-
-            gridPanel.Controls.Add(dataGridViewEspecialidades);
-
-            this.Controls.Add(gridPanel);
-            this.Controls.Add(buttonPanel);
         }
 
         private async void FormEspecialidades_Load(object sender, EventArgs e)
