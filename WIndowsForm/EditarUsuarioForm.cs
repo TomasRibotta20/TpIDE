@@ -89,5 +89,10 @@ namespace WIndowsForm
             Guardado = true;
             this.Close();
         }
+
+        private void EditarUsuarioForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

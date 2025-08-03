@@ -78,5 +78,10 @@ namespace WIndowsForm
         {
 
         }
+
+        private void EditarEspecialidadForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -244,6 +244,7 @@
             Name = "EditarUsuarioForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Editar Usuario";
+            Load += EditarUsuarioForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             panel1.ResumeLayout(false);
