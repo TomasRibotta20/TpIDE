@@ -80,5 +80,10 @@ namespace API.Clients
             var response = await _httpClient.DeleteAsync($"{_baseUrl}/usuarios/{id}");
             response.EnsureSuccessStatusCode();
         }
+
+        public static implicit operator UsuarioApiClient(EspecialidadApiClient v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

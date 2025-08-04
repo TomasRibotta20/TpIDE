@@ -16,4 +16,11 @@
     private Label lblProximamente;
     private Button btnOtroCrud;
     private Button btnEspecialidades;
+    private MenuStrip menuStrip1;
+    private ToolStripMenuItem usuarioToolStripMenuItem;
+    private ToolStripMenuItem nuevoUsuarioToolStripMenuItem;
+    private ToolStripMenuItem listarUsuariosToolStripMenuItem;
+    private ToolStripMenuItem especialidadToolStripMenuItem;
+    private ToolStripMenuItem nuevaEspecialidadToolStripMenuItem;
+    private ToolStripMenuItem listarEspecialidadesToolStripMenuItem;
 }
