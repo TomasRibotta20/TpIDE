@@ -144,6 +144,7 @@
             Name = "EditarEspecialidadForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Nueva Especialidad";
+            Load += EditarEspecialidadForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             buttonPanel.ResumeLayout(false);

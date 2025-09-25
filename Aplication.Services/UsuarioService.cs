@@ -1,6 +1,7 @@
 ﻿using Data;
 using Domain.Model;
 using DTOs;
+
 namespace Aplication.Services
 {
     public class UsuarioService
@@ -21,13 +22,13 @@ namespace Aplication.Services
 
         public void Add(UsuarioDto usuarioDto)
         {
-            var usuario = MapToEntity(usuarioDto);
+            var usuario = MapToEntityForCreation(usuarioDto);
             _repository.Add(usuario);
         }
 
         public void Update(UsuarioDto usuarioDto)
         {
-            var usuario = MapToEntity(usuarioDto);
+            var usuario = MapToEntityForUpdate(usuarioDto);
             _repository.Update(usuario);
         }
 
@@ -42,20 +43,30 @@ namespace Aplication.Services
             Nombre = usuario.Nombre,
             Apellido = usuario.Apellido,
             UsuarioNombre = usuario.UsuarioNombre,
-            Contrasenia = usuario.Contrasenia,
+            Contrasenia = usuario.PasswordHash,
             Email = usuario.Email,
             Habilitado = usuario.Habilitado
         };
 
-        private Usuario MapToEntity(UsuarioDto dto) => new Usuario
-        {
-            Id = dto.Id,
-            Nombre = dto.Nombre,
-            Apellido = dto.Apellido,
-            UsuarioNombre = dto.UsuarioNombre,
-            Contrasenia = dto.Contrasenia,
-            Email = dto.Email,
-            Habilitado = dto.Habilitado
-        };
+        // Para crear nuevos usuarios (sin ID)
+        private Usuario MapToEntityForCreation(UsuarioDto dto) => new Usuario(
+            dto.Nombre, 
+            dto.Apellido, 
+            dto.UsuarioNombre, 
+            dto.Email, 
+            dto.Contrasenia, 
+            dto.Habilitado
+        );
+
+        // Para actualizar usuarios existentes (con ID)
+        private Usuario MapToEntityForUpdate(UsuarioDto dto) => new Usuario(
+            dto.Id, 
+            dto.Nombre, 
+            dto.Apellido, 
+            dto.UsuarioNombre, 
+            dto.Email, 
+            dto.Contrasenia, 
+            dto.Habilitado
+        );
     }
 }

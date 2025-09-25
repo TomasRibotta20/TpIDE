@@ -17,8 +17,8 @@ public partial class MenuPrincipal : Form
             string apiUrl = "https://localhost:7229";
 
             Debug.WriteLine($"Conectando a API en: {apiUrl}");
-            _apiClient = new UsuarioApiClient(apiUrl);
-             _especialidadApiClient = new EspecialidadApiClient(apiUrl); // Inicializa el cliente de especialidades
+            _apiClient = new UsuarioApiClient();
+             _especialidadApiClient = new EspecialidadApiClient(); // Inicializa el cliente de especialidades
         }
         catch (Exception ex)
         {

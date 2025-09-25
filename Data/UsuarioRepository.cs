@@ -3,36 +3,60 @@ namespace Data
 {
     public class UsuarioRepository
     {
-        private static List<Usuario> _usuarios = new List<Usuario>
+        private AcademiaContext CreateContext()
         {
-            new Usuario { Id = 1, Nombre = "Juan", Apellido = "Perez", Email = "juan@mail.com", UsuarioNombre = "jperez", Contrasenia = "password", Habilitado = true },
-            new Usuario { Id = 2, Nombre = "Maria", Apellido = "Gomez", Email = "maria@mail.com", UsuarioNombre = "mgomez", Contrasenia = "password", Habilitado = true }
-        };
+            return new AcademiaContext();
+        }
 
-        public IEnumerable<Usuario> GetAll() => _usuarios;
-        public Usuario GetById(int id) => _usuarios.FirstOrDefault(u => u.Id == id);
+        public IEnumerable<Usuario> GetAll()
+        {
+            using var context = CreateContext();
+            return context.Usuarios.OrderBy(u => u.Apellido).ThenBy(u => u.Nombre).ToList();
+        }
+        public Usuario GetById(int id)
+        {
+            using var context = CreateContext();
+            return context.Usuarios.Find(id);
+        }
+  
+        public Usuario GetByUsername(string username)
+        {
+            using var context = CreateContext();
+            return context.Usuarios.FirstOrDefault(u => u.UsuarioNombre == username);
+        }
+
         public void Add(Usuario usuario)
         {
-            usuario.Id = _usuarios.Any() ? _usuarios.Max(u => u.Id) + 1 : 1;
-            _usuarios.Add(usuario);
+            using var context = CreateContext();
+            context.Usuarios.Add(usuario);
+            context.SaveChanges();
         }
         public void Update(Usuario usuario)
         {
-            var existing = GetById(usuario.Id);
-            if (existing != null)
-            {
-                existing.Nombre = usuario.Nombre;
-                existing.Apellido = usuario.Apellido;
-                existing.UsuarioNombre = usuario.UsuarioNombre;
-                existing.Contrasenia = usuario.Contrasenia;
-                existing.Email = usuario.Email;
-                existing.Habilitado = usuario.Habilitado;
-            }
+            using var context = CreateContext();
+            context.Usuarios.Update(usuario);
+            context.SaveChanges();
         }
         public void Delete(int id)
         {
-            var usuario = GetById(id);
-            if (usuario != null) _usuarios.Remove(usuario);
+            using var context = CreateContext();
+            var usuario = context.Usuarios.Find(id);
+            if (usuario != null)
+            {
+                context.Usuarios.Remove(usuario);
+                context.SaveChanges();
+            }
+        }
+
+        public bool EmailExists(string email, int? excludeId = null)
+        {
+            using var context = CreateContext();
+            var query = context.Usuarios.Where(c => c.Email.ToLower() == email.ToLower());
+            if (excludeId.HasValue)
+            {
+                query = query.Where(c => c.Id != excludeId.Value);
+            }
+            return query.Any();
         }
     }
 }

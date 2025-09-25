@@ -1,89 +1,83 @@
 ﻿using DTOs;
-using System.Diagnostics;
+using System;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class UsuarioApiClient
+    public class UsuarioApiClient : BaseApiClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
-        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true
-        };
 
-        public UsuarioApiClient(string baseUrl)
-        {
-            // Configurar HttpClient para ignorar certificados inválidos en desarrollo
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            };
-
-            _httpClient = new HttpClient(handler);
-            _baseUrl = baseUrl.TrimEnd('/');
-            Debug.WriteLine($"Cliente API inicializado con URL base: {_baseUrl}");
-        }
-
+        protected readonly JsonSerializerOptions _jsonOptions;
         public async Task<IEnumerable<UsuarioDto>> GetAllAsync()
         {
-            try
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync("usuarios");
+
+            if (response.IsSuccessStatusCode)
             {
-                Debug.WriteLine($"Solicitando GET a {_baseUrl}/usuarios");
-                var response = await _httpClient.GetAsync($"{_baseUrl}/usuarios");
-
-                Debug.WriteLine($"Respuesta recibida: {(int)response.StatusCode} {response.ReasonPhrase}");
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine($"Contenido recibido: {content}");
-
-                var result = JsonSerializer.Deserialize<IEnumerable<UsuarioDto>>(content, _jsonOptions);
-                return result ?? Enumerable.Empty<UsuarioDto>();
+                return await response.Content.ReadFromJsonAsync<IEnumerable<UsuarioDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<UsuarioDto>();
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error en GetAllAsync: {ex.Message}");
-                throw;
-            }
+
+            await HandleUnauthorizedResponseAsync(response);
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener lista de usuarios. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<UsuarioDto?> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/usuarios/{id}");
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync($"usuarios/{id}");
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                return null;
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<UsuarioDto>(_jsonOptions);
+            }
 
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<UsuarioDto>(_jsonOptions);
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<UsuarioDto> CreateAsync(UsuarioDto usuario)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/usuarios", usuario);
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.PostAsJsonAsync("usuarios", usuario);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al crear usuario. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
+
             return await response.Content.ReadFromJsonAsync<UsuarioDto>(_jsonOptions)
-                ?? throw new InvalidOperationException("No se pudo crear el usuario");
+                   ?? throw new InvalidOperationException("No se pudo crear el usuario");
         }
 
         public async Task UpdateAsync(UsuarioDto usuario)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/usuarios/{usuario.Id}", usuario);
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.PutAsJsonAsync($"usuarios/{usuario.Id}", usuario);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al actualizar usuario con Id {usuario.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"{_baseUrl}/usuarios/{id}");
-            response.EnsureSuccessStatusCode();
-        }
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.DeleteAsync($"usuarios/{id}");
 
-        public static implicit operator UsuarioApiClient(EspecialidadApiClient v)
-        {
-            throw new NotImplementedException();
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al eliminar usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
     }
 }

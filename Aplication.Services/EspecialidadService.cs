@@ -22,13 +22,13 @@ namespace Aplication.Services
 
         public void Add(EspecialidadDto especialidadDto)
         {
-            var especialidad = MapToEntity(especialidadDto);
+            var especialidad = MapToEntityForCreation(especialidadDto);
             _repository.Add(especialidad);
         }
 
         public void Update(EspecialidadDto especialidadDto)
         {
-            var especialidad = MapToEntity(especialidadDto);
+            var especialidad = MapToEntityForUpdate(especialidadDto);
             _repository.Update(especialidad);
         }
 
@@ -43,10 +43,10 @@ namespace Aplication.Services
             Descripcion = especialidad.Descripcion
         };
 
-        private Especialidad MapToEntity(EspecialidadDto dto) => new Especialidad
-        {
-            Id = dto.Id,
-            Descripcion = dto.Descripcion
-        };
+        // Para crear nuevas especialidades (sin ID)
+        private Especialidad MapToEntityForCreation(EspecialidadDto dto) => new Especialidad(dto.Descripcion);
+
+        // Para actualizar especialidades existentes (con ID)
+        private Especialidad MapToEntityForUpdate(EspecialidadDto dto) => new Especialidad(dto.Id, dto.Descripcion);
     }
 }

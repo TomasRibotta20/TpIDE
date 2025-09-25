@@ -22,7 +22,7 @@ namespace WIndowsForm
             {
                 string apiUrl = "https://localhost:7229";
                 Debug.WriteLine($"Conectando a API en: {apiUrl}");
-                _apiClient = new UsuarioApiClient(apiUrl);
+                _apiClient = new UsuarioApiClient();
 
                 // Configurar DataGridView
                 dataGridViewUsuarios.DataSource = _usuarios;

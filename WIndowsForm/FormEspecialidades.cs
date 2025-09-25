@@ -20,9 +20,8 @@ namespace WIndowsForm
 
             try
             {
-                string apiUrl = "https://localhost:7229";
-                Debug.WriteLine($"Conectando a API en: {apiUrl}");
-                _apiClient = new EspecialidadApiClient(apiUrl);
+                Debug.WriteLine("Inicializando cliente de API de especialidades");
+                _apiClient = new EspecialidadApiClient();
 
                 // Configurar DataGridView
                 dataGridViewEspecialidades.DataSource = _especialidades;

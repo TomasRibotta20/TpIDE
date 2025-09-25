@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36121.58 d17.14
+VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaAPI", "AcademiaAPI.csproj", "{D7C833C5-B49F-4AA0-8858-95693B757B60}"
 EndProject
@@ -20,6 +20,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Auth.WindowsForms", "..\API.Auth.WindowsForms\API.Auth.WindowsForms.csproj", "{15BEF01F-62A3-4F63-B3CB-AD0A18EFB1D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C30403A-D795-44E5-8005-EA16334F0664} = {0C30403A-D795-44E5-8005-EA16334F0664}
+		{665A3C3D-42C8-4869-9FAB-D3652F24CD7A} = {665A3C3D-42C8-4869-9FAB-D3652F24CD7A}
+		{8D1BDC30-7508-473F-9305-F9D59DB9C61F} = {8D1BDC30-7508-473F-9305-F9D59DB9C61F}
+		{CD284ACC-3DDF-460C-89B2-18A7F9715168} = {CD284ACC-3DDF-460C-89B2-18A7F9715168}
+		{D7C833C5-B49F-4AA0-8858-95693B757B60} = {D7C833C5-B49F-4AA0-8858-95693B757B60}
+		{F75395C3-18DF-4AF7-B5B4-5494D1D75901} = {F75395C3-18DF-4AF7-B5B4-5494D1D75901}
 	EndProjectSection
 EndProject
 Global
@@ -56,6 +66,10 @@ Global
 		{8215C4DF-AF7A-40BC-8B51-C9BA9FC9D492}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8215C4DF-AF7A-40BC-8B51-C9BA9FC9D492}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8215C4DF-AF7A-40BC-8B51-C9BA9FC9D492}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15BEF01F-62A3-4F63-B3CB-AD0A18EFB1D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15BEF01F-62A3-4F63-B3CB-AD0A18EFB1D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15BEF01F-62A3-4F63-B3CB-AD0A18EFB1D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15BEF01F-62A3-4F63-B3CB-AD0A18EFB1D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

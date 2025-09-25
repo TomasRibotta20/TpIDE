@@ -1,0 +1,20 @@
+Usando la configuración de inicio de D:\TP_IDE\TpIDE\AcademiaAPI\Properties\launchSettings.json...
+Compilando...
+D:\TP_IDE\TpIDE\Data\UsuarioRepository.cs(19,20): warning CS8603: Posible tipo de valor devuelto de referencia nulo. [D:\TP_IDE\TpIDE\Data\Data.csproj]
+D:\TP_IDE\TpIDE\Data\EspecialidadRepository.cs(21,20): warning CS8603: Posible tipo de valor devuelto de referencia nulo. [D:\TP_IDE\TpIDE\Data\Data.csproj]
+D:\TP_IDE\TpIDE\Data\UsuarioRepository.cs(25,20): warning CS8603: Posible tipo de valor devuelto de referencia nulo. [D:\TP_IDE\TpIDE\Data\Data.csproj]
+Starting API server...
+Environment: Development
+Available endpoints:
+- GET /health - Health check
+- POST /auth/login - User authentication
+- GET /usuarios - Get all users
+- GET /especialidades - Get all specialties
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:7229
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: D:\TP_IDE\TpIDE\AcademiaAPI

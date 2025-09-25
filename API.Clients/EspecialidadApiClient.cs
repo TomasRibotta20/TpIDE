@@ -4,64 +4,72 @@ using System.Text.Json;
 
 namespace API.Clients
 {
-    public class EspecialidadApiClient
+    public class EspecialidadApiClient : BaseApiClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
-        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
         };
 
-        public EspecialidadApiClient(string baseUrl)
-        {
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            };
-
-            _httpClient = new HttpClient(handler);
-            _baseUrl = baseUrl.TrimEnd('/');
-        }
-
         public async Task<IEnumerable<EspecialidadDto>> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/especialidades");
-            response.EnsureSuccessStatusCode();
-
-            return await response.Content.ReadFromJsonAsync<IEnumerable<EspecialidadDto>>(_jsonOptions)
-                ?? Enumerable.Empty<EspecialidadDto>();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync("especialidades");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<EspecialidadDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<EspecialidadDto>();
+            }
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener lista de especialidades. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<EspecialidadDto?> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"{_baseUrl}/especialidades/{id}");
-
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                return null;
-
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<EspecialidadDto>(_jsonOptions);
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync($"especialidades/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<EspecialidadDto>(_jsonOptions);
+            }
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener especialidad con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
-
+        
         public async Task<EspecialidadDto> CreateAsync(EspecialidadDto especialidad)
         {
-            var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/especialidades", especialidad);
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.PostAsJsonAsync("especialidades", especialidad);
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al crear especialidad. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
+            
             return await response.Content.ReadFromJsonAsync<EspecialidadDto>(_jsonOptions)
-                ?? throw new InvalidOperationException("No se pudo crear la especialidad");
+                   ?? throw new InvalidOperationException("No se pudo crear la especialidad");
         }
 
         public async Task UpdateAsync(EspecialidadDto especialidad)
         {
-            var response = await _httpClient.PutAsJsonAsync($"{_baseUrl}/especialidades/{especialidad.Id}", especialidad);
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.PutAsJsonAsync($"especialidades/{especialidad.Id}", especialidad);
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al actualizar especialidad con Id {especialidad.Id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"{_baseUrl}/especialidades/{id}");
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.DeleteAsync($"especialidades/{id}");
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al eliminar especialidad con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
     }
 }
