@@ -17,6 +17,7 @@ namespace WindowsForms
                 {
                     loginButton.Enabled = false;
                     loginButton.Text = "Iniciando sesión...";
+                    Cursor.Current = Cursors.WaitCursor;
 
                     var authService = AuthServiceProvider.Instance;
                     bool success = await authService.LoginAsync(usernameTextBox.Text, passwordTextBox.Text);
@@ -34,15 +35,31 @@ namespace WindowsForms
                         passwordTextBox.Focus();
                     }
                 }
+                catch (UnauthorizedAccessException ex)
+                {
+                    MessageBox.Show($"Error de autenticación: {ex.Message}", "Error de autenticación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    passwordTextBox.Clear();
+                    passwordTextBox.Focus();
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al iniciar sesión: {ex.Message}", "Error",
+                    // Proporcionar un mensaje de error más informativo según el tipo de error
+                    string errorMessage = ex.Message;
+
+                    if (ex is System.Net.Http.HttpRequestException)
+                    {
+                        errorMessage = "No se pudo conectar al servidor. Verifique que la API esté en ejecución.";
+                    }
+
+                    MessageBox.Show($"Error al iniciar sesión: {errorMessage}", "Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
                     loginButton.Enabled = true;
                     loginButton.Text = "Iniciar Sesión";
+                    Cursor.Current = Cursors.Default;
                 }
             }
         }
@@ -86,7 +103,9 @@ namespace WindowsForms
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-
+            // Precargar el usuario admin para facilitar las pruebas
+            usernameTextBox.Text = "admin";
+            passwordTextBox.Select();
         }
     }
 }

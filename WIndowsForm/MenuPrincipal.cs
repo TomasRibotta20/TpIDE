@@ -18,13 +18,73 @@ public partial class MenuPrincipal : Form
 
             Debug.WriteLine($"Conectando a API en: {apiUrl}");
             _apiClient = new UsuarioApiClient();
-             _especialidadApiClient = new EspecialidadApiClient(); // Inicializa el cliente de especialidades
+            _especialidadApiClient = new EspecialidadApiClient(); // Inicializa el cliente de especialidades
+            _comisionApiClient = new ComisionApiClient(); // Inicializa el cliente de comisiones
+            
+            // Create and initialize Comisiones UI
+            InitializeComisionesUI();
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Error al inicializar: {ex.Message}",
                 "Error de inicialización", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+    
+    private void InitializeComisionesUI()
+    {
+        // Create button
+        btnComisiones = new Button();
+        btnComisiones.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        btnComisiones.Location = new Point(150, 310);
+        btnComisiones.Name = "btnComisiones";
+        btnComisiones.Size = new Size(200, 50);
+        btnComisiones.TabIndex = 4;
+        btnComisiones.Text = "Gestión de Comisiones";
+        btnComisiones.UseVisualStyleBackColor = true;
+        btnComisiones.Click += BtnComisiones_Click;
+        
+        // Move proximamente label down
+        lblProximamente.Location = new Point(150, 375);
+        
+        // Add to panel
+        mainPanel.Controls.Add(btnComisiones);
+        
+        // Create menu items
+        comisionToolStripMenuItem = new ToolStripMenuItem();
+        nuevaComisionToolStripMenuItem = new ToolStripMenuItem();
+        listarComisionesToolStripMenuItem = new ToolStripMenuItem();
+        
+        // Configure menu items
+        comisionToolStripMenuItem.Name = "comisionToolStripMenuItem";
+        comisionToolStripMenuItem.Size = new Size(73, 20);
+        comisionToolStripMenuItem.Text = "Comisión";
+        
+        nuevaComisionToolStripMenuItem.Name = "nuevaComisionToolStripMenuItem";
+        nuevaComisionToolStripMenuItem.Size = new Size(180, 22);
+        nuevaComisionToolStripMenuItem.Text = "Nueva Comisión";
+        nuevaComisionToolStripMenuItem.Click += nuevaComisionToolStripMenuItem_Click;
+        
+        listarComisionesToolStripMenuItem.Name = "listarComisionesToolStripMenuItem";
+        listarComisionesToolStripMenuItem.Size = new Size(180, 22);
+        listarComisionesToolStripMenuItem.Text = "Listar Comisiones";
+        listarComisionesToolStripMenuItem.Click += listarComisionesToolStripMenuItem_Click;
+        
+        // Add sub-items to Comisiones menu
+        comisionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { 
+            nuevaComisionToolStripMenuItem, 
+            listarComisionesToolStripMenuItem 
+        });
+        
+        // Add to main menu strip
+        menuStrip1.Items.Add(comisionToolStripMenuItem);
+    }
+
+    private void BtnComisiones_Click(object sender, EventArgs e)
+    {
+        var formComisiones = new FormComisiones(this);
+        formComisiones.Show();
+        this.Hide();
     }
 
     private void ConfigureEvents()
@@ -42,6 +102,13 @@ public partial class MenuPrincipal : Form
             formEspecialidades.Show();
             this.Hide();
         };
+
+        btnPlanes.Click += (s, e) =>
+        {
+            var formPlanes = new FormPlanes(this);
+            formPlanes.Show();
+            this.Hide();
+        };
     }
     private void MenuPrincipal_Load(object sender, EventArgs e)
     {
@@ -52,7 +119,7 @@ public partial class MenuPrincipal : Form
     {
         mainPanel = new Panel();
         lblProximamente = new Label();
-        btnOtroCrud = new Button();
+        btnPlanes = new Button();
         btnEspecialidades = new Button();
         btnUsuarios = new Button();
         titleLabel = new Label();
@@ -63,6 +130,9 @@ public partial class MenuPrincipal : Form
         especialidadToolStripMenuItem = new ToolStripMenuItem();
         nuevaEspecialidadToolStripMenuItem = new ToolStripMenuItem();
         listarEspecialidadesToolStripMenuItem = new ToolStripMenuItem();
+        planToolStripMenuItem = new ToolStripMenuItem();
+        nuevoPlanToolStripMenuItem = new ToolStripMenuItem();
+        listarPlanesToolStripMenuItem = new ToolStripMenuItem();
         mainPanel.SuspendLayout();
         menuStrip1.SuspendLayout();
         SuspendLayout();
@@ -70,7 +140,7 @@ public partial class MenuPrincipal : Form
         // mainPanel
         // 
         mainPanel.Controls.Add(lblProximamente);
-        mainPanel.Controls.Add(btnOtroCrud);
+        mainPanel.Controls.Add(btnPlanes);
         mainPanel.Controls.Add(btnEspecialidades);
         mainPanel.Controls.Add(btnUsuarios);
         mainPanel.Controls.Add(titleLabel);
@@ -78,29 +148,28 @@ public partial class MenuPrincipal : Form
         mainPanel.Location = new Point(0, 24);
         mainPanel.Name = "mainPanel";
         mainPanel.Padding = new Padding(20);
-        mainPanel.Size = new Size(484, 387);
+        mainPanel.Size = new Size(484, 473);
         mainPanel.TabIndex = 0;
         // 
         // lblProximamente
         // 
         lblProximamente.Font = new Font("Arial", 9.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
-        lblProximamente.Location = new Point(150, 310);
+        lblProximamente.Location = new Point(150, 375);
         lblProximamente.Name = "lblProximamente";
         lblProximamente.Size = new Size(200, 20);
         lblProximamente.TabIndex = 4;
         lblProximamente.Text = "Mas CRUDs Proximamente...";
         lblProximamente.TextAlign = ContentAlignment.MiddleCenter;
         // 
-        // btnOtroCrud
+        // btnPlanes
         // 
-        btnOtroCrud.Enabled = false;
-        btnOtroCrud.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnOtroCrud.Location = new Point(150, 240);
-        btnOtroCrud.Name = "btnOtroCrud";
-        btnOtroCrud.Size = new Size(200, 50);
-        btnOtroCrud.TabIndex = 3;
-        btnOtroCrud.Text = "Otro Crud (No implementado)";
-        btnOtroCrud.UseVisualStyleBackColor = true;
+        btnPlanes.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        btnPlanes.Location = new Point(150, 240);
+        btnPlanes.Name = "btnPlanes";
+        btnPlanes.Size = new Size(200, 50);
+        btnPlanes.TabIndex = 3;
+        btnPlanes.Text = "Gestión de Planes";
+        btnPlanes.UseVisualStyleBackColor = true;
         // 
         // btnEspecialidades
         // 
@@ -135,7 +204,7 @@ public partial class MenuPrincipal : Form
         // 
         // menuStrip1
         // 
-        menuStrip1.Items.AddRange(new ToolStripItem[] { usuarioToolStripMenuItem, especialidadToolStripMenuItem });
+        menuStrip1.Items.AddRange(new ToolStripItem[] { usuarioToolStripMenuItem, especialidadToolStripMenuItem, planToolStripMenuItem });
         menuStrip1.Location = new Point(0, 0);
         menuStrip1.Name = "menuStrip1";
         menuStrip1.Size = new Size(484, 24);
@@ -152,14 +221,14 @@ public partial class MenuPrincipal : Form
         // nuevoUsuarioToolStripMenuItem
         // 
         nuevoUsuarioToolStripMenuItem.Name = "nuevoUsuarioToolStripMenuItem";
-        nuevoUsuarioToolStripMenuItem.Size = new Size(180, 22);
+        nuevoUsuarioToolStripMenuItem.Size = new Size(152, 22);
         nuevoUsuarioToolStripMenuItem.Text = "Nuevo Usuario";
         nuevoUsuarioToolStripMenuItem.Click += nuevoUsuarioToolStripMenuItem_Click;
         // 
         // listarUsuariosToolStripMenuItem
         // 
         listarUsuariosToolStripMenuItem.Name = "listarUsuariosToolStripMenuItem";
-        listarUsuariosToolStripMenuItem.Size = new Size(180, 22);
+        listarUsuariosToolStripMenuItem.Size = new Size(152, 22);
         listarUsuariosToolStripMenuItem.Text = "Listar Usuarios";
         listarUsuariosToolStripMenuItem.Click += listarUsuariosToolStripMenuItem_Click;
         // 
@@ -184,9 +253,30 @@ public partial class MenuPrincipal : Form
         listarEspecialidadesToolStripMenuItem.Text = "Listar Especialidades";
         listarEspecialidadesToolStripMenuItem.Click += listarEspecialidadesToolStripMenuItem_Click;
         // 
+        // planToolStripMenuItem
+        // 
+        planToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nuevoPlanToolStripMenuItem, listarPlanesToolStripMenuItem });
+        planToolStripMenuItem.Name = "planToolStripMenuItem";
+        planToolStripMenuItem.Size = new Size(45, 20);
+        planToolStripMenuItem.Text = "Plan";
+        // 
+        // nuevoPlanToolStripMenuItem
+        // 
+        nuevoPlanToolStripMenuItem.Name = "nuevoPlanToolStripMenuItem";
+        nuevoPlanToolStripMenuItem.Size = new Size(180, 22);
+        nuevoPlanToolStripMenuItem.Text = "Nuevo Plan";
+        nuevoPlanToolStripMenuItem.Click += nuevoPlanToolStripMenuItem_Click;
+        // 
+        // listarPlanesToolStripMenuItem
+        // 
+        listarPlanesToolStripMenuItem.Name = "listarPlanesToolStripMenuItem";
+        listarPlanesToolStripMenuItem.Size = new Size(180, 22);
+        listarPlanesToolStripMenuItem.Text = "Listar Planes";
+        listarPlanesToolStripMenuItem.Click += listarPlanesToolStripMenuItem_Click;
+        // 
         // MenuPrincipal
         // 
-        ClientSize = new Size(484, 411);
+        ClientSize = new Size(484, 497);
         Controls.Add(mainPanel);
         Controls.Add(menuStrip1);
         MainMenuStrip = menuStrip1;
@@ -208,12 +298,14 @@ public partial class MenuPrincipal : Form
     private BindingList<EspecialidadDto> _especialidades = new BindingList<EspecialidadDto>();
     // Agrega este campo para el cliente de especialidades
     private readonly EspecialidadApiClient _especialidadApiClient;
+    // Agrega este campo para el cliente de comisiones
+    private readonly ComisionApiClient _comisionApiClient;
+    private BindingList<ComisionDto> _comisiones = new BindingList<ComisionDto>();
+    
     private void MenuPrincipal_Load_1(object sender, EventArgs e)
     {
 
     }
-
-
 
     // Ejemplo para el método nuevaEspecialidadToolStripMenuItem_Click:
     private async void nuevaEspecialidadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -310,8 +402,65 @@ public partial class MenuPrincipal : Form
                 formUsuarios.ShowDialog();
             }
         }
-
-
     }
 
+    private async void nuevoPlanToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var form = new EditarPlanForm();
+        form.ShowDialog();
+        if (form.Guardado && form.PlanEditado != null)
+        {
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                var client = new PlanApiClient();
+                await client.CreateAsync(form.PlanEditado);
+                var listado = new FormPlanes(this);
+                listado.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+            finally { Cursor.Current = Cursors.Default; }
+        }
+    }
+
+    private void listarPlanesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var formPlanes = new FormPlanes(this);
+        formPlanes.Show();
+        this.Hide();
+    }
+
+    // Nuevos métodos para la funcionalidad de Comisiones
+    private async void nuevaComisionToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var form = new EditarComisionForm();
+        form.ShowDialog();
+        if (form.Guardado && form.ComisionEditada != null)
+        {
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                await _comisionApiClient.CreateAsync(form.ComisionEditada);
+                var listado = new FormComisiones(this);
+                listado.Show();
+                this.Hide();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+            finally { Cursor.Current = Cursors.Default; }
+        }
+    }
+
+    private void listarComisionesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        var formComisiones = new FormComisiones(this);
+        formComisiones.Show();
+        this.Hide();
+    }
 }

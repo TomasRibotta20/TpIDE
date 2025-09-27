@@ -23,7 +23,24 @@ namespace AcademiaAPI
                     }
                     else
                     {
-                        app.Logger.LogWarning($"Login failed for user: {request.Username}");
+                        app.Logger.LogWarning($"Login failed for user: {request.Username} - Invalid credentials");
+                        
+                        // Checking if user exists but password is wrong
+                        var usuarioRepo = new Data.UsuarioRepository();
+                        var user = usuarioRepo.GetByUsername(request.Username);
+                        if (user != null)
+                        {
+                            app.Logger.LogWarning($"User {request.Username} exists but password validation failed");
+                            
+                            // For debugging purposes, log password hash details
+                            bool passwordCheck = user.ValidatePassword(request.Password);
+                            app.Logger.LogWarning($"Password validation result: {passwordCheck}");
+                        }
+                        else
+                        {
+                            app.Logger.LogWarning($"User {request.Username} does not exist in database");
+                        }
+                        
                         return Results.Unauthorized();
                     }
                 }
@@ -53,6 +70,43 @@ namespace AcademiaAPI
             .WithName("ValidateToken")
             .WithTags("Authentication")
             .WithOpenApi();
+            
+            // Add debug endpoint to check if admin user exists and is configured correctly
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapGet("/auth/check-admin", () => 
+                {
+                    try 
+                    {
+                        var usuarioRepo = new Data.UsuarioRepository();
+                        var adminUser = usuarioRepo.GetByUsername("admin");
+                        
+                        if (adminUser == null)
+                        {
+                            return Results.NotFound("Admin user not found in database");
+                        }
+                        
+                        bool canValidate = adminUser.ValidatePassword("admin123");
+                        
+                        return Results.Ok(new 
+                        {
+                            exists = true,
+                            username = adminUser.UsuarioNombre,
+                            email = adminUser.Email,
+                            canValidateWithDefaultPassword = canValidate,
+                            passwordHashLength = adminUser.PasswordHash?.Length ?? 0,
+                            saltLength = adminUser.Salt?.Length ?? 0
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        return Results.Problem($"Error checking admin user: {ex.Message}");
+                    }
+                })
+                .WithName("CheckAdminUser")
+                .WithTags("Debugging")
+                .WithOpenApi();
+            }
         }
     }
 }

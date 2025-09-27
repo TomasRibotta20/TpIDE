@@ -1,6 +1,7 @@
 using Aplication.Services;
 using DTOs;
 using AcademiaAPI;
+using Data;
 
 Console.WriteLine("Starting API server...");
 
@@ -27,6 +28,24 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
+
+// Ensure database is created with all tables including Comisiones
+Console.WriteLine("Ensuring database schema is up to date...");
+try
+{
+    using (var context = new Data.AcademiaContext())
+    {
+        bool created = context.Database.EnsureCreated();
+        Console.WriteLine(created 
+            ? "Database was created or updated successfully." 
+            : "Database already exists and schema is up to date.");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error initializing database: {ex.Message}");
+    // Continue execution - the app might still work with existing database
+}
 
 // Reparar específicamente el usuario admin para asegurar que funcione el login
 Console.WriteLine("Repairing admin user...");
@@ -68,11 +87,7 @@ app.UseCors("AllowAll");
 app.MapAuthEndpoints();
 app.MapEspecialidadEndpoints();
 app.MapUsuariosEndpoints();
-
-Console.WriteLine("Available endpoints:");
-Console.WriteLine("- GET /health - Health check");
-Console.WriteLine("- POST /auth/login - User authentication");
-Console.WriteLine("- GET /usuarios - Get all users");
-Console.WriteLine("- GET /especialidades - Get all specialties");
+app.MapPlanEndpoints();
+app.MapComisionesEndpoints();
 
 app.Run();

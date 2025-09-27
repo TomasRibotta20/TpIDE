@@ -2,6 +2,7 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Domain.Model;
 
 namespace AcademiaAPI
 {
@@ -18,15 +19,15 @@ namespace AcademiaAPI
                 using var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
                 
-                // Generar nuevos valores para el usuario admin
-                string username = "admin";
-                string password = "admin123";
-                string salt = GenerateSalt();
-                string passwordHash = HashPassword(password, salt);
+                // Usar la misma implementación de hash que la clase Usuario
+                // para garantizar consistencia
+                var adminUser = new Usuario("Admin", "User", "admin", "admin@tpi.com", "admin123", true);
+                string salt = adminUser.Salt;
+                string passwordHash = adminUser.PasswordHash;
                 
                 Console.WriteLine($"Generated new credentials for admin user:");
-                Console.WriteLine($"Username: {username}");
-                Console.WriteLine($"Password: {password}");
+                Console.WriteLine($"Username: admin");
+                Console.WriteLine($"Password: admin123");
                 Console.WriteLine($"Salt: {salt}");
                 Console.WriteLine($"PasswordHash: {passwordHash}");
                 
@@ -40,7 +41,12 @@ namespace AcademiaAPI
                     // Actualizar el usuario existente
                     var updateQuery = @"
                         UPDATE Usuarios 
-                        SET PasswordHash = @PasswordHash, Salt = @Salt 
+                        SET PasswordHash = @PasswordHash, 
+                            Salt = @Salt,
+                            Nombre = 'Admin',
+                            Apellido = 'User',
+                            Email = 'admin@tpi.com',
+                            Habilitado = 1
                         WHERE UsuarioNombre = 'admin'";
                     
                     using var updateCommand = new SqlCommand(updateQuery, connection);
@@ -67,23 +73,35 @@ namespace AcademiaAPI
                 
                 // Validación
                 var validateQuery = @"
-                    SELECT PasswordHash, Salt FROM Usuarios WHERE UsuarioNombre = 'admin'";
+                    SELECT Id, Nombre, Apellido, UsuarioNombre, Email, PasswordHash, Salt, Habilitado
+                    FROM Usuarios WHERE UsuarioNombre = 'admin'";
                 
                 using var validateCommand = new SqlCommand(validateQuery, connection);
                 using var reader = await validateCommand.ExecuteReaderAsync();
                 
                 if (await reader.ReadAsync())
                 {
-                    string storedHash = reader["PasswordHash"].ToString();
-                    string storedSalt = reader["Salt"].ToString();
+                    // Obtener datos del usuario
+                    var id = (int)reader["Id"];
+                    var nombre = (string)reader["Nombre"];
+                    var apellido = (string)reader["Apellido"];
+                    var usuario = (string)reader["UsuarioNombre"];
+                    var email = (string)reader["Email"];
+                    var storedHash = (string)reader["PasswordHash"];
+                    var storedSalt = (string)reader["Salt"];
+                    var habilitado = (bool)reader["Habilitado"];
                     
-                    // Validar que la contraseña admin123 funcione con el hash y salt almacenados
-                    string testHash = HashPassword("admin123", storedSalt);
-                    bool isValid = testHash == storedHash;
+                    Console.WriteLine($"Validating user from database:");
+                    Console.WriteLine($"ID: {id}, Username: {usuario}, Email: {email}, Enabled: {habilitado}");
                     
-                    Console.WriteLine($"Validation test: {(isValid ? "PASSED" : "FAILED")}");
-                    Console.WriteLine($"Stored Hash: {storedHash}");
-                    Console.WriteLine($"Computed Hash: {testHash}");
+                    // No podemos crear una instancia de Usuario con hash y salt directamente
+                    // Pero podemos verificar si el hash coincide manualmente
+                    var testHash = HashPassword("admin123", storedSalt);
+                    var passwordValid = testHash == storedHash;
+                    
+                    Console.WriteLine($"Manual password validation test: {(passwordValid ? "PASSED" : "FAILED")}");
+                    Console.WriteLine($"Stored hash: {storedHash}");
+                    Console.WriteLine($"Test hash: {testHash}");
                 }
                 
                 Console.WriteLine("==== ADMIN USER REPAIR COMPLETED ====");

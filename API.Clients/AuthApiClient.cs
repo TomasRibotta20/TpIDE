@@ -36,13 +36,31 @@ namespace API.Clients
                     var errorContent = await response.Content.ReadAsStringAsync();
                     System.Diagnostics.Debug.WriteLine($"[DEBUG] Login failed: {response.StatusCode} - {errorContent}");
 
-                    // Throw an exception with the error message for better user feedback
-                    throw new Exception($"Error en el servidor: {response.StatusCode} - {errorContent}");
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Credenciales incorrectas. Verifique su nombre de usuario y contraseña.");
+                    }
+                    else
+                    {
+                        throw new Exception($"Error en el servidor: {response.StatusCode}" + 
+                            (!string.IsNullOrEmpty(errorContent) ? $" - {errorContent}" : ""));
+                    }
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw; // Re-throw unauthorized exceptions directly
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] Login exception: {ex.Message}");
+                
+                // Check if it's a network-related error
+                if (ex is System.Net.Http.HttpRequestException)
+                {
+                    throw new Exception($"Error de conexión: No se pudo conectar al servidor. Verifique que la API esté funcionando.");
+                }
+                
                 throw;
             }
         }
