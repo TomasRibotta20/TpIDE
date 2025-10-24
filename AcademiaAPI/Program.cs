@@ -2,6 +2,7 @@ using Aplication.Services;
 using DTOs;
 using AcademiaAPI;
 using Data;
+using Microsoft.EntityFrameworkCore;
 
 Console.WriteLine("Starting API server...");
 
@@ -29,29 +30,13 @@ var app = builder.Build();
 
 Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
 
-// Ensure database is created with all tables including Comisiones
-Console.WriteLine("Ensuring database schema is up to date...");
-try
-{
-    using (var context = new Data.AcademiaContext())
-    {
-        bool created = context.Database.EnsureCreated();
-        Console.WriteLine(created 
-            ? "Database was created or updated successfully." 
-            : "Database already exists and schema is up to date.");
-    }
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Error initializing database: {ex.Message}");
-    // Continue execution - the app might still work with existing database
-}
+// Asegurar que la base de datos esté actualizada (automático)
+Console.WriteLine("Ensuring database is up to date...");
+MigrationHelper.EnsureDatabaseUpdated();
 
 // Reparar específicamente el usuario admin para asegurar que funcione el login
-Console.WriteLine("Repairing admin user...");
+Console.WriteLine("Ensuring admin user exists...");
 await AdminUserRepairHelper.RepairAdminUserAsync();
-
-// Ensure database and admin user setup (general setup)
 await DatabaseSetupHelper.EnsureAdminUserExistsAsync();
 
 // Configure the HTTP request pipeline.
@@ -89,5 +74,6 @@ app.MapEspecialidadEndpoints();
 app.MapUsuariosEndpoints();
 app.MapPlanEndpoints();
 app.MapComisionesEndpoints();
+app.MapPersonasEndpoints();
 
 app.Run();

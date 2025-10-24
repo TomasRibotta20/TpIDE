@@ -11,7 +11,10 @@ namespace API.Clients
 {
     public class PlanApiClient : BaseApiClient
     {
-        protected readonly JsonSerializerOptions _jsonOptions;
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
 
         public async Task<IEnumerable<PlanDto>> GetAllAsync()
         {
@@ -73,6 +76,5 @@ namespace API.Clients
                 throw new Exception($"Error al eliminar plan con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
             }
         }
-
     }
 }

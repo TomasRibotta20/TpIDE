@@ -11,14 +11,14 @@ namespace AcademiaAPI
         
             var comisionService = new Aplication.Services.ComisionService();
             
-            // Test endpoint to check if Comisiones table exists and create it if needed
+
             app.MapGet("/comisiones/test-table", () =>
             {
                 try
                 {
                     using var context = new Data.AcademiaContext();
                     
-                    // Try to get a count of comisiones
+           
                     var count = context.Comisiones.Count();
                     
                     return Results.Ok(new { 
@@ -28,15 +28,15 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    // If there's an error, try to create the table
+               
                     try
                     {
                         using var context = new Data.AcademiaContext();
                         
-                        // Ensure database exists
+                  
                         context.Database.EnsureCreated();
                         
-                        // Try to manually create the Comisiones table
+                   
                         context.Database.ExecuteSqlRaw(@"
                         IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Comisiones')
                         BEGIN

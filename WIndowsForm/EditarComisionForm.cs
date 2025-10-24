@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +17,19 @@ namespace WIndowsForm
         private readonly bool _esNuevo;
         private readonly PlanApiClient _planApiClient = new PlanApiClient();
 
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label lblIdComision;
+        private TextBox txtIdComision;
+        private Label lblDescComision;
+        private TextBox txtDescComision;
+        private Label lblAnioEspecialidad;
+        private NumericUpDown numAnioEspecialidad;
+        private Label lblPlan;
+        private ComboBox comboPlanes;
+        private Panel panelBotones;
+        private Button btnCancelar;
+        private Button btnGuardar;
+
         public ComisionDto ComisionEditada { get; private set; }
         public bool Guardado { get; private set; }
 
@@ -25,6 +41,181 @@ namespace WIndowsForm
 
             ConfigurarFormulario();
             this.Load += async (_, __) => await CargarDatosAsync();
+        }
+
+        private void InitializeComponent()
+        {
+            tableLayoutPanel1 = new TableLayoutPanel();
+            lblIdComision = new Label();
+            txtIdComision = new TextBox();
+            lblDescComision = new Label();
+            txtDescComision = new TextBox();
+            lblAnioEspecialidad = new Label();
+            numAnioEspecialidad = new NumericUpDown();
+            lblPlan = new Label();
+            comboPlanes = new ComboBox();
+            panelBotones = new Panel();
+            btnCancelar = new Button();
+            btnGuardar = new Button();
+            tableLayoutPanel1.SuspendLayout();
+            ((ISupportInitialize)numAnioEspecialidad).BeginInit();
+            panelBotones.SuspendLayout();
+            SuspendLayout();
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            tableLayoutPanel1.Controls.Add(lblIdComision, 0, 0);
+            tableLayoutPanel1.Controls.Add(txtIdComision, 1, 0);
+            tableLayoutPanel1.Controls.Add(lblDescComision, 0, 1);
+            tableLayoutPanel1.Controls.Add(txtDescComision, 1, 1);
+            tableLayoutPanel1.Controls.Add(lblAnioEspecialidad, 0, 2);
+            tableLayoutPanel1.Controls.Add(numAnioEspecialidad, 1, 2);
+            tableLayoutPanel1.Controls.Add(lblPlan, 0, 3);
+            tableLayoutPanel1.Controls.Add(comboPlanes, 1, 3);
+            tableLayoutPanel1.Controls.Add(panelBotones, 0, 4);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.Padding = new Padding(20);
+            tableLayoutPanel1.RowCount = 5;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.Size = new Size(434, 261);
+            tableLayoutPanel1.TabIndex = 0;
+            // 
+            // lblIdComision
+            // 
+            lblIdComision.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblIdComision.AutoSize = true;
+            lblIdComision.Location = new Point(23, 32);
+            lblIdComision.Name = "lblIdComision";
+            lblIdComision.Size = new Size(112, 15);
+            lblIdComision.TabIndex = 0;
+            lblIdComision.Text = "ID:";
+            lblIdComision.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtIdComision
+            // 
+            txtIdComision.Dock = DockStyle.Fill;
+            txtIdComision.Location = new Point(141, 23);
+            txtIdComision.Name = "txtIdComision";
+            txtIdComision.ReadOnly = true;
+            txtIdComision.Size = new Size(270, 23);
+            txtIdComision.TabIndex = 1;
+            // 
+            // lblDescComision
+            // 
+            lblDescComision.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblDescComision.AutoSize = true;
+            lblDescComision.Location = new Point(23, 72);
+            lblDescComision.Name = "lblDescComision";
+            lblDescComision.Size = new Size(112, 15);
+            lblDescComision.TabIndex = 2;
+            lblDescComision.Text = "Descripción*:";
+            lblDescComision.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // txtDescComision
+            // 
+            txtDescComision.Dock = DockStyle.Fill;
+            txtDescComision.Location = new Point(141, 63);
+            txtDescComision.Name = "txtDescComision";
+            txtDescComision.Size = new Size(270, 23);
+            txtDescComision.TabIndex = 3;
+            // 
+            // lblAnioEspecialidad
+            // 
+            lblAnioEspecialidad.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblAnioEspecialidad.AutoSize = true;
+            lblAnioEspecialidad.Location = new Point(23, 112);
+            lblAnioEspecialidad.Name = "lblAnioEspecialidad";
+            lblAnioEspecialidad.Size = new Size(112, 15);
+            lblAnioEspecialidad.TabIndex = 4;
+            lblAnioEspecialidad.Text = "Año Especialidad*:";
+            lblAnioEspecialidad.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // numAnioEspecialidad
+            // 
+            numAnioEspecialidad.Dock = DockStyle.Fill;
+            numAnioEspecialidad.Location = new Point(141, 103);
+            numAnioEspecialidad.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
+            numAnioEspecialidad.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numAnioEspecialidad.Name = "numAnioEspecialidad";
+            numAnioEspecialidad.Size = new Size(270, 23);
+            numAnioEspecialidad.TabIndex = 5;
+            numAnioEspecialidad.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // lblPlan
+            // 
+            lblPlan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblPlan.AutoSize = true;
+            lblPlan.Location = new Point(23, 152);
+            lblPlan.Name = "lblPlan";
+            lblPlan.Size = new Size(112, 15);
+            lblPlan.TabIndex = 6;
+            lblPlan.Text = "Plan*:";
+            lblPlan.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // comboPlanes
+            // 
+            comboPlanes.Dock = DockStyle.Fill;
+            comboPlanes.FormattingEnabled = true;
+            comboPlanes.Location = new Point(141, 143);
+            comboPlanes.Name = "comboPlanes";
+            comboPlanes.Size = new Size(270, 23);
+            comboPlanes.TabIndex = 7;
+            // 
+            // panelBotones
+            // 
+            tableLayoutPanel1.SetColumnSpan(panelBotones, 2);
+            panelBotones.Controls.Add(btnCancelar);
+            panelBotones.Controls.Add(btnGuardar);
+            panelBotones.Dock = DockStyle.Fill;
+            panelBotones.Location = new Point(23, 183);
+            panelBotones.Name = "panelBotones";
+            panelBotones.Size = new Size(388, 55);
+            panelBotones.TabIndex = 8;
+            // 
+            // btnCancelar
+            // 
+            btnCancelar.Location = new Point(160, 5);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(100, 30);
+            btnCancelar.TabIndex = 1;
+            btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // btnGuardar
+            // 
+            btnGuardar.Location = new Point(50, 5);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(100, 30);
+            btnGuardar.TabIndex = 0;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            // 
+            // EditarComisionForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(434, 261);
+            Controls.Add(tableLayoutPanel1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "EditarComisionForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Comisión";
+            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
+            ((ISupportInitialize)numAnioEspecialidad).EndInit();
+            panelBotones.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         private void ConfigurarFormulario()
@@ -46,10 +237,13 @@ namespace WIndowsForm
 
             comboPlanes.DropDownStyle = ComboBoxStyle.DropDownList;
             
-            // Configurar el control numérico para el año de especialidad
+            // Configurar el control numérico para el año de especialidad sin límite superior
             numAnioEspecialidad.Minimum = 1;
-            numAnioEspecialidad.Maximum = 10;
+            numAnioEspecialidad.Maximum = 9999; // Máximo valor permitido por NumericUpDown
             numAnioEspecialidad.Value = 1;
+            
+            // Permitir entrada manual de valores (sin restricción)
+            numAnioEspecialidad.TextAlign = HorizontalAlignment.Right;
         }
 
         private async Task CargarDatosAsync()
@@ -111,202 +305,5 @@ namespace WIndowsForm
             Guardado = true;
             Close();
         }
-
-        #region Windows Form Designer generated code
-
-        private System.ComponentModel.IContainer components = null;
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private void InitializeComponent()
-        {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblIdComision = new System.Windows.Forms.Label();
-            this.txtIdComision = new System.Windows.Forms.TextBox();
-            this.lblDescComision = new System.Windows.Forms.Label();
-            this.txtDescComision = new System.Windows.Forms.TextBox();
-            this.lblAnioEspecialidad = new System.Windows.Forms.Label();
-            this.numAnioEspecialidad = new System.Windows.Forms.NumericUpDown();
-            this.lblPlan = new System.Windows.Forms.Label();
-            this.comboPlanes = new System.Windows.Forms.ComboBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAnioEspecialidad)).BeginInit();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-            this.tableLayoutPanel1.Controls.Add(this.lblIdComision, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.txtIdComision, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lblDescComision, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.txtDescComision, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.lblAnioEspecialidad, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.numAnioEspecialidad, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblPlan, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.comboPlanes, 1, 3);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 10);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 4;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(364, 140);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // lblIdComision
-            // 
-            this.lblIdComision.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblIdComision.Location = new System.Drawing.Point(3, 0);
-            this.lblIdComision.Name = "lblIdComision";
-            this.lblIdComision.Size = new System.Drawing.Size(103, 35);
-            this.lblIdComision.TabIndex = 0;
-            this.lblIdComision.Text = "ID:";
-            this.lblIdComision.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtIdComision
-            // 
-            this.txtIdComision.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtIdComision.Location = new System.Drawing.Point(112, 3);
-            this.txtIdComision.Name = "txtIdComision";
-            this.txtIdComision.ReadOnly = true;
-            this.txtIdComision.Size = new System.Drawing.Size(249, 23);
-            this.txtIdComision.TabIndex = 1;
-            // 
-            // lblDescComision
-            // 
-            this.lblDescComision.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDescComision.Location = new System.Drawing.Point(3, 35);
-            this.lblDescComision.Name = "lblDescComision";
-            this.lblDescComision.Size = new System.Drawing.Size(103, 35);
-            this.lblDescComision.TabIndex = 2;
-            this.lblDescComision.Text = "Descripción:";
-            this.lblDescComision.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // txtDescComision
-            // 
-            this.txtDescComision.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDescComision.Location = new System.Drawing.Point(112, 38);
-            this.txtDescComision.Name = "txtDescComision";
-            this.txtDescComision.Size = new System.Drawing.Size(249, 23);
-            this.txtDescComision.TabIndex = 3;
-            // 
-            // lblAnioEspecialidad
-            // 
-            this.lblAnioEspecialidad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblAnioEspecialidad.Location = new System.Drawing.Point(3, 70);
-            this.lblAnioEspecialidad.Name = "lblAnioEspecialidad";
-            this.lblAnioEspecialidad.Size = new System.Drawing.Size(103, 35);
-            this.lblAnioEspecialidad.TabIndex = 4;
-            this.lblAnioEspecialidad.Text = "Año Especialidad:";
-            this.lblAnioEspecialidad.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // numAnioEspecialidad
-            // 
-            this.numAnioEspecialidad.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.numAnioEspecialidad.Location = new System.Drawing.Point(112, 73);
-            this.numAnioEspecialidad.Name = "numAnioEspecialidad";
-            this.numAnioEspecialidad.Size = new System.Drawing.Size(249, 23);
-            this.numAnioEspecialidad.TabIndex = 5;
-            // 
-            // lblPlan
-            // 
-            this.lblPlan.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPlan.Location = new System.Drawing.Point(3, 105);
-            this.lblPlan.Name = "lblPlan";
-            this.lblPlan.Size = new System.Drawing.Size(103, 35);
-            this.lblPlan.TabIndex = 6;
-            this.lblPlan.Text = "Plan:";
-            this.lblPlan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // comboPlanes
-            // 
-            this.comboPlanes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.comboPlanes.FormattingEnabled = true;
-            this.comboPlanes.Location = new System.Drawing.Point(112, 108);
-            this.comboPlanes.Name = "comboPlanes";
-            this.comboPlanes.Size = new System.Drawing.Size(249, 23);
-            this.comboPlanes.TabIndex = 7;
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.AutoSize = true;
-            this.flowLayoutPanel1.Controls.Add(this.btnCancelar);
-            this.flowLayoutPanel1.Controls.Add(this.btnGuardar);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 207);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(364, 33);
-            this.flowLayoutPanel1.TabIndex = 1;
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Location = new System.Drawing.Point(205, 3);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 27);
-            this.btnGuardar.TabIndex = 0;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Location = new System.Drawing.Point(286, 3);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 27);
-            this.btnCancelar.TabIndex = 1;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            // 
-            // EditarComisionForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 250);
-            this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "EditarComisionForm";
-            this.Padding = new System.Windows.Forms.Padding(10);
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Comisión";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAnioEspecialidad)).EndInit();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
-        }
-
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label lblIdComision;
-        private System.Windows.Forms.TextBox txtIdComision;
-        private System.Windows.Forms.Label lblDescComision;
-        private System.Windows.Forms.TextBox txtDescComision;
-        private System.Windows.Forms.Label lblAnioEspecialidad;
-        private System.Windows.Forms.NumericUpDown numAnioEspecialidad;
-        private System.Windows.Forms.Label lblPlan;
-        private System.Windows.Forms.ComboBox comboPlanes;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button btnCancelar;
-        private System.Windows.Forms.Button btnGuardar;
-
-        #endregion
     }
 }

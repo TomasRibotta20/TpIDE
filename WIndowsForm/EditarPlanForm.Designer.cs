@@ -10,7 +10,7 @@
         private System.Windows.Forms.TextBox txtDescripcion;
         private System.Windows.Forms.Label lblEspecialidad;
         private System.Windows.Forms.ComboBox comboEspecialidades;
-        private System.Windows.Forms.FlowLayoutPanel panelBotones;
+        private System.Windows.Forms.Panel panelBotones;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
 
@@ -29,7 +29,7 @@
             txtDescripcion = new TextBox();
             lblEspecialidad = new Label();
             comboEspecialidades = new ComboBox();
-            panelBotones = new FlowLayoutPanel();
+            panelBotones = new Panel();
             btnCancelar = new Button();
             btnGuardar = new Button();
             tableLayoutPanel1.SuspendLayout();
@@ -51,67 +51,72 @@
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.Padding = new Padding(20);
             tableLayoutPanel1.RowCount = 4;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 40F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.Size = new Size(460, 190);
+            tableLayoutPanel1.Size = new Size(434, 230);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // lblId
             // 
-            lblId.Dock = DockStyle.Fill;
-            lblId.Location = new Point(3, 0);
+            lblId.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblId.AutoSize = true;
+            lblId.Location = new Point(23, 32);
             lblId.Name = "lblId";
-            lblId.Size = new Size(132, 35);
+            lblId.Size = new Size(112, 15);
             lblId.TabIndex = 0;
-            lblId.Text = "Id:";
-            lblId.TextAlign = ContentAlignment.MiddleRight;
+            lblId.Text = "ID:";
+            lblId.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txtId
             // 
             txtId.Dock = DockStyle.Fill;
-            txtId.Location = new Point(141, 3);
+            txtId.Location = new Point(141, 23);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(316, 23);
+            txtId.Size = new Size(270, 23);
             txtId.TabIndex = 1;
             // 
             // lblDescripcion
             // 
-            lblDescripcion.Dock = DockStyle.Fill;
-            lblDescripcion.Location = new Point(3, 35);
+            lblDescripcion.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblDescripcion.AutoSize = true;
+            lblDescripcion.Location = new Point(23, 72);
             lblDescripcion.Name = "lblDescripcion";
-            lblDescripcion.Size = new Size(132, 45);
+            lblDescripcion.Size = new Size(112, 15);
             lblDescripcion.TabIndex = 2;
-            lblDescripcion.Text = "Descripción:";
-            lblDescripcion.TextAlign = ContentAlignment.MiddleRight;
+            lblDescripcion.Text = "Descripción*:";
+            lblDescripcion.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // txtDescripcion
             // 
             txtDescripcion.Dock = DockStyle.Fill;
-            txtDescripcion.Location = new Point(141, 38);
+            txtDescripcion.Location = new Point(141, 63);
             txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(316, 23);
+            txtDescripcion.Size = new Size(270, 23);
             txtDescripcion.TabIndex = 3;
             // 
             // lblEspecialidad
             // 
-            lblEspecialidad.Dock = DockStyle.Fill;
-            lblEspecialidad.Location = new Point(3, 80);
+            lblEspecialidad.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblEspecialidad.AutoSize = true;
+            lblEspecialidad.Location = new Point(23, 112);
             lblEspecialidad.Name = "lblEspecialidad";
-            lblEspecialidad.Size = new Size(132, 45);
+            lblEspecialidad.Size = new Size(112, 15);
             lblEspecialidad.TabIndex = 4;
-            lblEspecialidad.Text = "Especialidad:";
-            lblEspecialidad.TextAlign = ContentAlignment.MiddleRight;
+            lblEspecialidad.Text = "Especialidad*:";
+            lblEspecialidad.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // comboEspecialidades
             // 
             comboEspecialidades.Dock = DockStyle.Fill;
-            comboEspecialidades.Location = new Point(141, 83);
+            comboEspecialidades.FormattingEnabled = true;
+            comboEspecialidades.Location = new Point(141, 103);
             comboEspecialidades.Name = "comboEspecialidades";
-            comboEspecialidades.Size = new Size(316, 23);
+            comboEspecialidades.Size = new Size(270, 23);
             comboEspecialidades.TabIndex = 5;
             // 
             // panelBotones
@@ -120,32 +125,38 @@
             panelBotones.Controls.Add(btnCancelar);
             panelBotones.Controls.Add(btnGuardar);
             panelBotones.Dock = DockStyle.Fill;
-            panelBotones.FlowDirection = FlowDirection.RightToLeft;
-            panelBotones.Location = new Point(3, 128);
+            panelBotones.Location = new Point(23, 143);
             panelBotones.Name = "panelBotones";
-            panelBotones.Size = new Size(454, 59);
+            panelBotones.Size = new Size(388, 64);
             panelBotones.TabIndex = 6;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(376, 3);
+            btnCancelar.Location = new Point(160, 5);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(75, 23);
-            btnCancelar.TabIndex = 0;
+            btnCancelar.Size = new Size(100, 30);
+            btnCancelar.TabIndex = 1;
             btnCancelar.Text = "Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(295, 3);
+            btnGuardar.Location = new Point(50, 5);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(75, 23);
-            btnGuardar.TabIndex = 1;
+            btnGuardar.Size = new Size(100, 30);
+            btnGuardar.TabIndex = 0;
             btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
             // 
             // EditarPlanForm
             // 
-            ClientSize = new Size(460, 190);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(434, 230);
             Controls.Add(tableLayoutPanel1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "EditarPlanForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Plan";

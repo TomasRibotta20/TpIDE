@@ -32,11 +32,11 @@ namespace AcademiaAPI
                     
                     Console.WriteLine("\n=== TESTING PASSWORD VALIDATION ===");
                     
-                    // Test the correct password
+                
                     bool passwordValid = adminUser.ValidatePassword("admin123");
                     Console.WriteLine($"Password 'admin123' validation: {passwordValid} {(passwordValid ? "✓" : "✗")}");
                     
-                    // Test wrong passwords
+                  
                     Console.WriteLine($"Password 'admin' validation: {adminUser.ValidatePassword("admin")} ✗");
                     Console.WriteLine($"Password 'Admin123' validation: {adminUser.ValidatePassword("Admin123")} ✗");
                     Console.WriteLine($"Password '' validation: {adminUser.ValidatePassword("")} ✗");

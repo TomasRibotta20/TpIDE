@@ -28,7 +28,7 @@ namespace Data
         public void Add(Domain.Model.Plan plan)
         {
             using var context = CreateContext();
-            // Crear una nueva instancia de Plan sin especificar un ID explícito
+            
             var newPlan = new Domain.Model.Plan(
                 0, // El ID será asignado por la base de datos, pero necesitamos un valor para el constructor
                 plan.Descripcion,

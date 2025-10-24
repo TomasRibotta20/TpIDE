@@ -10,7 +10,6 @@ namespace API.Clients
         {
             try
             {
-                // Don't require auth for login endpoint
                 using var httpClient = await CreateHttpClientAsync(requireAuth: false);
 
                 var json = JsonSerializer.Serialize(request);
@@ -49,13 +48,12 @@ namespace API.Clients
             }
             catch (UnauthorizedAccessException)
             {
-                throw; // Re-throw unauthorized exceptions directly
+                throw; 
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] Login exception: {ex.Message}");
                 
-                // Check if it's a network-related error
                 if (ex is System.Net.Http.HttpRequestException)
                 {
                     throw new Exception($"Error de conexión: No se pudo conectar al servidor. Verifique que la API esté funcionando.");

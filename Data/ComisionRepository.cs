@@ -19,17 +19,16 @@ namespace Data
             return new AcademiaContext();
         }
 
-        // Method to ensure the Comisiones table exists
         private void EnsureComisionesTableExists()
         {
             using var context = CreateContext();
             
             try
             {
-                // First, check if the table exists using EF Core
+                
                 try
                 {
-                    // Try to get a count - if this succeeds, the table exists
+                    
                     var count = context.Comisiones.Count();
                     Console.WriteLine($"Comisiones table exists, count: {count}");
                     return;
@@ -37,10 +36,10 @@ namespace Data
                 catch
                 {
                     Console.WriteLine("Comisiones table might not exist, will try to create it");
-                    // Table might not exist, let's recreate it
+                    
                 }
 
-                // Use raw SQL to check if the table exists
+                
                 var connection = context.Database.GetDbConnection();
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
@@ -77,15 +76,15 @@ namespace Data
         {
             try 
             {
-                // First ensure the table exists
+               
                 EnsureComisionesTableExists();
                 
                 using var context = CreateContext();
                 
-                // Ensure the database exists
+                
                 context.Database.EnsureCreated();
                 
-                // Try to retrieve the data
+                
                 return context.Comisiones.OrderBy(c => c.DescComision).ToList();
             }
             catch (Exception ex)
@@ -99,7 +98,7 @@ namespace Data
         {
             try
             {
-                // First ensure the table exists
+                
                 EnsureComisionesTableExists();
                 
                 using var context = CreateContext();
@@ -116,7 +115,7 @@ namespace Data
         {
             try
             {
-                // First ensure the table exists
+                
                 EnsureComisionesTableExists();
                 
                 using var context = CreateContext();
@@ -134,7 +133,7 @@ namespace Data
         {
             try
             {
-                // First ensure the table exists
+               
                 EnsureComisionesTableExists();
                 
                 using var context = CreateContext();
@@ -152,7 +151,7 @@ namespace Data
         {
             try
             {
-                // First ensure the table exists
+                
                 EnsureComisionesTableExists();
                 
                 using var context = CreateContext();

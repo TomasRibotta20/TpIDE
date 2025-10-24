@@ -18,7 +18,6 @@ namespace AcademiaAPI
                 using var connection = new SqlConnection(ConnectionString);
                 await connection.OpenAsync();
                 
-                // Check if the Usuarios table exists and has the correct schema
                 var checkTableQuery = @"
                     SELECT COUNT(*) 
                     FROM INFORMATION_SCHEMA.COLUMNS 
@@ -58,7 +57,6 @@ namespace AcademiaAPI
                     }
                 }
                 
-                // Check if admin user exists
                 var checkUserQuery = "SELECT COUNT(*) FROM Usuarios WHERE UsuarioNombre = 'admin'";
                 using var userCommand = new SqlCommand(checkUserQuery, connection);
                 var userExists = (int)await userCommand.ExecuteScalarAsync() > 0;
@@ -69,7 +67,7 @@ namespace AcademiaAPI
                 {
                     Console.WriteLine("Creating admin user...");
                     
-                    // Create admin user using the Entity class to ensure consistency
+
                     var adminUser = new Usuario("Admin", "User", "admin", "admin@tpi.com", "admin123", true);
                     
                     var insertUserQuery = @"
@@ -91,7 +89,7 @@ namespace AcademiaAPI
                     Console.WriteLine($"  Email: {adminUser.Email}");
                     Console.WriteLine($"  Password: admin123");
                     
-                    // Test password validation immediately
+
                     bool testValidation = adminUser.ValidatePassword("admin123");
                     Console.WriteLine($"  Password validation test: {testValidation}");
                 }
@@ -99,7 +97,7 @@ namespace AcademiaAPI
                 {
                     Console.WriteLine("Admin user already exists.");
                     
-                    // Let's verify the existing admin user can validate password correctly
+          
                     var getUserQuery = @"
                         SELECT Id, Nombre, Apellido, UsuarioNombre, Email, PasswordHash, Salt, Habilitado 
                         FROM Usuarios WHERE UsuarioNombre = 'admin'";
@@ -115,8 +113,7 @@ namespace AcademiaAPI
                         Console.WriteLine($"  Email: {reader["Email"]}");
                         Console.WriteLine($"  Enabled: {reader["Habilitado"]}");
                         
-                        // Note: We cannot test password validation here because we need to construct 
-                        // the Usuario object properly, which requires the constructor that sets up validation
+
                     }
                 }
                 

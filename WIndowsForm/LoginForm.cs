@@ -1,4 +1,6 @@
 using API.Clients;
+using System.Net.Http;
+using WIndowsForm;
 
 namespace WindowsForms
 {
@@ -42,18 +44,38 @@ namespace WindowsForms
                     passwordTextBox.Clear();
                     passwordTextBox.Focus();
                 }
+                catch (HttpRequestException ex)
+                {
+                    MessageBox.Show(
+                        "Error de conexión: No se pudo conectar al servidor.\n\n" +
+                        "Verifique que la API esté funcionando:\n" +
+                        "1. Abra https://localhost:7229/swagger en el navegador\n" +
+                        "2. Si no funciona, inicie el proyecto AcademiaAPI\n\n" +
+                        $"Detalles técnicos: {ex.Message}",
+                        "Error de Conexión",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                catch (TaskCanceledException)
+                {
+                    MessageBox.Show(
+                        "La conexión con el servidor ha tardado demasiado.\n\n" +
+                        "Posibles causas:\n" +
+                        "• La API no está respondiendo\n" +
+                        "• Problemas de red\n" +
+                        "• El servidor está ocupado",
+                        "Timeout",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
                 catch (Exception ex)
                 {
-                    // Proporcionar un mensaje de error más informativo según el tipo de error
-                    string errorMessage = ex.Message;
-
-                    if (ex is System.Net.Http.HttpRequestException)
-                    {
-                        errorMessage = "No se pudo conectar al servidor. Verifique que la API esté en ejecución.";
-                    }
-
-                    MessageBox.Show($"Error al iniciar sesión: {errorMessage}", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(
+                        $"Error inesperado al iniciar sesión:\n\n{ex.Message}\n\n" +
+                        $"Tipo de error: {ex.GetType().Name}",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
                 finally
                 {
@@ -101,11 +123,54 @@ namespace WindowsForms
             }
         }
 
-        private void LoginForm_Load(object sender, EventArgs e)
+        private async void LoginForm_Load(object sender, EventArgs e)
         {
             // Precargar el usuario admin para facilitar las pruebas
             usernameTextBox.Text = "admin";
             passwordTextBox.Select();
+
+            // Verificar conexión con la API
+            try
+            {
+                loginButton.Enabled = false;
+                loginButton.Text = "Verificando API...";
+
+                bool isConnected = await TestConnection.TestApiConnectionAsync();
+
+                if (!isConnected)
+                {
+                    var result = MessageBox.Show(
+                        "No se puede conectar con la API.\n\n" +
+                        "Asegúrese de que:\n" +
+                        "1. El proyecto AcademiaAPI esté ejecutándose\n" +
+                        "2. La API esté corriendo en https://localhost:7229\n" +
+                        "3. El certificado SSL sea confiable\n\n" +
+                        "¿Desea continuar de todas formas?",
+                        "Advertencia de Conexión",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.No)
+                    {
+                        this.DialogResult = DialogResult.Cancel;
+                        this.Close();
+                        return;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al verificar la conexión: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                loginButton.Enabled = true;
+                loginButton.Text = "Iniciar Sesión";
+            }
         }
     }
 }
