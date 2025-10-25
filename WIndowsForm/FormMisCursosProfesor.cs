@@ -11,7 +11,7 @@ namespace WIndowsForm
     public partial class FormMisCursosProfesor : Form
     {
         private readonly int _personaId;
-        private readonly CursoApiClient _cursoApiClient;
+        private readonly DocenteCursoApiClient _docenteCursoApiClient;
         private DataGridView dgvMisCursos;
         private Label lblTitulo;
         private Button btnVolver;
@@ -20,7 +20,7 @@ namespace WIndowsForm
         public FormMisCursosProfesor(int personaId)
         {
             _personaId = personaId;
-            _cursoApiClient = new CursoApiClient();
+            _docenteCursoApiClient = new DocenteCursoApiClient();
             InitializeComponent();
             this.Load += FormMisCursosProfesor_Load;
         }
@@ -110,52 +110,49 @@ namespace WIndowsForm
             {
                 Cursor.Current = Cursors.WaitCursor;
                 
-                // Obtener cursos del profesor
-                // Nota: Asumiendo que existe un metodo en CursoApiClient para obtener cursos por profesor
-                // Si no existe, deberas implementarlo en el backend
-                var cursos = await _cursoApiClient.GetAllAsync();
+                // Obtener cursos asignados al profesor a través de docentes_cursos
+                var asignaciones = await _docenteCursoApiClient.GetByDocenteIdAsync(_personaId);
                 
-                if (cursos == null || !cursos.Any())
+                if (asignaciones == null || !asignaciones.Any())
                 {
-                    MessageBox.Show("No tienes cursos asignados.", 
-                        "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No tienes cursos asignados.\n\nUn administrador debe asignarte cursos desde el menú 'Gestionar Docentes por Curso'.", 
+                        "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     dgvMisCursos.DataSource = null;
                     return;
                 }
 
-                // Filtrar cursos donde el profesor este asignado
-                // Por ahora mostramos todos, pero deberias filtrar por IdProfesor
-                var cursosData = cursos.Select(c => new
+                // Preparar datos para mostrar
+                var cursosData = asignaciones.Select(a => new
                 {
-                    IdCurso = c.IdCurso,
-                    Curso = c.Nombre,
-                    Comision = c.Comision,
-                    Anio = c.AnioCalendario,
-                    Cupo = c.Cupo,
-                    Inscriptos = c.InscriptosCount,
-                    Disponibles = c.Cupo - c.InscriptosCount
+                    IdDictado = a.IdDictado,
+                    IdCurso = a.IdCurso,
+                    Materia = a.NombreMateria ?? "N/A",
+                    Comision = a.DescComision ?? "N/A",
+                    Anio = a.AnioCalendario ?? 0,
+                    Cargo = a.CargoDescripcion,
+                    DescripcionCurso = a.DescripcionCurso
                 }).ToList();
 
                 dgvMisCursos.DataSource = cursosData;
                 
+                dgvMisCursos.Columns["IdDictado"].Visible = false;
                 dgvMisCursos.Columns["IdCurso"].Visible = false;
-                dgvMisCursos.Columns["Curso"].HeaderText = "Curso";
-                dgvMisCursos.Columns["Comision"].HeaderText = "Comision";
+                dgvMisCursos.Columns["Materia"].HeaderText = "Materia";
+                dgvMisCursos.Columns["Comision"].HeaderText = "Comisión";
                 dgvMisCursos.Columns["Anio"].HeaderText = "Año";
-                dgvMisCursos.Columns["Cupo"].HeaderText = "Cupo Total";
-                dgvMisCursos.Columns["Inscriptos"].HeaderText = "Inscriptos";
-                dgvMisCursos.Columns["Disponibles"].HeaderText = "Disponibles";
+                dgvMisCursos.Columns["Cargo"].HeaderText = "Cargo";
+                dgvMisCursos.Columns["DescripcionCurso"].HeaderText = "Descripción Completa";
 
-                // Colorear filas segun disponibilidad
+                // Colorear filas según cargo
                 foreach (DataGridViewRow row in dgvMisCursos.Rows)
                 {
-                    int disponibles = Convert.ToInt32(row.Cells["Disponibles"].Value);
-                    if (disponibles > 5)
-                        row.DefaultCellStyle.BackColor = Color.FromArgb(200, 247, 197);
-                    else if (disponibles > 0)
-                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 250, 205);
-                    else
-                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 224, 224);
+                    string cargo = row.Cells["Cargo"].Value?.ToString() ?? "";
+                    if (cargo == "Jefe de Cátedra")
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(200, 230, 255); // Azul claro
+                    else if (cargo == "Titular")
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(200, 255, 200); // Verde claro
+                    else if (cargo == "Auxiliar")
+                        row.DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 200); // Amarillo claro
                 }
             }
             catch (Exception ex)

@@ -13,13 +13,13 @@ namespace WIndowsForm
         private readonly int _personaId;
         private readonly Form _menuAnterior;
         private readonly InscripcionApiClient _inscripcionApiClient;
-        private readonly CursoApiClient _cursoApiClient;
+        private readonly DocenteCursoApiClient _docenteCursoApiClient;
         private ComboBox cmbCurso;
         private DataGridView dgvAlumnos;
         private Label lblTitulo;
         private Button btnVolver;
         private Button btnGuardar;
-        private List<CursoDto>? _cursos;
+        private List<DocenteCursoDto>? _cursosAsignados;
         private List<AlumnoCursoDto>? _inscripcionesActuales;
 
         public FormCargarNotasProfesor(int personaId, Form menuAnterior)
@@ -27,7 +27,7 @@ namespace WIndowsForm
             _personaId = personaId;
             _menuAnterior = menuAnterior;
             _inscripcionApiClient = new InscripcionApiClient();
-            _cursoApiClient = new CursoApiClient();
+            _docenteCursoApiClient = new DocenteCursoApiClient();
             
             InitializeComponent();
             this.Load += FormCargarNotasProfesor_Load;
@@ -141,29 +141,37 @@ namespace WIndowsForm
             {
                 Cursor.Current = Cursors.WaitCursor;
                 
-                var cursosEnumerable = await _cursoApiClient.GetAllAsync();
-                _cursos = cursosEnumerable.ToList();
+                // Obtener solo los cursos asignados al profesor
+                var asignacionesEnumerable = await _docenteCursoApiClient.GetByDocenteIdAsync(_personaId);
+                _cursosAsignados = asignacionesEnumerable.ToList();
                 
-                if (_cursos != null && _cursos.Any())
+                if (_cursosAsignados != null && _cursosAsignados.Any())
                 {
                     cmbCurso.DisplayMember = "Display";
                     cmbCurso.ValueMember = "Value";
-                    cmbCurso.DataSource = _cursos.Select(c => new CursoComboItem
+                    cmbCurso.DataSource = _cursosAsignados.Select(a => new CursoComboItem
                     {
-                        Value = c.IdCurso,
-                        Display = $"{c.Nombre} - {c.Comision} ({c.AnioCalendario})"
+                        Value = a.IdCurso,
+                        Display = $"{a.NombreMateria} - {a.DescComision} ({a.AnioCalendario}) - Cargo: {a.CargoDescripcion}"
                     }).ToList();
                 }
                 else
                 {
-                    MessageBox.Show("No hay cursos disponibles.", 
-                        "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        "No tienes cursos asignados.\n\n" +
+                        "Un administrador debe asignarte cursos desde el menú:\n" +
+                        "Profesor ? Gestionar Docentes por Curso", 
+                        "Sin cursos asignados", 
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Information);
+                    this.Close();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar cursos: {ex.Message}", 
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
             }
             finally
             {

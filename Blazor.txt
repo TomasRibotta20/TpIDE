@@ -1,0 +1,14 @@
+Mira tengo que hacer este trabajo que ya esta implementado y ya esta funcional en windows forms. La idea ahora es que me ayudes a pasarlo a blazor, obviamente la idea basica es que vos veas lo que esta hecho en windows form e irlo pasando a blazor, por ahora solamente tendriamos que implementar en blazor la parte del admin, es decir todo lo que tenga que ver con el menu del admin, que puede acceder a todos los cruds, el login anterior y la parte de las inscripciones y reportes. Primeramente se que hay que configurar el proyecto de blazor en la solucion, pedime que queres que agregue primeramente, yo lo agreggo a mano y decime que referencias y todo porque anteriormente ya lo intentaste agregar y se rompio todo, vamos de a pooco.
+
+
+1. En Visual Studio, clic derecho en la solución → Add → New Project
+2. Buscar "Blazor WebAssembly App" (o "Blazor Server App" si prefieres)
+3. Nombre: "AcademiaBlazor" 
+4. Framework: .NET 8.0
+5. Authentication type: None (lo manejaremos manualmente)
+6. NO marcar "Progressive Web Application"
+7. Crear el proyecto
+
+ Microsoft.AspNetCore.Components.WebAssembly (si no viene instalado)
+•	✅ Microsoft.AspNetCore.Components.WebAssembly.DevServer (si no viene instalado)
+•	✅ System.Net.Http.Json (si no viene instalado)

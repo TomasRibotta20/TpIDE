@@ -136,11 +136,10 @@ namespace WIndowsForm
             btnEliminar.Size = new System.Drawing.Size(130, 40);
             btnEliminar.Click += async (s, e) => await EliminarAsignacionSeleccionada(dataGridViewAsignaciones);
 
-            var btnVolver = FormStyles.CreateSecondaryButton("Volver", null);
-            btnVolver.Location = new System.Drawing.Point(920, 15);
-            btnVolver.Size = new System.Drawing.Size(130, 40);
-            btnVolver.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnVolver.Click += (s, e) => this.Close();
+            var btnVolver = FormStyles.CreateSecondaryButton("Volver al Menú", null);
+            btnVolver.Location = new System.Drawing.Point(470, 15);
+            btnVolver.Size = new System.Drawing.Size(160, 40);
+            btnVolver.Click += BtnVolver_Click;
 
             buttonPanel.Controls.AddRange(new Control[] { btnNuevo, btnEditar, btnEliminar, btnVolver });
             this.Controls.Add(buttonPanel);
@@ -407,6 +406,26 @@ namespace WIndowsForm
                     Cursor.Current = Cursors.Default;
                 }
             }
+        }
+
+        private void BtnVolver_Click(object sender, EventArgs e)
+        {
+            // Mostrar el menú principal y cerrar este formulario
+            var menuPrincipal = Application.OpenForms.OfType<MenuPrincipal>().FirstOrDefault();
+            
+            if (menuPrincipal != null)
+            {
+                menuPrincipal.Show();
+                menuPrincipal.BringToFront();
+            }
+            else
+            {
+                // Si no existe, crear uno nuevo
+                menuPrincipal = new MenuPrincipal();
+                menuPrincipal.Show();
+            }
+            
+            this.Close();
         }
     }
 }
