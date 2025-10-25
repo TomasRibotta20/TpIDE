@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API.Clients\API.Clients.csproj" />
+	  <ProjectReference Include="..\DTOs\DTOs.csproj" />
     <ProjectReference Include="..\API.Auth.WindowsForms\API.Auth.WindowsForms.csproj" />
   </ItemGroup>
 
