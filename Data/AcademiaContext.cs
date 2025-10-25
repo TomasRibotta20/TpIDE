@@ -16,6 +16,7 @@ namespace Data
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Persona> Personas { get; set; }
+        public DbSet<Materia> Materias { get; set; }
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<AlumnoCurso> AlumnoCursos { get; set; }
 
@@ -100,6 +101,17 @@ namespace Data
                 entity.Property(p => p.EspecialidadId).IsRequired();
             });
 
+            // Configuración de Materia
+            modelBuilder.Entity<Materia>(entity =>
+            {
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.Id).ValueGeneratedOnAdd();
+                entity.Property(m => m.Descripcion).IsRequired().HasMaxLength(100);
+                entity.Property(m => m.HorasSemanales).IsRequired();
+                entity.Property(m => m.HorasTotales).IsRequired();
+                entity.Property(m => m.IdPlan).IsRequired();
+            });
+
             // Configuración de Comisión
             modelBuilder.Entity<Comision>(entity =>
             {
@@ -127,7 +139,7 @@ namespace Data
             {
                 entity.HasKey(c => c.IdCurso);
                 entity.Property(c => c.IdCurso).ValueGeneratedOnAdd();
-                entity.Property(c => c.IdMateria).IsRequired(false); // Nullable temporalmente
+                entity.Property(c => c.IdMateria).IsRequired();
                 entity.Property(c => c.IdComision).IsRequired();
                 entity.Property(c => c.AnioCalendario).IsRequired();
                 entity.Property(c => c.Cupo).IsRequired();

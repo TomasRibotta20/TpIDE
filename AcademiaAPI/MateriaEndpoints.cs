@@ -17,24 +17,35 @@ namespace AcademiaAPI
             // y crea una instancia del MateriaService para cada solicitud.
             MateriaService GetService(HttpContext httpContext)
             {
-                // Usar RequestServices es más seguro que CreateScope en Minimal APIs
-                var repository = httpContext.RequestServices.GetRequiredService<Data.MateriaRepository>();
-                // Asegúrate de que PlanService esté registrado en Program.cs
-                var planService = httpContext.RequestServices.GetRequiredService<PlanService>();
-                return new MateriaService(repository, planService);
+                try
+                {
+                    // Usar RequestServices es más seguro que CreateScope en Minimal APIs
+                    var repository = httpContext.RequestServices.GetRequiredService<Data.MateriaRepository>();
+                    // Asegúrate de que PlanService esté registrado en Program.cs
+                    var planService = httpContext.RequestServices.GetRequiredService<PlanService>();
+                    return new MateriaService(repository, planService);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error creando MateriaService: {ex.Message}");
+                    throw;
+                }
             }
             // ---------------------------------------------------------------------
 
             // Agrupar endpoints bajo /materias y añadir tag "Materias" para Swagger
-            var group = app.MapGroup("/materias").WithTags("AcademiaAPI");
+            var group = app.MapGroup("/materias").WithTags("Materias");
 
             // GET /materias - Obtener todas las materias
             group.MapGet("/", (HttpContext context) =>
             {
                 try
                 {
+                    Console.WriteLine("Intentando obtener materias...");
                     var service = GetService(context);
+                    Console.WriteLine("Servicio creado correctamente");
                     var materias = service.GetAll();
+                    Console.WriteLine($"Obtenidas {materias?.Count() ?? 0} materias");
                     return Results.Ok(materias);
                 }
                 catch (NotImplementedException) // Si el repositorio ADO.NET aún no está implementado
@@ -43,9 +54,13 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    // Loggear el error real aquí si es posible (usar ILogger sería mejor)
-                    Console.WriteLine($"ERROR en GET /materias: {ex.Message} \n {ex.StackTrace}");
-                    return Results.Problem(detail: "Ocurrió un error interno al obtener las materias.", statusCode: 500);
+                    Console.WriteLine($"ERROR en GET /materias: {ex.Message}");
+                    Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                    if (ex.InnerException != null)
+                    {
+                        Console.WriteLine($"InnerException: {ex.InnerException.Message}");
+                    }
+                    return Results.Problem(detail: $"Error interno: {ex.Message}", statusCode: 500);
                 }
             });
 
@@ -65,7 +80,7 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ERROR en GET /materias/{id}: {ex.Message} \n {ex.StackTrace}");
+                    Console.WriteLine($"ERROR en GET /materias/{id}: {ex.Message}");
                     return Results.Problem(detail: "Ocurrió un error interno al obtener la materia.", statusCode: 500);
                 }
             });
@@ -78,8 +93,6 @@ namespace AcademiaAPI
                     var service = GetService(context);
                     service.Add(materiaDto);
                     // Devolver 201 Created con la ubicación y el objeto creado
-                    // Nota: Si Add no devuelve el ID, el DTO de respuesta no tendrá el ID asignado por la BD.
-                    // Para obtener el ID real, el método Add del repositorio debería devolverlo.
                     return Results.Created($"/materias/{materiaDto.Id}", materiaDto); // Usamos el ID del DTO (puede ser 0)
                 }
                 catch (ArgumentException ex) // Error de validación (ej: Plan no existe, datos inválidos en entidad)
@@ -92,7 +105,7 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ERROR en POST /materias: {ex.Message} \n {ex.StackTrace}");
+                    Console.WriteLine($"ERROR en POST /materias: {ex.Message}");
                     return Results.Problem(detail: "Ocurrió un error interno al crear la materia.", statusCode: 500);
                 }
             });
@@ -126,7 +139,7 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ERROR en PUT /materias/{id}: {ex.Message} \n {ex.StackTrace}");
+                    Console.WriteLine($"ERROR en PUT /materias/{id}: {ex.Message}");
                     return Results.Problem(detail: "Ocurrió un error interno al actualizar la materia.", statusCode: 500);
                 }
             });
@@ -150,9 +163,7 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-                    // Podría haber errores si hay dependencias (ej: Cursos asociados a la Materia)
-                    Console.WriteLine($"ERROR en DELETE /materias/{id}: {ex.Message} \n {ex.StackTrace}");
-                    // Devolver un 409 Conflict si hay dependencias sería más específico, pero requiere lógica adicional en el service/repo
+                    Console.WriteLine($"ERROR en DELETE /materias/{id}: {ex.Message}");
                     return Results.Problem(detail: "Ocurrió un error interno al eliminar la materia. Verifique si tiene dependencias.", statusCode: 500);
                 }
             });

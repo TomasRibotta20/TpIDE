@@ -12,6 +12,7 @@ namespace WIndowsForm
         private readonly CursoDto _curso;
         private readonly bool _esNuevo;
         private readonly ComisionApiClient _comisionApiClient;
+        private readonly MateriaApiClient _materiaApiClient; // Nuevo cliente de materias
 
         public CursoDto CursoEditado { get; private set; }
         public bool Guardado { get; private set; }
@@ -21,6 +22,7 @@ namespace WIndowsForm
             InitializeComponent();
             
             _comisionApiClient = new ComisionApiClient();
+            _materiaApiClient = new MateriaApiClient(); // Inicializar cliente de materias
             _curso = curso ?? new CursoDto { AnioCalendario = DateTime.Now.Year, Cupo = 30 };
             _esNuevo = curso == null;
 
@@ -35,6 +37,7 @@ namespace WIndowsForm
         private async void EditarCursoForm_Load(object sender, EventArgs e)
         {
             await CargarComisiones();
+            await CargarMaterias(); // Cargar materias reales
         }
 
         private async Task CargarComisiones()
@@ -57,6 +60,26 @@ namespace WIndowsForm
             }
         }
 
+        private async Task CargarMaterias()
+        {
+            try
+            {
+                var materias = await _materiaApiClient.GetAllAsync();
+                cmbMateria.DataSource = materias.ToList();
+                cmbMateria.DisplayMember = "Descripcion";
+                cmbMateria.ValueMember = "Id";
+
+                if (!_esNuevo && _curso.IdMateria > 0)
+                {
+                    cmbMateria.SelectedValue = _curso.IdMateria;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar las materias: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void ConfigurarFormulario()
         {
             this.Text = _esNuevo ? "Nuevo Curso" : "Editar Curso";
@@ -68,13 +91,6 @@ namespace WIndowsForm
                 txtId.Visible = false;
                 tableLayoutPanel1.RowStyles[0].Height = 0;
             }
-
-            // Configurar ComboBox de Materia (temporalmente con opción "Sin Materia")
-            cmbMateria.Items.Clear();
-            cmbMateria.Items.Add(new { Text = "Sin Materia (Temporal)", Value = (int?)null });
-            cmbMateria.DisplayMember = "Text";
-            cmbMateria.ValueMember = "Value";
-            cmbMateria.SelectedIndex = 0;
 
             // Cargar años (desde 2020 hasta 5 años en el futuro)
             int currentYear = DateTime.Now.Year;
@@ -94,9 +110,6 @@ namespace WIndowsForm
                 txtId.Text = _curso.IdCurso.ToString();
             }
 
-            // Materia (temporalmente sin materia)
-            cmbMateria.SelectedIndex = 0;
-
             // Año calendario
             if (_curso.AnioCalendario > 0)
             {
@@ -114,7 +127,8 @@ namespace WIndowsForm
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
             // Validar campos obligatorios
-            if (cmbComision.SelectedValue == null ||
+            if (cmbMateria.SelectedValue == null ||
+                cmbComision.SelectedValue == null ||
                 cmbAnioCalendario.SelectedItem == null ||
                 numCupo.Value <= 0)
             {
@@ -137,7 +151,7 @@ namespace WIndowsForm
                 CursoEditado = new CursoDto
                 {
                     IdCurso = _esNuevo ? 0 : _curso.IdCurso,
-                    IdMateria = null, // Temporalmente null hasta implementar Materia
+                    IdMateria = (int)cmbMateria.SelectedValue, // Ahora usa materia real
                     IdComision = (int)cmbComision.SelectedValue,
                     AnioCalendario = (int)cmbAnioCalendario.SelectedItem,
                     Cupo = (int)numCupo.Value

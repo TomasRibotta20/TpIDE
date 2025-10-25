@@ -318,175 +318,181 @@ namespace WIndowsForm
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.lblDescripcion = new System.Windows.Forms.Label();
-            this.txtDescripcion = new System.Windows.Forms.TextBox();
-            this.lblHorasSem = new System.Windows.Forms.Label();
-            this.txtHorasSemanales = new System.Windows.Forms.TextBox();
-            this.lblHorasTot = new System.Windows.Forms.Label();
-            this.txtHorasTotales = new System.Windows.Forms.TextBox();
-            this.lblPlan = new System.Windows.Forms.Label();
-            this.cmbPlan = new System.Windows.Forms.ComboBox();
-            this.panelBotones = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnAceptar = new System.Windows.Forms.Button();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.tableLayoutPanelMain.SuspendLayout();
-            this.panelBotones.SuspendLayout();
-            this.SuspendLayout();
-            //
+            tableLayoutPanelMain = new TableLayoutPanel();
+            lblDescripcion = new Label();
+            txtDescripcion = new TextBox();
+            lblHorasSem = new Label();
+            txtHorasSemanales = new TextBox();
+            lblHorasTot = new Label();
+            txtHorasTotales = new TextBox();
+            lblPlan = new Label();
+            cmbPlan = new ComboBox();
+            panelBotones = new FlowLayoutPanel();
+            btnCancelar = new Button();
+            btnAceptar = new Button();
+            tableLayoutPanelMain.SuspendLayout();
+            panelBotones.SuspendLayout();
+            SuspendLayout();
+            // 
             // tableLayoutPanelMain
-            //
-            this.tableLayoutPanelMain.ColumnCount = 2;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F)); // Fixed label width
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F)); // Textbox takes remaining space
-            this.tableLayoutPanelMain.Controls.Add(this.lblDescripcion, 0, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.txtDescripcion, 1, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.lblHorasSem, 0, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.txtHorasSemanales, 1, 1);
-            this.tableLayoutPanelMain.Controls.Add(this.lblHorasTot, 0, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.txtHorasTotales, 1, 2);
-            this.tableLayoutPanelMain.Controls.Add(this.lblPlan, 0, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.cmbPlan, 1, 3);
-            this.tableLayoutPanelMain.Controls.Add(this.panelBotones, 0, 4);
-            this.tableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.Padding = new System.Windows.Forms.Padding(10);
-            this.tableLayoutPanelMain.RowCount = 5;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F)); // Button panel takes remaining space
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(432, 253);
-            this.tableLayoutPanelMain.TabIndex = 0;
-            //
+            // 
+            tableLayoutPanelMain.ColumnCount = 2;
+            tableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 105F));
+            tableLayoutPanelMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanelMain.Controls.Add(lblDescripcion, 0, 0);
+            tableLayoutPanelMain.Controls.Add(txtDescripcion, 1, 0);
+            tableLayoutPanelMain.Controls.Add(lblHorasSem, 0, 1);
+            tableLayoutPanelMain.Controls.Add(txtHorasSemanales, 1, 1);
+            tableLayoutPanelMain.Controls.Add(lblHorasTot, 0, 2);
+            tableLayoutPanelMain.Controls.Add(txtHorasTotales, 1, 2);
+            tableLayoutPanelMain.Controls.Add(lblPlan, 0, 3);
+            tableLayoutPanelMain.Controls.Add(cmbPlan, 1, 3);
+            tableLayoutPanelMain.Controls.Add(panelBotones, 0, 4);
+            tableLayoutPanelMain.Dock = DockStyle.Fill;
+            tableLayoutPanelMain.Location = new Point(0, 0);
+            tableLayoutPanelMain.Margin = new Padding(3, 2, 3, 2);
+            tableLayoutPanelMain.Name = "tableLayoutPanelMain";
+            tableLayoutPanelMain.Padding = new Padding(9, 8, 9, 8);
+            tableLayoutPanelMain.RowCount = 5;
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 26F));
+            tableLayoutPanelMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanelMain.Size = new Size(380, 196);
+            tableLayoutPanelMain.TabIndex = 0;
+            // 
             // lblDescripcion
-            //
-            this.lblDescripcion.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblDescripcion.AutoSize = true;
-            this.lblDescripcion.Location = new System.Drawing.Point(13, 17);
-            this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(87, 20);
-            this.lblDescripcion.TabIndex = 0;
-            this.lblDescripcion.Text = "Descripción:";
-            //
+            // 
+            lblDescripcion.Anchor = AnchorStyles.Left;
+            lblDescripcion.AutoSize = true;
+            lblDescripcion.Location = new Point(12, 13);
+            lblDescripcion.Name = "lblDescripcion";
+            lblDescripcion.Size = new Size(72, 15);
+            lblDescripcion.TabIndex = 0;
+            lblDescripcion.Text = "Descripción:";
+            // 
             // txtDescripcion
-            //
-            this.txtDescripcion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtDescripcion.Location = new System.Drawing.Point(133, 14); // Position based on fixed label width
-            this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(286, 27); // Adjusted size
-            this.txtDescripcion.TabIndex = 1;
-            //
+            // 
+            txtDescripcion.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtDescripcion.Location = new Point(117, 10);
+            txtDescripcion.Margin = new Padding(3, 2, 3, 2);
+            txtDescripcion.Name = "txtDescripcion";
+            txtDescripcion.Size = new Size(251, 23);
+            txtDescripcion.TabIndex = 1;
+            // 
             // lblHorasSem
-            //
-            this.lblHorasSem.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblHorasSem.AutoSize = true;
-            this.lblHorasSem.Location = new System.Drawing.Point(13, 52);
-            this.lblHorasSem.Name = "lblHorasSem";
-            this.lblHorasSem.Size = new System.Drawing.Size(108, 20);
-            this.lblHorasSem.TabIndex = 2;
-            this.lblHorasSem.Text = "Hs. Semanales:";
-            //
+            // 
+            lblHorasSem.Anchor = AnchorStyles.Left;
+            lblHorasSem.AutoSize = true;
+            lblHorasSem.Location = new Point(12, 39);
+            lblHorasSem.Name = "lblHorasSem";
+            lblHorasSem.Size = new Size(86, 15);
+            lblHorasSem.TabIndex = 2;
+            lblHorasSem.Text = "Hs. Semanales:";
+            // 
             // txtHorasSemanales
-            //
-            this.txtHorasSemanales.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtHorasSemanales.Location = new System.Drawing.Point(133, 49);
-            this.txtHorasSemanales.Name = "txtHorasSemanales";
-            this.txtHorasSemanales.Size = new System.Drawing.Size(286, 27);
-            this.txtHorasSemanales.TabIndex = 3;
-            //
+            // 
+            txtHorasSemanales.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtHorasSemanales.Location = new Point(117, 36);
+            txtHorasSemanales.Margin = new Padding(3, 2, 3, 2);
+            txtHorasSemanales.Name = "txtHorasSemanales";
+            txtHorasSemanales.Size = new Size(251, 23);
+            txtHorasSemanales.TabIndex = 3;
+            // 
             // lblHorasTot
-            //
-            this.lblHorasTot.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblHorasTot.AutoSize = true;
-            this.lblHorasTot.Location = new System.Drawing.Point(13, 87);
-            this.lblHorasTot.Name = "lblHorasTot";
-            this.lblHorasTot.Size = new System.Drawing.Size(91, 20);
-            this.lblHorasTot.TabIndex = 4;
-            this.lblHorasTot.Text = "Hs. Totales:";
-            //
+            // 
+            lblHorasTot.Anchor = AnchorStyles.Left;
+            lblHorasTot.AutoSize = true;
+            lblHorasTot.Location = new Point(12, 65);
+            lblHorasTot.Name = "lblHorasTot";
+            lblHorasTot.Size = new Size(66, 15);
+            lblHorasTot.TabIndex = 4;
+            lblHorasTot.Text = "Hs. Totales:";
+            // 
             // txtHorasTotales
-            //
-            this.txtHorasTotales.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtHorasTotales.Location = new System.Drawing.Point(133, 84);
-            this.txtHorasTotales.Name = "txtHorasTotales";
-            this.txtHorasTotales.Size = new System.Drawing.Size(286, 27);
-            this.txtHorasTotales.TabIndex = 5;
-            //
+            // 
+            txtHorasTotales.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            txtHorasTotales.Location = new Point(117, 62);
+            txtHorasTotales.Margin = new Padding(3, 2, 3, 2);
+            txtHorasTotales.Name = "txtHorasTotales";
+            txtHorasTotales.Size = new Size(251, 23);
+            txtHorasTotales.TabIndex = 5;
+            // 
             // lblPlan
-            //
-            this.lblPlan.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPlan.AutoSize = true;
-            this.lblPlan.Location = new System.Drawing.Point(13, 122);
-            this.lblPlan.Name = "lblPlan";
-            this.lblPlan.Size = new System.Drawing.Size(39, 20);
-            this.lblPlan.TabIndex = 6;
-            this.lblPlan.Text = "Plan:";
-            //
+            // 
+            lblPlan.Anchor = AnchorStyles.Left;
+            lblPlan.AutoSize = true;
+            lblPlan.Location = new Point(12, 91);
+            lblPlan.Name = "lblPlan";
+            lblPlan.Size = new Size(33, 15);
+            lblPlan.TabIndex = 6;
+            lblPlan.Text = "Plan:";
+            // 
             // cmbPlan
-            //
-            this.cmbPlan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbPlan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPlan.FormattingEnabled = true;
-            this.cmbPlan.Location = new System.Drawing.Point(133, 119);
-            this.cmbPlan.Name = "cmbPlan";
-            this.cmbPlan.Size = new System.Drawing.Size(286, 28);
-            this.cmbPlan.TabIndex = 7;
-            //
+            // 
+            cmbPlan.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            cmbPlan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPlan.FormattingEnabled = true;
+            cmbPlan.Location = new Point(117, 88);
+            cmbPlan.Margin = new Padding(3, 2, 3, 2);
+            cmbPlan.Name = "cmbPlan";
+            cmbPlan.Size = new Size(251, 23);
+            cmbPlan.TabIndex = 7;
+            // 
             // panelBotones
-            //
-            this.tableLayoutPanelMain.SetColumnSpan(this.panelBotones, 2);
-            this.panelBotones.Controls.Add(this.btnCancelar); // Order for RightToLeft
-            this.panelBotones.Controls.Add(this.btnAceptar); // Order for RightToLeft
-            this.panelBotones.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBotones.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.panelBotones.Location = new System.Drawing.Point(13, 153);
-            this.panelBotones.Name = "panelBotones";
-            this.panelBotones.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.panelBotones.Size = new System.Drawing.Size(406, 87);
-            this.panelBotones.TabIndex = 8;
-            //
-            // btnAceptar
-            //
-            this.btnAceptar.Location = new System.Drawing.Point(303, 13);
-            this.btnAceptar.Margin = new System.Windows.Forms.Padding(3, 3, 10, 3); // Right margin
-            this.btnAceptar.Name = "btnAceptar";
-            this.btnAceptar.Size = new System.Drawing.Size(100, 30);
-            this.btnAceptar.TabIndex = 0; // First button on the right
-            this.btnAceptar.Text = "&Aceptar"; // Shortcut key
-            this.btnAceptar.UseVisualStyleBackColor = true;
-            //
+            // 
+            tableLayoutPanelMain.SetColumnSpan(panelBotones, 2);
+            panelBotones.Controls.Add(btnCancelar);
+            panelBotones.Controls.Add(btnAceptar);
+            panelBotones.Dock = DockStyle.Fill;
+            panelBotones.FlowDirection = FlowDirection.RightToLeft;
+            panelBotones.Location = new Point(12, 114);
+            panelBotones.Margin = new Padding(3, 2, 3, 2);
+            panelBotones.Name = "panelBotones";
+            panelBotones.Padding = new Padding(0, 8, 0, 0);
+            panelBotones.Size = new Size(356, 72);
+            panelBotones.TabIndex = 8;
+            // 
             // btnCancelar
-            //
-            this.btnCancelar.Location = new System.Drawing.Point(197, 13);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(3);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(100, 30);
-            this.btnCancelar.TabIndex = 1;
-            this.btnCancelar.Text = "&Cancelar"; // Shortcut key
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            //
+            // 
+            btnCancelar.Location = new Point(265, 10);
+            btnCancelar.Margin = new Padding(3, 2, 3, 2);
+            btnCancelar.Name = "btnCancelar";
+            btnCancelar.Size = new Size(88, 22);
+            btnCancelar.TabIndex = 1;
+            btnCancelar.Text = "&Cancelar";
+            btnCancelar.UseVisualStyleBackColor = true;
+            // 
+            // btnAceptar
+            // 
+            btnAceptar.Location = new Point(165, 10);
+            btnAceptar.Margin = new Padding(3, 2, 9, 2);
+            btnAceptar.Name = "btnAceptar";
+            btnAceptar.Size = new Size(88, 22);
+            btnAceptar.TabIndex = 0;
+            btnAceptar.Text = "&Aceptar";
+            btnAceptar.UseVisualStyleBackColor = true;
+            // 
             // EditarMateriaForm
-            //
-            this.AcceptButton = this.btnAceptar; // Enter key triggers Accept
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancelar; // Escape key triggers Cancel
-            this.ClientSize = new System.Drawing.Size(432, 253);
-            this.Controls.Add(this.tableLayoutPanelMain);
-            this.MaximizeBox = false; // Disable maximize
-            this.MinimizeBox = false; // Disable minimize
-            this.MinimumSize = new System.Drawing.Size(450, 300); // Set minimum size
-            this.Name = "EditarMateriaForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent; // Center relative to the form that opened it
-            this.Text = "Editar Materia"; // Default text, updated in constructor
-            this.tableLayoutPanelMain.ResumeLayout(false);
-            this.tableLayoutPanelMain.PerformLayout();
-            this.panelBotones.ResumeLayout(false);
-            this.ResumeLayout(false);
+            // 
+            AcceptButton = btnAceptar;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            CancelButton = btnCancelar;
+            ClientSize = new Size(380, 196);
+            Controls.Add(tableLayoutPanelMain);
+            Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            MinimumSize = new Size(396, 235);
+            Name = "EditarMateriaForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Editar Materia";
+            tableLayoutPanelMain.ResumeLayout(false);
+            tableLayoutPanelMain.PerformLayout();
+            panelBotones.ResumeLayout(false);
+            ResumeLayout(false);
 
         }
         #endregion

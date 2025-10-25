@@ -11,6 +11,7 @@ public partial class MenuPrincipal : Form
     private readonly EspecialidadApiClient _especialidadApiClient;
     private readonly ComisionApiClient _comisionApiClient;
     private readonly PersonaApiClient _personaApiClient;
+    private readonly MateriaApiClient _materiaApiClient; // Nuevo cliente de materias
     private BindingList<UsuarioDto> _usuarios = new BindingList<UsuarioDto>();
     private BindingList<EspecialidadDto> _especialidades = new BindingList<EspecialidadDto>();
     private BindingList<ComisionDto> _comisiones = new BindingList<ComisionDto>();
@@ -29,6 +30,7 @@ public partial class MenuPrincipal : Form
             _especialidadApiClient = new EspecialidadApiClient();
             _comisionApiClient = new ComisionApiClient();
             _personaApiClient = new PersonaApiClient();
+            _materiaApiClient = new MateriaApiClient(); // Inicializar cliente de materias
         }
         catch (Exception ex)
         {
@@ -116,6 +118,22 @@ public partial class MenuPrincipal : Form
                 }
             };
 
+            // Nuevo evento para el botón de materias
+            btnMaterias.Click += (s, e) =>
+            {
+                try
+                {
+                    var formMaterias = new FormMaterias(this);
+                    formMaterias.Show();
+                    this.Hide();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al abrir formulario de materias: {ex.Message}", 
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
             btnCursos.Click += (s, e) =>
             {
                 try
@@ -186,6 +204,42 @@ public partial class MenuPrincipal : Form
         catch (Exception ex)
         {
             MessageBox.Show($"Error al abrir gestión de inscripciones: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    // Nuevos métodos para materias
+    private void listarMateriasToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formMaterias = new FormMaterias(this);
+            formMaterias.Show();
+            this.Hide();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al listar materias: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private async void nuevaMateriaToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var planApiClient = new PlanApiClient();
+            var formNuevaMateria = new EditarMateriaForm(null, planApiClient, _materiaApiClient);
+            if (formNuevaMateria.ShowDialog() == DialogResult.OK)
+            {
+                var formMaterias = new FormMaterias(this);
+                formMaterias.Show();
+                this.Hide();
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al crear nueva materia: {ex.Message}", 
                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }

@@ -19,8 +19,9 @@
     private Button btnEspecialidades;
     private Button btnPlanes;
     private Button btnComisiones;
+    private Button btnMaterias; // Nuevo botón de materias
     private Button btnCursos;
-    private Button btnInscripciones; // Nuevo botón de inscripciones
+    private Button btnInscripciones;
     private Label titleLabel;
     private Label lblProximamente;
     private MenuStrip menuStrip1;
@@ -42,7 +43,10 @@
     private ToolStripMenuItem comisionToolStripMenuItem;
     private ToolStripMenuItem nuevaComisionToolStripMenuItem;
     private ToolStripMenuItem listarComisionesToolStripMenuItem;
-    private ToolStripMenuItem inscripcionToolStripMenuItem; // Nuevo menú de inscripciones
+    private ToolStripMenuItem materiaToolStripMenuItem; // Nuevo menú de materias
+    private ToolStripMenuItem nuevaMateriaToolStripMenuItem;
+    private ToolStripMenuItem listarMateriasToolStripMenuItem;
+    private ToolStripMenuItem inscripcionToolStripMenuItem;
     private ToolStripMenuItem gestionarInscripcionesToolStripMenuItem;
 
     private void InitializeComponent()
@@ -52,8 +56,9 @@
         btnAlumnos = new Button();
         btnProfesores = new Button();
         btnComisiones = new Button();
+        btnMaterias = new Button(); // Nuevo botón
         btnCursos = new Button();
-        btnInscripciones = new Button(); // Nuevo botón
+        btnInscripciones = new Button();
         btnPlanes = new Button();
         btnEspecialidades = new Button();
         btnUsuarios = new Button();
@@ -77,7 +82,10 @@
         comisionToolStripMenuItem = new ToolStripMenuItem();
         nuevaComisionToolStripMenuItem = new ToolStripMenuItem();
         listarComisionesToolStripMenuItem = new ToolStripMenuItem();
-        inscripcionToolStripMenuItem = new ToolStripMenuItem(); // Nuevo menú
+        materiaToolStripMenuItem = new ToolStripMenuItem(); // Nuevo menú
+        nuevaMateriaToolStripMenuItem = new ToolStripMenuItem();
+        listarMateriasToolStripMenuItem = new ToolStripMenuItem();
+        inscripcionToolStripMenuItem = new ToolStripMenuItem();
         gestionarInscripcionesToolStripMenuItem = new ToolStripMenuItem();
         mainPanel.SuspendLayout();
         menuStrip1.SuspendLayout();
@@ -88,8 +96,9 @@
         mainPanel.Controls.Add(lblProximamente);
         mainPanel.Controls.Add(btnProfesores);
         mainPanel.Controls.Add(btnAlumnos);
+        mainPanel.Controls.Add(btnMaterias); // Agregar al panel
         mainPanel.Controls.Add(btnCursos);
-        mainPanel.Controls.Add(btnInscripciones); // Agregar al panel
+        mainPanel.Controls.Add(btnInscripciones);
         mainPanel.Controls.Add(btnComisiones);
         mainPanel.Controls.Add(btnPlanes);
         mainPanel.Controls.Add(btnEspecialidades);
@@ -105,11 +114,11 @@
         // lblProximamente
         // 
         lblProximamente.Font = new Font("Arial", 9.75F, FontStyle.Italic, GraphicsUnit.Point, 0);
-        lblProximamente.Location = new Point(150, 450); // Movido hacia abajo
+        lblProximamente.Location = new Point(150, 450);
         lblProximamente.Name = "lblProximamente";
         lblProximamente.Size = new Size(200, 20);
         lblProximamente.TabIndex = 6;
-        lblProximamente.Text = "Mas CRUDs Proximamente...";
+        lblProximamente.Text = "Sistema Completo de Academia";
         lblProximamente.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // btnAlumnos
@@ -145,9 +154,9 @@
         // btnPlanes
         // 
         btnPlanes.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnPlanes.Location = new Point(150, 350);
+        btnPlanes.Location = new Point(25, 350);
         btnPlanes.Name = "btnPlanes";
-        btnPlanes.Size = new Size(200, 50);
+        btnPlanes.Size = new Size(100, 50);
         btnPlanes.TabIndex = 3;
         btnPlanes.Text = "Gestión de Planes";
         btnPlanes.UseVisualStyleBackColor = true;
@@ -155,17 +164,27 @@
         // btnComisiones
         // 
         btnComisiones.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnComisiones.Location = new Point(25, 350);
+        btnComisiones.Location = new Point(135, 350);
         btnComisiones.Name = "btnComisiones";
         btnComisiones.Size = new Size(100, 50);
         btnComisiones.TabIndex = 4;
         btnComisiones.Text = "Gestión de Comisiones";
         btnComisiones.UseVisualStyleBackColor = true;
         // 
+        // btnMaterias
+        // 
+        btnMaterias.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        btnMaterias.Location = new Point(245, 350);
+        btnMaterias.Name = "btnMaterias";
+        btnMaterias.Size = new Size(100, 50);
+        btnMaterias.TabIndex = 8;
+        btnMaterias.Text = "Gestión de Materias";
+        btnMaterias.UseVisualStyleBackColor = true;
+        // 
         // btnCursos
         // 
         btnCursos.Font = new Font("Arial Narrow", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        btnCursos.Location = new Point(370, 350);
+        btnCursos.Location = new Point(355, 350);
         btnCursos.Name = "btnCursos";
         btnCursos.Size = new Size(100, 50);
         btnCursos.TabIndex = 7;
@@ -178,7 +197,7 @@
         btnInscripciones.Location = new Point(150, 410);
         btnInscripciones.Name = "btnInscripciones";
         btnInscripciones.Size = new Size(200, 35);
-        btnInscripciones.TabIndex = 8;
+        btnInscripciones.TabIndex = 9;
         btnInscripciones.Text = "📚 Gestión de Inscripciones";
         btnInscripciones.UseVisualStyleBackColor = true;
         btnInscripciones.BackColor = Color.LightGreen;
@@ -213,7 +232,8 @@
             especialidadToolStripMenuItem, 
             planToolStripMenuItem,
             comisionToolStripMenuItem,
-            inscripcionToolStripMenuItem  // Agregar al menú
+            materiaToolStripMenuItem, // Agregar al menú
+            inscripcionToolStripMenuItem
         });
         menuStrip1.Location = new Point(0, 0);
         menuStrip1.Name = "menuStrip1";
@@ -346,6 +366,27 @@
         listarComisionesToolStripMenuItem.Size = new Size(180, 22);
         listarComisionesToolStripMenuItem.Text = "Listar Comisiones";
         listarComisionesToolStripMenuItem.Click += listarComisionesToolStripMenuItem_Click;
+        // 
+        // materiaToolStripMenuItem
+        // 
+        materiaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nuevaMateriaToolStripMenuItem, listarMateriasToolStripMenuItem });
+        materiaToolStripMenuItem.Name = "materiaToolStripMenuItem";
+        materiaToolStripMenuItem.Size = new Size(60, 20);
+        materiaToolStripMenuItem.Text = "Materia";
+        // 
+        // nuevaMateriaToolStripMenuItem
+        // 
+        nuevaMateriaToolStripMenuItem.Name = "nuevaMateriaToolStripMenuItem";
+        nuevaMateriaToolStripMenuItem.Size = new Size(152, 22);
+        nuevaMateriaToolStripMenuItem.Text = "Nueva Materia";
+        nuevaMateriaToolStripMenuItem.Click += nuevaMateriaToolStripMenuItem_Click;
+        // 
+        // listarMateriasToolStripMenuItem
+        // 
+        listarMateriasToolStripMenuItem.Name = "listarMateriasToolStripMenuItem";
+        listarMateriasToolStripMenuItem.Size = new Size(152, 22);
+        listarMateriasToolStripMenuItem.Text = "Listar Materias";
+        listarMateriasToolStripMenuItem.Click += listarMateriasToolStripMenuItem_Click;
         // 
         // inscripcionToolStripMenuItem
         // 

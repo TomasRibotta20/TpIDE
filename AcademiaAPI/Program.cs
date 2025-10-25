@@ -76,6 +76,10 @@ Console.WriteLine("Ensuring admin user exists...");
 await AdminUserRepairHelper.RepairAdminUserAsync();
 await DatabaseSetupHelper.EnsureAdminUserExistsAsync(); // Necesario para el login inicial
 
+// Insertar materias de prueba
+Console.WriteLine("Ensuring test materias exist...");
+await MateriaTestHelper.InsertTestMateriasAsync(connectionString);
+
 // --- Configuración del Pipeline HTTP ---
 if (app.Environment.IsDevelopment())
 {
@@ -101,9 +105,7 @@ app.MapComisionesEndpoints();
 app.MapPersonasEndpoints();
 app.MapCursosEndpoints();
 app.MapInscripcionesEndpoints();
-
-// *** AÑADIR ESTA LÍNEA CRUCIAL PARA MATERIAS ***
-app.MapMateriaEndpoints(); // <--- ASEGÚRATE DE QUE ESTA LÍNEA ESTÉ PRESENTE Y DESCOMENTADA
+app.MapMateriaEndpoints(); // Asegúrate de que este mapeo esté presente y correcto
 
 // --- Ejecutar la Aplicación ---
 app.Run();

@@ -3,7 +3,7 @@ namespace DTOs
     public class CursoDto
     {
         public int IdCurso { get; set; }
-        public int? IdMateria { get; set; } // Nullable temporalmente
+        public int IdMateria { get; set; } // Ya no nullable - todos los cursos deben tener materia
         public string? NombreMateria { get; set; } // Para mostrar en la UI
         public int IdComision { get; set; }
         public string? DescComision { get; set; } // Para mostrar en la UI

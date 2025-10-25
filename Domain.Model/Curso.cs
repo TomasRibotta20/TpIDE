@@ -5,14 +5,14 @@ namespace Domain.Model
     public class Curso
     {
         public int IdCurso { get; set; }
-        public int? IdMateria { get; set; } // Nullable temporalmente hasta que implementemos Materia
+        public int IdMateria { get; set; } // Ya no nullable - requerido
         public int IdComision { get; set; }
         public int AnioCalendario { get; set; }
         public int Cupo { get; set; }
 
         private Curso() { }
 
-        public Curso(int? idMateria, int idComision, int anioCalendario, int cupo)
+        public Curso(int idMateria, int idComision, int anioCalendario, int cupo)
         {
             SetIdMateria(idMateria);
             SetIdComision(idComision);
@@ -21,7 +21,7 @@ namespace Domain.Model
             IdCurso = 0; // El ID será asignado por la base de datos
         }
 
-        public Curso(int idCurso, int? idMateria, int idComision, int anioCalendario, int cupo)
+        public Curso(int idCurso, int idMateria, int idComision, int anioCalendario, int cupo)
         {
             SetIdCurso(idCurso);
             SetIdMateria(idMateria);
@@ -37,10 +37,9 @@ namespace Domain.Model
             IdCurso = idCurso;
         }
 
-        public void SetIdMateria(int? idMateria)
+        public void SetIdMateria(int idMateria)
         {
-            // Temporalmente nullable - cuando implementemos Materia será requerido
-            if (idMateria.HasValue && idMateria.Value <= 0)
+            if (idMateria <= 0)
                 throw new ArgumentException("El ID de la materia debe ser mayor que cero.", nameof(idMateria));
             IdMateria = idMateria;
         }
