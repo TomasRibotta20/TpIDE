@@ -75,5 +75,7 @@ app.MapUsuariosEndpoints();
 app.MapPlanEndpoints();
 app.MapComisionesEndpoints();
 app.MapPersonasEndpoints();
+app.MapCursosEndpoints();
+app.MapInscripcionesEndpoints();
 
 app.Run();

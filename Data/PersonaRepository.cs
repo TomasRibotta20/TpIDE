@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Data
 {
@@ -31,6 +32,13 @@ namespace Data
         {
             using var context = CreateContext();
             return context.Personas.Find(id);
+        }
+
+        // Método async para InscripcionService
+        public async Task<Persona?> GetByIdAsync(int id)
+        {
+            using var context = CreateContext();
+            return await context.Personas.FindAsync(id);
         }
 
         public void Add(Persona persona)

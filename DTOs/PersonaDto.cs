@@ -20,5 +20,8 @@ namespace DTOs
         public int Legajo { get; set; }
         public TipoPersonaDto TipoPersona { get; set; }
         public int? IdPlan { get; set; }
+
+        // Propiedad calculada para mostrar en la UI
+        public string NombreCompleto => $"{Apellido}, {Nombre}";
     }
 }

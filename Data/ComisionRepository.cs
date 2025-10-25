@@ -111,6 +111,22 @@ namespace Data
             }
         }
 
+        public async Task<Domain.Model.Comision?> GetByIdAsync(int id)
+        {
+            try
+            {
+                EnsureComisionesTableExists();
+                
+                using var context = CreateContext();
+                return await context.Comisiones.FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving Comision with ID {id}: {ex.Message}");
+                throw new Exception($"Error retrieving Comision with ID {id}: {ex.Message}", ex);
+            }
+        }
+
         public void Add(Domain.Model.Comision comision)
         {
             try

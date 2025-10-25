@@ -16,6 +16,8 @@ namespace Data
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Persona> Personas { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
+        public DbSet<AlumnoCurso> AlumnoCursos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -96,99 +98,53 @@ namespace Data
                 entity.Property(p => p.Id).ValueGeneratedOnAdd();
                 entity.Property(p => p.Descripcion).IsRequired().HasMaxLength(50);
                 entity.Property(p => p.EspecialidadId).IsRequired();
-                
-                entity.HasOne<Especialidad>()
-                    .WithMany()
-                    .HasForeignKey(p => p.EspecialidadId)
-                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Configuración de Comisión
             modelBuilder.Entity<Comision>(entity =>
             {
-                entity.ToTable("Comisiones", schema: "dbo");
-                entity.HasKey(c => c.IdComision).HasName("PK_Comisiones");
-                
-                entity.Property(c => c.IdComision)
-                    .HasColumnName("IdComision")
-                    .ValueGeneratedOnAdd()
-                    .IsRequired();
-
-                entity.Property(c => c.DescComision)
-                    .HasColumnName("DescComision")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(c => c.AnioEspecialidad)
-                    .HasColumnName("AnioEspecialidad")
-                    .IsRequired();
-
-                entity.Property(c => c.IdPlan)
-                    .HasColumnName("IdPlan")
-                    .IsRequired();
-
-                entity.HasOne<Plan>()
-                    .WithMany()
-                    .HasForeignKey(c => c.IdPlan)
-                    .HasConstraintName("FK_Comisiones_Planes")
-                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasKey(c => c.IdComision);
+                entity.Property(c => c.IdComision).ValueGeneratedOnAdd();
+                entity.Property(c => c.DescComision).IsRequired().HasMaxLength(50);
+                entity.Property(c => c.AnioEspecialidad).IsRequired();
+                entity.Property(c => c.IdPlan).IsRequired();
             });
 
-            // Configuración de Persona (CORREGIDA PARA COINCIDIR CON BD EXISTENTE)
+            // Configuración de Persona
             modelBuilder.Entity<Persona>(entity =>
             {
-                entity.ToTable("personas");
                 entity.HasKey(p => p.Id);
+                entity.Property(p => p.Id).ValueGeneratedOnAdd();
+                entity.Property(p => p.Nombre).IsRequired().HasMaxLength(100);
+                entity.Property(p => p.Apellido).IsRequired().HasMaxLength(100);
+                entity.Property(p => p.Email).IsRequired().HasMaxLength(100);
+                entity.Property(p => p.TipoPersona).HasConversion<string>();
+                entity.HasIndex(p => p.Email).IsUnique();
+            });
+
+            // Configuración de Curso
+            modelBuilder.Entity<Curso>(entity =>
+            {
+                entity.HasKey(c => c.IdCurso);
+                entity.Property(c => c.IdCurso).ValueGeneratedOnAdd();
+                entity.Property(c => c.IdMateria).IsRequired(false); // Nullable temporalmente
+                entity.Property(c => c.IdComision).IsRequired();
+                entity.Property(c => c.AnioCalendario).IsRequired();
+                entity.Property(c => c.Cupo).IsRequired();
+            });
+
+            // Configuración de AlumnoCurso
+            modelBuilder.Entity<AlumnoCurso>(entity =>
+            {
+                entity.HasKey(ac => ac.IdInscripcion);
+                entity.Property(ac => ac.IdInscripcion).ValueGeneratedOnAdd();
+                entity.Property(ac => ac.IdAlumno).IsRequired();
+                entity.Property(ac => ac.IdCurso).IsRequired();
+                entity.Property(ac => ac.Condicion).HasConversion<string>();
+                entity.Property(ac => ac.Nota).IsRequired(false);
                 
-                entity.Property(p => p.Id)
-                    .HasColumnName("id_persona")
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(p => p.Nombre)
-                    .HasColumnName("nombre")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(p => p.Apellido)
-                    .HasColumnName("apellido")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(p => p.Direccion)
-                    .HasColumnName("direccion")
-                    .IsRequired(false)
-                    .HasMaxLength(50);
-
-                entity.Property(p => p.Email)
-                    .HasColumnName("email")
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(p => p.Telefono)
-                    .HasColumnName("telefono")
-                    .IsRequired(false)
-                    .HasMaxLength(20);
-
-                entity.Property(p => p.FechaNacimiento)
-                    .HasColumnName("fecha_nac")
-                    .IsRequired();
-
-                entity.Property(p => p.Legajo)
-                    .HasColumnName("legajo")
-                    .IsRequired();
-
-                entity.Property(p => p.TipoPersona)
-                    .HasColumnName("tipo_persona")
-                    .IsRequired()
-                    .HasConversion<string>();
-
-                entity.Property(p => p.IdPlan)
-                    .HasColumnName("id_plan");
-
-                entity.HasOne<Plan>()
-                    .WithMany()
-                    .HasForeignKey(p => p.IdPlan)
-                    .OnDelete(DeleteBehavior.SetNull);
+                // Índice único para evitar inscripciones duplicadas
+                entity.HasIndex(ac => new { ac.IdAlumno, ac.IdCurso }).IsUnique();
             });
         }
     }
