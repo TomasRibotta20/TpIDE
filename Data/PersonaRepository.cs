@@ -10,60 +10,57 @@ namespace Data
     {
         private AcademiaContext CreateContext() => new AcademiaContext();
 
-        public IEnumerable<Persona> GetAll()
+        public async Task<IEnumerable<Persona>> GetAllAsync()
         {
             using var context = CreateContext();
-            return context.Personas.ToList();
+            return await context.Personas.ToListAsync();
         }
 
-        public IEnumerable<Persona> GetAlumnos()
+        public async Task<IEnumerable<Persona>> GetAlumnosAsync()
         {
             using var context = CreateContext();
-            return context.Personas.Where(p => p.TipoPersona == TipoPersona.Alumno).ToList();
+            return await context.Personas
+                .Where(p => p.TipoPersona == TipoPersona.Alumno)
+                .ToListAsync();
         }
 
-        public IEnumerable<Persona> GetProfesores()
+        public async Task<IEnumerable<Persona>> GetProfesoresAsync()
         {
             using var context = CreateContext();
-            return context.Personas.Where(p => p.TipoPersona == TipoPersona.Profesor).ToList();
+            return await context.Personas
+                .Where(p => p.TipoPersona == TipoPersona.Profesor)
+                .ToListAsync();
         }
 
-        public Persona GetById(int id)
-        {
-            using var context = CreateContext();
-            return context.Personas.Find(id);
-        }
-
-        // Método async para InscripcionService
         public async Task<Persona?> GetByIdAsync(int id)
         {
             using var context = CreateContext();
             return await context.Personas.FindAsync(id);
         }
 
-        public void Add(Persona persona)
+        public async Task AddAsync(Persona persona)
         {
             using var context = CreateContext();
             context.Personas.Add(persona);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Update(Persona persona)
+        public async Task UpdateAsync(Persona persona)
         {
             using var context = CreateContext();
             context.Personas.Attach(persona);
             context.Entry(persona).State = EntityState.Modified;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             using var context = CreateContext();
-            var persona = context.Personas.Find(id);
+            var persona = await context.Personas.FindAsync(id);
             if (persona != null)
             {
                 context.Personas.Remove(persona);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

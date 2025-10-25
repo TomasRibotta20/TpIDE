@@ -1,4 +1,4 @@
-﻿namespace WIndowsForm
+namespace WIndowsForm
 {
     partial class FormAlumnos
     {
@@ -13,7 +13,7 @@
                     components.Dispose();
                 }
                 // Liberar el HttpClient del API
-                _apiClient?.Dispose();
+
             }
             base.Dispose(disposing);
         }

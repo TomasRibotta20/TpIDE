@@ -135,6 +135,73 @@ namespace Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Model.Modulo", b =>
+                {
+                    b.Property<int>("Id_Modulo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Modulo"));
+
+                    b.Property<string>("Desc_Modulo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Ejecuta")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id_Modulo");
+
+                    b.ToTable("Modulos", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Model.ModulosUsuarios", b =>
+                {
+                    b.Property<int>("Id_ModuloUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_ModuloUsuario"));
+
+                    b.Property<int>("ModuloId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("alta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("baja")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("consulta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("modificacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("Id_ModuloUsuario");
+
+                    b.HasIndex("ModuloId");
+
+                    b.HasIndex("UsuarioId", "ModuloId")
+                        .IsUnique();
+
+                    b.ToTable("ModulosUsuarios", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Model.Persona", b =>
                 {
                     b.Property<int>("Id")
@@ -225,7 +292,9 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<bool>("Habilitado")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -236,6 +305,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("PersonaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Salt")
                         .IsRequired()
@@ -252,10 +324,56 @@ namespace Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("PersonaId");
+
                     b.HasIndex("UsuarioNombre")
                         .IsUnique();
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Model.ModulosUsuarios", b =>
+                {
+                    b.HasOne("Domain.Model.Modulo", "Modulo")
+                        .WithMany("ModulosUsuarios")
+                        .HasForeignKey("ModuloId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Model.Usuario", "Usuario")
+                        .WithMany("ModulosUsuarios")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Modulo");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Model.Usuario", b =>
+                {
+                    b.HasOne("Domain.Model.Persona", "Persona")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Persona");
+                });
+
+            modelBuilder.Entity("Domain.Model.Modulo", b =>
+                {
+                    b.Navigation("ModulosUsuarios");
+                });
+
+            modelBuilder.Entity("Domain.Model.Persona", b =>
+                {
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("Domain.Model.Usuario", b =>
+                {
+                    b.Navigation("ModulosUsuarios");
                 });
 #pragma warning restore 612, 618
         }

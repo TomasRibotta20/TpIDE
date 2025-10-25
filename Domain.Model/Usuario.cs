@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -12,13 +13,17 @@ namespace Domain.Model
         public string UsuarioNombre { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public bool Habilitado { get; set; }
-
-        // Agregar propiedades para manejo de contraseñas
         public string Salt { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
+        
+        // Relación con Persona usando una FK separada (nullable)
+        public int? PersonaId { get; set; }
+        public virtual Persona? Persona { get; set; }
+        
+        public virtual ICollection<ModulosUsuarios> ModulosUsuarios { get; set; } = new List<ModulosUsuarios>();
 
         // Constructor para usuarios existentes (con ID)
-        public Usuario(int id, string nombre, string apellido, string username, string email, string password, bool habilitado = true)
+        public Usuario(int id, string nombre, string apellido, string username, string email, string password, Persona? persona, bool habilitado = true)
         {
             SetId(id);
             SetNombre(nombre);
@@ -27,6 +32,10 @@ namespace Domain.Model
             SetPassword(password);
             SetHabilitado(habilitado);
             SetUsername(username);
+            if (persona != null)
+            {
+                SetPersona(persona);
+            }
         }
 
         // Constructor para nuevos usuarios (sin ID, será autogenerado por EF)
@@ -38,13 +47,11 @@ namespace Domain.Model
             SetPassword(password);
             SetHabilitado(habilitado);
             SetUsername(username);
-            // El ID se establece como 0 y será autogenerado por Entity Framework
             Id = 0;
         }
 
         // Constructor público sin parámetros para Entity Framework
-        // Cambiado a público para que EF pueda usarlo y los objetos tengan funcionalidad completa
-        public Usuario() 
+        public Usuario()
         {
             // Inicialización básica
         }
@@ -147,6 +154,71 @@ namespace Domain.Model
             byte[] saltedPasswordBytes = System.Text.Encoding.UTF8.GetBytes(password + salt);
             byte[] hashBytes = sha256.ComputeHash(saltedPasswordBytes);
             return Convert.ToBase64String(hashBytes);
+        }
+
+        // Método actualizado: Agregar un módulo al usuario
+        public void AgregarModuloUsuario(ModulosUsuarios moduloUsuario)
+        {
+            if (moduloUsuario == null)
+                throw new ArgumentException("El módulo de usuario no puede ser nulo.", nameof(moduloUsuario));
+
+            ModulosUsuarios.Add(moduloUsuario);
+        }
+
+        // Verifica si el usuario tiene un permiso específico en algún módulo
+        public bool TienePermiso(string permiso)
+        {
+            if (!Habilitado)
+                throw new InvalidOperationException("El usuario está deshabilitado");
+
+            if (ModulosUsuarios == null || !ModulosUsuarios.Any())
+                return false;
+
+            return ModulosUsuarios.Any(mu => mu.TienePermiso(permiso));
+        }
+
+        // Verifica si el usuario tiene un permiso específico en un módulo específico
+        public bool TienePermisoEnModulo(string permiso, int moduloId)
+        {
+            if (!Habilitado)
+                throw new InvalidOperationException("El usuario está deshabilitado");
+
+            var moduloUsuario = ModulosUsuarios?.FirstOrDefault(mu => mu.ModuloId == moduloId);
+            return moduloUsuario?.TienePermiso(permiso) ?? false;
+        }
+
+        // Obtiene todos los permisos del usuario en todos los módulos
+        public IEnumerable<string> ObtenerTodosLosPermisos()
+        {
+            if (ModulosUsuarios == null || !ModulosUsuarios.Any())
+                return new List<string>();
+
+            var permisos = new HashSet<string>();
+            foreach (var moduloUsuario in ModulosUsuarios)
+            {
+                foreach (var permiso in moduloUsuario.ObtenerNombresPermisos())
+                {
+                    permisos.Add(permiso);
+                }
+            }
+            return permisos;
+        }
+
+        // Obtiene los nombres de todos los módulos asignados al usuario
+        public IEnumerable<string> ObtenerNombresModulos()
+        {
+            if (ModulosUsuarios == null || !ModulosUsuarios.Any())
+                return new List<string>();
+
+            return ModulosUsuarios
+                .Where(mu => mu.Modulo != null)
+                .Select(mu => mu.Modulo.Desc_Modulo);
+        }
+
+        public void SetPersona(Persona? persona)
+        {
+            // Ahora la persona puede ser nula ya que no se mapea a la BD
+            Persona = persona;
         }
     }
 }

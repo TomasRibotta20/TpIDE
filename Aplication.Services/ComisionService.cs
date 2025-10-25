@@ -16,29 +16,35 @@ namespace Aplication.Services
             _repository = new ComisionRepository();
         }
 
-        public IEnumerable<DTOs.ComisionDto> GetAll() => _repository.GetAll().Select(MapToDto);
+        public async Task<IEnumerable<DTOs.ComisionDto>> GetAllAsync()
+        {
+            var comisiones = await _repository.GetAllAsync();
+            return comisiones.Select(MapToDto);
+        }
 
-        public DTOs.ComisionDto GetById(int id)
-            {
-                var comision = _repository.GetById(id);
-                return comision == null ? null : MapToDto(comision);
-            }
-        public void Add(DTOs.ComisionDto comisionDto)
-            {
+        public async Task<DTOs.ComisionDto?> GetByIdAsync(int id)
+        {
+            var comision = await _repository.GetByIdAsync(id);
+            return comision == null ? null : MapToDto(comision);
+        }
+
+        public async Task AddAsync(DTOs.ComisionDto comisionDto)
+        {
             var comision = MapToEntityForCreation(comisionDto);
-            _repository.Add(comision);
+            await _repository.AddAsync(comision);
         }
         
-        public void Update(DTOs.ComisionDto comisionDto)
-            {
+        public async Task UpdateAsync(DTOs.ComisionDto comisionDto)
+        {
             var comision = MapToEntityForUpdate(comisionDto);
-            _repository.Update(comision);
+            await _repository.UpdateAsync(comision);
         }
 
-        public void Delete(int id)
-            {
-            _repository.Delete(id);
+        public async Task DeleteAsync(int id)
+        {
+            await _repository.DeleteAsync(id);
         }
+
         private DTOs.ComisionDto MapToDto(Domain.Model.Comision comision) => new DTOs.ComisionDto
         {
             IdComision = comision.IdComision,
@@ -55,16 +61,11 @@ namespace Aplication.Services
         );
 
         // Para actualizar comisiones existentes (con ID)
-
         private Domain.Model.Comision MapToEntityForUpdate(DTOs.ComisionDto dto) => new Domain.Model.Comision(
             dto.IdComision,
             dto.DescComision,
             dto.AnioEspecialidad,
             dto.IdPlan
         );
-
-
-
-
     }
 }

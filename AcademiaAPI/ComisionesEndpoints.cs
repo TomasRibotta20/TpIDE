@@ -8,18 +8,13 @@ namespace AcademiaAPI
     public static class ComisionesEndpoints
     {
         public static void MapComisionesEndpoints(this WebApplication app) { 
-        
-            var comisionService = new Aplication.Services.ComisionService();
-            
 
-            app.MapGet("/comisiones/test-table", () =>
+            app.MapGet("/comisiones/test-table", async () =>
             {
                 try
                 {
                     using var context = new Data.AcademiaContext();
-                    
-           
-                    var count = context.Comisiones.Count();
+                    var count = await context.Comisiones.CountAsync();
                     
                     return Results.Ok(new { 
                         message = "La tabla Comisiones existe correctamente.", 
@@ -28,16 +23,12 @@ namespace AcademiaAPI
                 }
                 catch (Exception ex)
                 {
-               
                     try
                     {
                         using var context = new Data.AcademiaContext();
+                        await context.Database.EnsureCreatedAsync();
                         
-                  
-                        context.Database.EnsureCreated();
-                        
-                   
-                        context.Database.ExecuteSqlRaw(@"
+                        await context.Database.ExecuteSqlRawAsync(@"
                         IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Comisiones')
                         BEGIN
                             CREATE TABLE [dbo].[Comisiones](
@@ -66,48 +57,55 @@ namespace AcademiaAPI
                 }
             });
             
-            app.MapGet("/comisiones", () =>
+            app.MapGet("/comisiones", async () =>
             {
-                var comisiones = comisionService.GetAll();
+                var comisionService = new ComisionService();
+                var comisiones = await comisionService.GetAllAsync();
                 return Results.Ok(comisiones);
             });
             
-            app.MapGet("/comisiones/{id:int}", (int id) =>
+            app.MapGet("/comisiones/{id:int}", async (int id) =>
             {
-                var comision = comisionService.GetById(id);
+                var comisionService = new ComisionService();
+                var comision = await comisionService.GetByIdAsync(id);
                 return comision == null ? Results.NotFound() : Results.Ok(comision);
             });
             
-            app.MapPost("/comisiones", (DTOs.ComisionDto comisionDto) =>
+            app.MapPost("/comisiones", async (DTOs.ComisionDto comisionDto) =>
             {
-                comisionService.Add(comisionDto);
+                var comisionService = new ComisionService();
+                await comisionService.AddAsync(comisionDto);
                 return Results.Created($"/comisiones/{comisionDto.IdComision}", comisionDto);
             });
             
-            app.MapPut("/comisiones/{id:int}", (int id, DTOs.ComisionDto comisionDto) =>
+            app.MapPut("/comisiones/{id:int}", async (int id, DTOs.ComisionDto comisionDto) =>
             {
                 if (id != comisionDto.IdComision)
                 {
                     return Results.BadRequest("ID mismatch");
                 }
-                var existingComision = comisionService.GetById(id);
+
+                var comisionService = new ComisionService();
+                var existingComision = await comisionService.GetByIdAsync(id);
                 if (existingComision == null)
                 {
                     return Results.NotFound();
                 }
-                comisionService.Update(comisionDto);
+
+                await comisionService.UpdateAsync(comisionDto);
                 return Results.NoContent();
             });
             
-            app.MapDelete("/comisiones/{id:int}", (int id) =>
+            app.MapDelete("/comisiones/{id:int}", async (int id) =>
             {
-                var existingComision = comisionService.GetById(id);
+                var comisionService = new ComisionService();
+                var existingComision = await comisionService.GetByIdAsync(id);
                 if (existingComision == null)
                 {
                     return Results.NotFound();
                 }
                 
-                comisionService.Delete(id);
+                await comisionService.DeleteAsync(id);
                 return Results.NoContent();
             });
         }

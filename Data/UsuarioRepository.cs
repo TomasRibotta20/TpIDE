@@ -1,62 +1,65 @@
-﻿using Domain.Model;
+using Domain.Model;
+using Microsoft.EntityFrameworkCore;
+
 namespace Data
 {
     public class UsuarioRepository
     {
-        private AcademiaContext CreateContext()
+        private readonly AcademiaContext _context;
+
+        public UsuarioRepository(AcademiaContext context)
         {
-            return new AcademiaContext();
+            _context = context;
         }
 
-        public IEnumerable<Usuario> GetAll()
+        public async Task<List<Usuario>> GetAllAsync()
         {
-            using var context = CreateContext();
-            return context.Usuarios.OrderBy(u => u.Apellido).ThenBy(u => u.Nombre).ToList();
-        }
-        public Usuario GetById(int id)
-        {
-            using var context = CreateContext();
-            return context.Usuarios.Find(id);
-        }
-  
-        public Usuario GetByUsername(string username)
-        {
-            using var context = CreateContext();
-            return context.Usuarios.FirstOrDefault(u => u.UsuarioNombre == username);
+            return await _context.Usuarios
+                .Include(u => u.Persona)
+                .Include(u => u.ModulosUsuarios)
+                    .ThenInclude(mu => mu.Modulo)
+                .ToListAsync();
         }
 
-        public void Add(Usuario usuario)
+        public async Task<Usuario?> GetByIdAsync(int id)
         {
-            using var context = CreateContext();
-            context.Usuarios.Add(usuario);
-            context.SaveChanges();
+            return await _context.Usuarios
+                .Include(u => u.Persona)
+                .Include(u => u.ModulosUsuarios)
+                    .ThenInclude(mu => mu.Modulo)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
-        public void Update(Usuario usuario)
+
+        public async Task<Usuario?> GetByUsernameAsync(string username)
         {
-            using var context = CreateContext();
-            context.Usuarios.Update(usuario);
-            context.SaveChanges();
+            return await _context.Usuarios
+                .Include(u => u.Persona)
+                .Include(u => u.ModulosUsuarios)
+                    .ThenInclude(mu => mu.Modulo)
+                .FirstOrDefaultAsync(u => u.UsuarioNombre == username);
         }
-        public void Delete(int id)
+
+        public async Task<Usuario> CreateAsync(Usuario usuario)
         {
-            using var context = CreateContext();
-            var usuario = context.Usuarios.Find(id);
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            return usuario;
+        }
+
+        public async Task UpdateAsync(Usuario usuario)
+        {
+            _context.Entry(usuario).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var usuario = await GetByIdAsync(id);
             if (usuario != null)
             {
-                context.Usuarios.Remove(usuario);
-                context.SaveChanges();
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
             }
-        }
-
-        public bool EmailExists(string email, int? excludeId = null)
-        {
-            using var context = CreateContext();
-            var query = context.Usuarios.Where(c => c.Email.ToLower() == email.ToLower());
-            if (excludeId.HasValue)
-            {
-                query = query.Where(c => c.Id != excludeId.Value);
-            }
-            return query.Any();
         }
     }
 }

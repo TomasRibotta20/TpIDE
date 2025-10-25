@@ -1,17 +1,15 @@
 using DTOs;
+using System.Text;
 using System.Text.Json;
 
 namespace API.Clients
 {
-    public class InscripcionApiClient
+    public class InscripcionApiClient : BaseApiClient
     {
-        private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonOptions;
 
         public InscripcionApiClient()
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7229/");
             _jsonOptions = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -20,7 +18,8 @@ namespace API.Clients
 
         public async Task<IEnumerable<AlumnoCursoDto>> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("inscripciones");
+            var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("inscripciones");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<AlumnoCursoDto>>(json, _jsonOptions) ?? new List<AlumnoCursoDto>();
@@ -28,7 +27,8 @@ namespace API.Clients
 
         public async Task<AlumnoCursoDto?> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"inscripciones/{id}");
+            var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"inscripciones/{id}");
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
             
@@ -49,7 +49,8 @@ namespace API.Clients
             var json = JsonSerializer.Serialize(inscripcionRequest, _jsonOptions);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             
-            var response = await _httpClient.PostAsync("inscripciones", content);
+            var client = await CreateHttpClientAsync();
+            var response = await client.PostAsync("inscripciones", content);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -129,7 +130,8 @@ namespace API.Clients
             var json = JsonSerializer.Serialize(updateRequest, _jsonOptions);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
             
-            var response = await _httpClient.PutAsync($"inscripciones/{idInscripcion}/condicion", content);
+            var client = await CreateHttpClientAsync();
+            var response = await client.PutAsync($"inscripciones/{idInscripcion}/condicion", content);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -182,7 +184,8 @@ namespace API.Clients
 
         public async Task DesinscribirAlumnoAsync(int idInscripcion)
         {
-            var response = await _httpClient.DeleteAsync($"inscripciones/{idInscripcion}");
+            var client = await CreateHttpClientAsync();
+            var response = await client.DeleteAsync($"inscripciones/{idInscripcion}");
             
             if (!response.IsSuccessStatusCode)
             {
@@ -208,7 +211,8 @@ namespace API.Clients
 
         public async Task<IEnumerable<AlumnoCursoDto>> GetInscripcionesByAlumnoAsync(int idAlumno)
         {
-            var response = await _httpClient.GetAsync($"inscripciones/alumno/{idAlumno}");
+            var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"inscripciones/alumno/{idAlumno}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<AlumnoCursoDto>>(json, _jsonOptions) ?? new List<AlumnoCursoDto>();
@@ -216,7 +220,8 @@ namespace API.Clients
 
         public async Task<IEnumerable<AlumnoCursoDto>> GetInscripcionesByCursoAsync(int idCurso)
         {
-            var response = await _httpClient.GetAsync($"inscripciones/curso/{idCurso}");
+            var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"inscripciones/curso/{idCurso}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<AlumnoCursoDto>>(json, _jsonOptions) ?? new List<AlumnoCursoDto>();
@@ -224,10 +229,34 @@ namespace API.Clients
 
         public async Task<Dictionary<string, int>> GetEstadisticasGeneralesAsync()
         {
-            var response = await _httpClient.GetAsync("inscripciones/estadisticas");
+            var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("inscripciones/estadisticas");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<Dictionary<string, int>>(json, _jsonOptions) ?? new Dictionary<string, int>();
+        }
+
+        // Métodos adicionales para compatibilidad con formularios
+        public async Task<List<AlumnoCursoDto>> GetByAlumnoIdAsync(int alumnoId)
+        {
+            var result = await GetInscripcionesByAlumnoAsync(alumnoId);
+            return result.ToList();
+        }
+
+        public async Task<List<AlumnoCursoDto>> GetByCursoIdAsync(int cursoId)
+        {
+            var result = await GetInscripcionesByCursoAsync(cursoId);
+            return result.ToList();
+        }
+
+        public async Task UpdateCondicionAsync(int idInscripcion, CondicionAlumnoDto condicion, int? nota)
+        {
+            await ActualizarCondicionYNotaAsync(idInscripcion, condicion, nota);
+        }
+
+        public async Task CreateAsync(AlumnoCursoDto inscripcion)
+        {
+            await InscribirAlumnoAsync(inscripcion.IdAlumno, inscripcion.IdCurso, inscripcion.Condicion);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Domain.Model
 {
@@ -20,6 +21,9 @@ namespace Domain.Model
         public int Legajo { get; set; }
         public TipoPersona TipoPersona { get; set; }
         public int? IdPlan { get; set; }
+
+        // Relación bidireccional con Usuario
+        public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 
         // Constructor para EF Core (sin parámetros)
         public Persona() { }

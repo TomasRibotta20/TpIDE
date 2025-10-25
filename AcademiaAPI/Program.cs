@@ -9,7 +9,6 @@ Console.WriteLine("Starting API server...");
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpLogging(o => { });
@@ -30,14 +29,28 @@ var app = builder.Build();
 
 Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
 
-// Asegurar que la base de datos estÃ© actualizada (automÃ¡tico)
+// Asegurar que la base de datos esté actualizada (automático)
 Console.WriteLine("Ensuring database is up to date...");
-MigrationHelper.EnsureDatabaseUpdated();
 
-// Reparar especÃ­ficamente el usuario admin para asegurar que funcione el login
+// Check if force recreate is enabled via environment variable
+bool forceRecreate = Environment.GetEnvironmentVariable("FORCE_RECREATE_DB") == "true";
+if (forceRecreate)
+{
+    Console.WriteLine(">>> FORCE_RECREATE_DB is enabled - Database will be dropped and recreated!");
+}
+
+MigrationHelper.EnsureDatabaseUpdated(forceRecreate);
+
+// Reparar específicamente el usuario admin para asegurar que funcione el login
 Console.WriteLine("Ensuring admin user exists...");
 await AdminUserRepairHelper.RepairAdminUserAsync();
 await DatabaseSetupHelper.EnsureAdminUserExistsAsync();
+
+// Inicializar módulos del sistema
+Console.WriteLine("Initializing system modules...");
+var usuarioService = new UsuarioService();
+await usuarioService.InicializarModulosAsync();
+Console.WriteLine(">>> System modules initialized");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -63,7 +76,7 @@ if (app.Environment.IsDevelopment())
         .WithOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // Comentado para desarrollo HTTP
 
 // Use CORS
 app.UseCors("AllowAll");

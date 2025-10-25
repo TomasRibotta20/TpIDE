@@ -13,7 +13,7 @@ namespace WIndowsForm
                     components.Dispose();
                 }
                 // Liberar el HttpClient del API
-                _apiClient?.Dispose();
+
             }
             base.Dispose(disposing);
         }
@@ -116,7 +116,7 @@ namespace WIndowsForm
             Controls.Add(gridPanel);
             Name = "FormProfesores";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestión de Profesores";
+            Text = "Gestiï¿½n de Profesores";
             Load += FormProfesores_Load;
             gridPanel.ResumeLayout(false);
             buttonPanel.ResumeLayout(false);

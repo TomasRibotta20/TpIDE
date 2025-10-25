@@ -1,5 +1,6 @@
 using Application.Services;
 using DTOs;
+using Data;
 
 namespace AcademiaAPI
 {
@@ -26,8 +27,9 @@ namespace AcademiaAPI
                         app.Logger.LogWarning($"Login failed for user: {request.Username} - Invalid credentials");
                         
                         // Checking if user exists but password is wrong
-                        var usuarioRepo = new Data.UsuarioRepository();
-                        var user = usuarioRepo.GetByUsername(request.Username);
+                        using var context = new AcademiaContext();
+                        var usuarioRepo = new UsuarioRepository(context);
+                        var user = await usuarioRepo.GetByUsernameAsync(request.Username);
                         if (user != null)
                         {
                             app.Logger.LogWarning($"User {request.Username} exists but password validation failed");
@@ -54,6 +56,39 @@ namespace AcademiaAPI
             .WithTags("Authentication")
             .WithOpenApi();
 
+            app.MapPost("/auth/register", async (RegisterRequestDto request) =>
+            {
+                try
+                {
+                    app.Logger.LogInformation($"Register attempt for username: {request.UsuarioNombre}");
+                    
+                    var response = await authService.RegisterAsync(request);
+                    
+                    if (response.Success)
+                    {
+                        app.Logger.LogInformation($"Registration successful for user: {request.UsuarioNombre}");
+                        return Results.Ok(response);
+                    }
+                    else
+                    {
+                        app.Logger.LogWarning($"Registration failed: {response.Message}");
+                        return Results.BadRequest(response);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    app.Logger.LogError(ex, $"Error during registration for user: {request.UsuarioNombre}");
+                    return Results.BadRequest(new RegisterResponseDto
+                    {
+                        Success = false,
+                        Message = $"Error al registrar: {ex.Message}"
+                    });
+                }
+            })
+            .WithName("Register")
+            .WithTags("Authentication")
+            .WithOpenApi();
+
             app.MapPost("/auth/validate", (ValidateTokenRequest request) =>
             {
                 try
@@ -74,12 +109,13 @@ namespace AcademiaAPI
             // Add debug endpoint to check if admin user exists and is configured correctly
             if (app.Environment.IsDevelopment())
             {
-                app.MapGet("/auth/check-admin", () => 
+                app.MapGet("/auth/check-admin", async () => 
                 {
                     try 
                     {
-                        var usuarioRepo = new Data.UsuarioRepository();
-                        var adminUser = usuarioRepo.GetByUsername("admin");
+                        using var context = new AcademiaContext();
+                        var usuarioRepo = new UsuarioRepository(context);
+                        var adminUser = await usuarioRepo.GetByUsernameAsync("admin");
                         
                         if (adminUser == null)
                         {

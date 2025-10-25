@@ -8,20 +8,29 @@ using System.Threading.Tasks;
 
 namespace API.Clients
 {
-    public class PersonaApiClient : IDisposable
+    public class PersonaApiClient : BaseApiClient
     {
-        private readonly HttpClient _httpClient;
-        private bool _disposed = false;
-
-        public PersonaApiClient()
+        // --- Todas las personas ---
+        public async Task<IEnumerable<PersonaDto>> GetAllAsync()
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:7229/") };
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("personas");
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al obtener personas. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
+            
+            return await response.Content.ReadFromJsonAsync<IEnumerable<PersonaDto>>()
+                   ?? Enumerable.Empty<PersonaDto>();
         }
 
         // --- Alumnos ---
         public async Task<IEnumerable<PersonaDto>> GetAllAlumnosAsync()
         {
-            var response = await _httpClient.GetAsync("personas/alumnos");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("personas/alumnos");
             
             if (!response.IsSuccessStatusCode)
             {
@@ -36,7 +45,8 @@ namespace API.Clients
         // --- Profesores ---
         public async Task<IEnumerable<PersonaDto>> GetAllProfesoresAsync()
         {
-            var response = await _httpClient.GetAsync("personas/profesores");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("personas/profesores");
             
             if (!response.IsSuccessStatusCode)
             {
@@ -51,7 +61,8 @@ namespace API.Clients
         // --- Genérico ---
         public async Task<PersonaDto> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"personas/{id}");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"personas/{id}");
             
             if (!response.IsSuccessStatusCode)
             {
@@ -59,12 +70,14 @@ namespace API.Clients
                 throw new Exception($"Error al obtener persona con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
             }
             
-            return await response.Content.ReadFromJsonAsync<PersonaDto>();
+            return await response.Content.ReadFromJsonAsync<PersonaDto>()
+                   ?? throw new Exception("No se pudo deserializar la persona");
         }
 
         public async Task CreateAsync(PersonaDto persona)
         {
-            var response = await _httpClient.PostAsJsonAsync("personas", persona);
+            using var client = await CreateHttpClientAsync();
+            var response = await client.PostAsJsonAsync("personas", persona);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -75,7 +88,8 @@ namespace API.Clients
 
         public async Task UpdateAsync(int id, PersonaDto persona)
         {
-            var response = await _httpClient.PutAsJsonAsync($"personas/{id}", persona);
+            using var client = await CreateHttpClientAsync();
+            var response = await client.PutAsJsonAsync($"personas/{id}", persona);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -86,30 +100,13 @@ namespace API.Clients
 
         public async Task DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"personas/{id}");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.DeleteAsync($"personas/{id}");
             
             if (!response.IsSuccessStatusCode)
             {
                 string errorContent = await response.Content.ReadAsStringAsync();
                 throw new Exception($"Error al eliminar persona con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _httpClient?.Dispose();
-                }
-                _disposed = true;
             }
         }
     }

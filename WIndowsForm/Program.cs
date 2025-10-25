@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using API.Auth.WindowsForms;
 using API.Clients;
 using System.IO;
+using WIndowsForm;
 
 namespace WindowsForms
 {
@@ -25,8 +26,8 @@ namespace WindowsForms
                 if (!File.Exists(appSettingsPath))
                 {
                     MessageBox.Show(
-                        $"No se encontró el archivo de configuración en:\n{appSettingsPath}\n\nSe creará uno con la configuración predeterminada.",
-                        "Archivo de configuración faltante",
+                        $"No se encontro el archivo de configuracion en:\n{appSettingsPath}\n\nSe creara uno con la configuracion predeterminada.",
+                        "Archivo de configuracion faltante",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning
                     );
@@ -50,8 +51,8 @@ namespace WindowsForms
 }";
                     File.WriteAllText(appSettingsPath, defaultConfig);
                     MessageBox.Show(
-                        "Se ha creado un archivo de configuración predeterminado.",
-                        "Configuración creada",
+                        "Se ha creado un archivo de configuracion predeterminado.",
+                        "Configuracion creada",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information
                     );
@@ -60,8 +61,8 @@ namespace WindowsForms
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Error al iniciar la aplicación: {ex.Message}",
-                    "Error de inicialización",
+                    $"Error al iniciar la aplicacion: {ex.Message}",
+                    "Error de inicializacion",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -88,12 +89,35 @@ namespace WindowsForms
 
                 try
                 {
-                    Application.Run(new MenuPrincipal());
+                    // Determinar que menu mostrar segun el tipo de usuario
+                    string? tipoUsuario = WindowsFormsAuthService.GetCurrentTipoUsuario();
+                    
+                    Form menuPrincipal;
+                    if (tipoUsuario == "Administrador")
+                    {
+                        menuPrincipal = new MenuPrincipal();
+                    }
+                    else if (tipoUsuario == "Profesor")
+                    {
+                        menuPrincipal = new MenuProfesor();
+                    }
+                    else if (tipoUsuario == "Alumno")
+                    {
+                        menuPrincipal = new MenuAlumno();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Tipo de usuario desconocido: {tipoUsuario}", 
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
+                    Application.Run(menuPrincipal);
                     break;
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    MessageBox.Show(ex.Message, "Sesión Expirada",
+                    MessageBox.Show(ex.Message, "Sesion Expirada",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 catch (Exception ex)
@@ -109,7 +133,7 @@ namespace WindowsForms
         {
             if (e.Exception is UnauthorizedAccessException)
             {
-                MessageBox.Show("Su sesión ha expirado. Debe volver a autenticarse.", "Sesión Expirada",
+                MessageBox.Show("Su sesion ha expirado. Debe volver a autenticarse.", "Sesion Expirada",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 Application.Restart();

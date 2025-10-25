@@ -19,30 +19,26 @@ namespace Data
             return new AcademiaContext();
         }
 
-        private void EnsureComisionesTableExists()
+        private async Task EnsureComisionesTableExistsAsync()
         {
             using var context = CreateContext();
             
             try
             {
-                
                 try
                 {
-                    
-                    var count = context.Comisiones.Count();
+                    var count = await context.Comisiones.CountAsync();
                     Console.WriteLine($"Comisiones table exists, count: {count}");
                     return;
                 }
                 catch
                 {
                     Console.WriteLine("Comisiones table might not exist, will try to create it");
-                    
                 }
 
-                
                 var connection = context.Database.GetDbConnection();
                 if (connection.State != ConnectionState.Open)
-                    connection.Open();
+                    await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
                 command.CommandText = @"
@@ -63,7 +59,7 @@ namespace Data
                     PRINT 'Comisiones table already exists';
                 END";
 
-                command.ExecuteNonQuery();
+                await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
@@ -72,20 +68,16 @@ namespace Data
             }
         }
 
-        public IEnumerable<Domain.Model.Comision> GetAll()
+        public async Task<IEnumerable<Domain.Model.Comision>> GetAllAsync()
         {
             try 
             {
-               
-                EnsureComisionesTableExists();
+                await EnsureComisionesTableExistsAsync();
                 
                 using var context = CreateContext();
+                await context.Database.EnsureCreatedAsync();
                 
-                
-                context.Database.EnsureCreated();
-                
-                
-                return context.Comisiones.OrderBy(c => c.DescComision).ToList();
+                return await context.Comisiones.OrderBy(c => c.DescComision).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -94,28 +86,11 @@ namespace Data
             }
         }
 
-        public Domain.Model.Comision GetById(int id)
-        {
-            try
-            {
-                
-                EnsureComisionesTableExists();
-                
-                using var context = CreateContext();
-                return context.Comisiones.Find(id);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving Comision with ID {id}: {ex.Message}");
-                throw new Exception($"Error retrieving Comision with ID {id}: {ex.Message}", ex);
-            }
-        }
-
         public async Task<Domain.Model.Comision?> GetByIdAsync(int id)
         {
             try
             {
-                EnsureComisionesTableExists();
+                await EnsureComisionesTableExistsAsync();
                 
                 using var context = CreateContext();
                 return await context.Comisiones.FindAsync(id);
@@ -127,16 +102,15 @@ namespace Data
             }
         }
 
-        public void Add(Domain.Model.Comision comision)
+        public async Task AddAsync(Domain.Model.Comision comision)
         {
             try
             {
-                
-                EnsureComisionesTableExists();
+                await EnsureComisionesTableExistsAsync();
                 
                 using var context = CreateContext();
                 context.Comisiones.Add(comision);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -145,16 +119,15 @@ namespace Data
             }
         }
 
-        public void Update(Domain.Model.Comision comision)
+        public async Task UpdateAsync(Domain.Model.Comision comision)
         {
             try
             {
-               
-                EnsureComisionesTableExists();
+                await EnsureComisionesTableExistsAsync();
                 
                 using var context = CreateContext();
                 context.Comisiones.Update(comision);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -163,19 +136,18 @@ namespace Data
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             try
             {
-                
-                EnsureComisionesTableExists();
+                await EnsureComisionesTableExistsAsync();
                 
                 using var context = CreateContext();
-                var comision = context.Comisiones.Find(id);
+                var comision = await context.Comisiones.FindAsync(id);
                 if (comision != null)
                 {
                     context.Comisiones.Remove(comision);
-                    context.SaveChanges();
+                    await context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)

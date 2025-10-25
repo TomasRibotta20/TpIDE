@@ -7,47 +7,57 @@ namespace AcademiaAPI
     {
         public static void MapEspecialidadEndpoints(this WebApplication app)
         {
-            var especialidadService = new EspecialidadService();
-            app.MapGet("/especialidades", () =>
+            app.MapGet("/especialidades", async () =>
             {
-                var especialidades = especialidadService.GetAll();
+                var especialidadService = new EspecialidadService();
+                var especialidades = await especialidadService.GetAllAsync();
                 return Results.Ok(especialidades);
             });
-            app.MapGet("/especialidades/{id:int}", (int id) =>
+
+            app.MapGet("/especialidades/{id:int}", async (int id) =>
             {
-                var especialidad = especialidadService.GetById(id);
+                var especialidadService = new EspecialidadService();
+                var especialidad = await especialidadService.GetByIdAsync(id);
                 return especialidad == null ? Results.NotFound() : Results.Ok(especialidad);
             });
-            app.MapPost("/especialidades", (EspecialidadDto especialidadDto) =>
+
+            app.MapPost("/especialidades", async (EspecialidadDto especialidadDto) =>
             {
-                especialidadService.Add(especialidadDto);
+                var especialidadService = new EspecialidadService();
+                await especialidadService.AddAsync(especialidadDto);
                 return Results.Created($"/especialidades/{especialidadDto.Id}", especialidadDto);
             });
-            app.MapPut("/especialidades/{id:int}", (int id, EspecialidadDto especialidadDto) =>
+
+            app.MapPut("/especialidades/{id:int}", async (int id, EspecialidadDto especialidadDto) =>
             {
                 if (id != especialidadDto.Id)
                 {
                     return Results.BadRequest("ID mismatch");
                 }
-                var existingEspecialidad = especialidadService.GetById(id);
+
+                var especialidadService = new EspecialidadService();
+                var existingEspecialidad = await especialidadService.GetByIdAsync(id);
                 if (existingEspecialidad == null)
                 {
                     return Results.NotFound();
                 }
-                especialidadService.Update(especialidadDto);
+
+                await especialidadService.UpdateAsync(especialidadDto);
                 return Results.NoContent();
             });
-            app.MapDelete("/especialidades/{id:int}", (int id) =>
+
+            app.MapDelete("/especialidades/{id:int}", async (int id) =>
             {
-                var existingEspecialidad = especialidadService.GetById(id);
+                var especialidadService = new EspecialidadService();
+                var existingEspecialidad = await especialidadService.GetByIdAsync(id);
                 if (existingEspecialidad == null)
                 {
                     return Results.NotFound();
                 }
-                especialidadService.Delete(id);
+
+                await especialidadService.DeleteAsync(id);
                 return Results.NoContent();
             });
         }
-
     }
 }

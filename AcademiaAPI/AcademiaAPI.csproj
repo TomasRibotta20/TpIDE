@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.16" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
@@ -25,6 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="API.Auth.WindowsForms\" />
+    <Folder Include="Aplication.Services\" />
+    <Folder Include="Data\" />
     <Folder Include="WIndowsForm\" />
   </ItemGroup>
 

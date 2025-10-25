@@ -49,8 +49,9 @@ namespace WindowsForms
                     MessageBox.Show(
                         "Error de conexión: No se pudo conectar al servidor.\n\n" +
                         "Verifique que la API esté funcionando:\n" +
-                        "1. Abra https://localhost:7229/swagger en el navegador\n" +
-                        "2. Si no funciona, inicie el proyecto AcademiaAPI\n\n" +
+                        "1. Abra http://localhost:5000/swagger en el navegador\n" +
+                        "2. Si no funciona, inicie el proyecto AcademiaAPI\n" +
+                        "3. Verifique la configuración en appsettings.json\n\n" +
                         $"Detalles técnicos: {ex.Message}",
                         "Error de Conexión",
                         MessageBoxButtons.OK,
@@ -90,6 +91,31 @@ namespace WindowsForms
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void registerLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                var registerForm = new RegisterForm();
+                var result = registerForm.ShowDialog();
+                
+                if (result == DialogResult.OK)
+                {
+                    // Limpiar los campos después de un registro exitoso
+                    usernameTextBox.Clear();
+                    passwordTextBox.Clear();
+                    usernameTextBox.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al abrir el formulario de registro:\n\n{ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private bool ValidateInput()
@@ -143,8 +169,8 @@ namespace WindowsForms
                         "No se puede conectar con la API.\n\n" +
                         "Asegúrese de que:\n" +
                         "1. El proyecto AcademiaAPI esté ejecutándose\n" +
-                        "2. La API esté corriendo en https://localhost:7229\n" +
-                        "3. El certificado SSL sea confiable\n\n" +
+                        "2. La API esté corriendo en http://localhost:5000\n" +
+                        "3. La configuración en appsettings.json sea correcta\n\n" +
                         "¿Desea continuar de todas formas?",
                         "Advertencia de Conexión",
                         MessageBoxButtons.YesNo,

@@ -161,6 +161,22 @@ public partial class MenuPrincipal : Form
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             };
+            
+            // Evento para cerrar sesión
+            this.FormClosing += async (s, e) =>
+            {
+                var result = MessageBox.Show("¿Desea cerrar sesión?", 
+                    "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    var authService = AuthServiceProvider.Instance;
+                    await authService.LogoutAsync();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            };
         }
         catch (Exception ex)
         {
@@ -455,6 +471,42 @@ public partial class MenuPrincipal : Form
             MessageBox.Show($"Error al listar comisiones: {ex.Message}", 
                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    // Nuevos métodos para funcionalidades del administrador
+    private void asignarProfesoresToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formAsignarProfesores = new FormAsignarProfesores(this);
+            formAsignarProfesores.Show();
+            this.Hide();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al abrir asignación de profesores: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void reportePlanesToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formReportePlanes = new FormReportePlanes();
+            formReportePlanes.ShowDialog();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al abrir reporte de planes: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void reporteFuturoToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show("Esta funcionalidad estará disponible próximamente.", 
+            "Reporte Futuro", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void listarProfesoresToolStripMenuItem_Click(object sender, EventArgs e)

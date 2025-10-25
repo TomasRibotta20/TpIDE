@@ -9,12 +9,20 @@ namespace API.Clients
 {
     public class UsuarioApiClient : BaseApiClient
     {
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        protected readonly JsonSerializerOptions _jsonOptions;
+        public UsuarioApiClient()
+        {
+            _jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+        }
+
         public async Task<IEnumerable<UsuarioDto>> GetAllAsync()
         {
             using var client = await CreateHttpClientAsync();
-            HttpResponseMessage response = await client.GetAsync("usuarios");
+            HttpResponseMessage response = await client.GetAsync("usuarios");  // Cambiado de "api/usuarios" a "usuarios"
 
             if (response.IsSuccessStatusCode)
             {
@@ -30,21 +38,58 @@ namespace API.Clients
         public async Task<UsuarioDto?> GetByIdAsync(int id)
         {
             using var client = await CreateHttpClientAsync();
-            HttpResponseMessage response = await client.GetAsync($"usuarios/{id}");
+            HttpResponseMessage response = await client.GetAsync($"usuarios/{id}");  // Cambiado
 
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<UsuarioDto>(_jsonOptions);
             }
 
+            await HandleUnauthorizedResponseAsync(response);
             string errorContent = await response.Content.ReadAsStringAsync();
             throw new Exception($"Error al obtener usuario con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+        }
+
+        /// <summary>
+        /// Obtiene todos los módulos disponibles del sistema
+        /// </summary>
+        public async Task<IEnumerable<ModuloDto>> GetModulosAsync()
+        {
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync("usuarios/modulos");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<ModuloDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<ModuloDto>();
+            }
+
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener módulos. Status: {response.StatusCode}, Detalle: {errorContent}");
+        }
+
+        /// <summary>
+        /// Obtiene los tipos de usuario predefinidos (Administrador, Profesor, Alumno)
+        /// </summary>
+        public async Task<IEnumerable<string>> GetTiposUsuarioAsync()
+        {
+            using var client = await CreateHttpClientAsync();
+            HttpResponseMessage response = await client.GetAsync("usuarios/tipos");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<string>>(_jsonOptions)
+                       ?? Enumerable.Empty<string>();
+            }
+
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener tipos de usuario. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<UsuarioDto> CreateAsync(UsuarioDto usuario)
         {
             using var client = await CreateHttpClientAsync();
-            HttpResponseMessage response = await client.PostAsJsonAsync("usuarios", usuario);
+            HttpResponseMessage response = await client.PostAsJsonAsync("usuarios", usuario);  // Cambiado
 
             if (!response.IsSuccessStatusCode)
             {
@@ -59,7 +104,7 @@ namespace API.Clients
         public async Task UpdateAsync(UsuarioDto usuario)
         {
             using var client = await CreateHttpClientAsync();
-            HttpResponseMessage response = await client.PutAsJsonAsync($"usuarios/{usuario.Id}", usuario);
+            HttpResponseMessage response = await client.PutAsJsonAsync($"usuarios/{usuario.Id}", usuario);  // Cambiado
 
             if (!response.IsSuccessStatusCode)
             {
@@ -71,7 +116,7 @@ namespace API.Clients
         public async Task DeleteAsync(int id)
         {
             using var client = await CreateHttpClientAsync();
-            HttpResponseMessage response = await client.DeleteAsync($"usuarios/{id}");
+            HttpResponseMessage response = await client.DeleteAsync($"usuarios/{id}");  // Cambiado
 
             if (!response.IsSuccessStatusCode)
             {

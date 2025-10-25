@@ -11,14 +11,28 @@ namespace AcademiaAPI
     {
         public static void MapPersonasEndpoints(this WebApplication app)
         {
-            var personaService = new PersonaService();
-
-            // Endpoint para obtener todos los alumnos
-            app.MapGet("/personas/alumnos", () =>
+            // Endpoint para obtener TODAS las personas (alumnos y profesores)
+            app.MapGet("/personas", async () =>
             {
                 try
                 {
-                    var alumnos = personaService.GetAllAlumnos();
+                    var personaService = new PersonaService();
+                    var personas = await personaService.GetAllAsync();
+                    return Results.Ok(personas);
+                }
+                catch (Exception ex)
+                {
+                    return Results.Problem($"Ocurrió un error al obtener las personas: {ex.Message}");
+                }
+            });
+
+            // Endpoint para obtener todos los alumnos
+            app.MapGet("/personas/alumnos", async () =>
+            {
+                try
+                {
+                    var personaService = new PersonaService();
+                    var alumnos = await personaService.GetAllAlumnosAsync();
                     return Results.Ok(alumnos);
                 }
                 catch (Exception ex)
@@ -28,11 +42,12 @@ namespace AcademiaAPI
             });
 
             // Endpoint para obtener todos los profesores
-            app.MapGet("/personas/profesores", () =>
+            app.MapGet("/personas/profesores", async () =>
             {
                 try
                 {
-                    var profesores = personaService.GetAllProfesores();
+                    var personaService = new PersonaService();
+                    var profesores = await personaService.GetAllProfesoresAsync();
                     return Results.Ok(profesores);
                 }
                 catch (Exception ex)
@@ -42,18 +57,20 @@ namespace AcademiaAPI
             });
 
             // Endpoint para obtener una persona por ID
-            app.MapGet("/personas/{id:int}", (int id) =>
+            app.MapGet("/personas/{id:int}", async (int id) =>
             {
-                var persona = personaService.GetById(id);
+                var personaService = new PersonaService();
+                var persona = await personaService.GetByIdAsync(id);
                 return persona == null ? Results.NotFound() : Results.Ok(persona);
             });
 
             // Endpoint para crear una nueva persona
-            app.MapPost("/personas", (PersonaDto personaDto) =>
+            app.MapPost("/personas", async (PersonaDto personaDto) =>
             {
                 try
                 {
-                    personaService.Add(personaDto);
+                    var personaService = new PersonaService();
+                    await personaService.AddAsync(personaDto);
                     return Results.Created($"/personas/{personaDto.Id}", personaDto);
                 }
                 catch (Exception ex)
@@ -63,7 +80,7 @@ namespace AcademiaAPI
             });
 
             // Endpoint para actualizar una persona
-            app.MapPut("/personas/{id:int}", (int id, PersonaDto personaDto) =>
+            app.MapPut("/personas/{id:int}", async (int id, PersonaDto personaDto) =>
             {
                 if (id != personaDto.Id)
                 {
@@ -72,7 +89,8 @@ namespace AcademiaAPI
 
                 try
                 {
-                    personaService.Update(personaDto);
+                    var personaService = new PersonaService();
+                    await personaService.UpdateAsync(personaDto);
                     return Results.NoContent();
                 }
                 catch (Exception ex)
@@ -82,11 +100,12 @@ namespace AcademiaAPI
             });
 
             // Endpoint para eliminar una persona
-            app.MapDelete("/personas/{id:int}", (int id) =>
+            app.MapDelete("/personas/{id:int}", async (int id) =>
             {
                 try
                 {
-                    personaService.Delete(id);
+                    var personaService = new PersonaService();
+                    await personaService.DeleteAsync(id);
                     return Results.NoContent();
                 }
                 catch (Exception ex)

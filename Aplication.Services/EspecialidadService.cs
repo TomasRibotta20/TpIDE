@@ -1,6 +1,10 @@
 ﻿using Data;
 using Domain.Model;
 using DTOs;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace Aplication.Services
 {
     public class EspecialidadService
@@ -12,29 +16,33 @@ namespace Aplication.Services
             _repository = new EspecialidadRepository();
         }
 
-        public IEnumerable<EspecialidadDto> GetAll() => _repository.GetAll().Select(MapToDto);
-
-        public EspecialidadDto GetById(int id)
+        public async Task<IEnumerable<EspecialidadDto>> GetAllAsync()
         {
-            var especialidad = _repository.GetById(id);
+            var especialidades = await _repository.GetAllAsync();
+            return especialidades.Select(MapToDto);
+        }
+
+        public async Task<EspecialidadDto?> GetByIdAsync(int id)
+        {
+            var especialidad = await _repository.GetByIdAsync(id);
             return especialidad == null ? null : MapToDto(especialidad);
         }
 
-        public void Add(EspecialidadDto especialidadDto)
+        public async Task AddAsync(EspecialidadDto especialidadDto)
         {
             var especialidad = MapToEntityForCreation(especialidadDto);
-            _repository.Add(especialidad);
+            await _repository.AddAsync(especialidad);
         }
 
-        public void Update(EspecialidadDto especialidadDto)
+        public async Task UpdateAsync(EspecialidadDto especialidadDto)
         {
             var especialidad = MapToEntityForUpdate(especialidadDto);
-            _repository.Update(especialidad);
+            await _repository.UpdateAsync(especialidad);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
         private EspecialidadDto MapToDto(Especialidad especialidad) => new EspecialidadDto

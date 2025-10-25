@@ -3,6 +3,7 @@ using Domain.Model;
 using DTOs;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Aplication.Services
 {
@@ -15,37 +16,48 @@ namespace Aplication.Services
             _repository = new PersonaRepository();
         }
 
-        public IEnumerable<PersonaDto> GetAllAlumnos()
+        /// <summary>
+        /// Obtiene todas las personas (alumnos y profesores)
+        /// </summary>
+        public async Task<IEnumerable<PersonaDto>> GetAllAsync()
         {
-            return _repository.GetAlumnos().Select(MapToDto);
+            var personas = await _repository.GetAllAsync();
+            return personas.Select(MapToDto);
         }
 
-        public IEnumerable<PersonaDto> GetAllProfesores()
+        public async Task<IEnumerable<PersonaDto>> GetAllAlumnosAsync()
         {
-            return _repository.GetProfesores().Select(MapToDto);
+            var alumnos = await _repository.GetAlumnosAsync();
+            return alumnos.Select(MapToDto);
         }
 
-        public PersonaDto GetById(int id)
+        public async Task<IEnumerable<PersonaDto>> GetAllProfesoresAsync()
         {
-            var persona = _repository.GetById(id);
+            var profesores = await _repository.GetProfesoresAsync();
+            return profesores.Select(MapToDto);
+        }
+
+        public async Task<PersonaDto?> GetByIdAsync(int id)
+        {
+            var persona = await _repository.GetByIdAsync(id);
             return persona == null ? null : MapToDto(persona);
         }
 
-        public void Add(PersonaDto personaDto)
+        public async Task AddAsync(PersonaDto personaDto)
         {
             var persona = MapToEntityForCreation(personaDto);
-            _repository.Add(persona);
+            await _repository.AddAsync(persona);
         }
 
-        public void Update(PersonaDto personaDto)
+        public async Task UpdateAsync(PersonaDto personaDto)
         {
             var persona = MapToEntityForUpdate(personaDto);
-            _repository.Update(persona);
+            await _repository.UpdateAsync(persona);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
         private PersonaDto MapToDto(Persona persona) => new PersonaDto

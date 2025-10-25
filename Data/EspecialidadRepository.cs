@@ -1,5 +1,10 @@
 ﻿using Domain.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace Data
 {
     public class EspecialidadRepository
@@ -9,38 +14,40 @@ namespace Data
             return new AcademiaContext();
         }
 
-        public IEnumerable<Especialidad> GetAll()
+        public async Task<IEnumerable<Especialidad>> GetAllAsync()
         {
             using var context = CreateContext();
-            return context.Especialidades.OrderBy(e => e.Descripcion).ToList();
+            return await context.Especialidades.OrderBy(e => e.Descripcion).ToListAsync();
         }
 
-        public Especialidad GetById(int id)
+        public async Task<Especialidad?> GetByIdAsync(int id)
         {
             using var context = CreateContext();
-            return context.Especialidades.Find(id);
+            return await context.Especialidades.FindAsync(id);
         }
-        public void Add(Especialidad especialidad)
+
+        public async Task AddAsync(Especialidad especialidad)
         {
             using var context = CreateContext();
             context.Especialidades.Add(especialidad);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public void Update(Especialidad especialidad)
+        public async Task UpdateAsync(Especialidad especialidad)
         {
             using var context = CreateContext();
             context.Especialidades.Update(especialidad);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-        public void Delete(int id)
+
+        public async Task DeleteAsync(int id)
         {
             using var context = CreateContext();
-            var especialidad = context.Especialidades.Find(id);
+            var especialidad = await context.Especialidades.FindAsync(id);
             if (especialidad != null)
             {
                 context.Especialidades.Remove(especialidad);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

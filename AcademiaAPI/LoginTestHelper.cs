@@ -11,9 +11,10 @@ namespace AcademiaAPI
             try
             {
                 Console.WriteLine("=== TESTING DATABASE CONNECTION ===");
-                var usuarioRepo = new UsuarioRepository();
-                var users = usuarioRepo.GetAll();
-                Console.WriteLine($"Found {users.Count()} users in database");
+                using var context = new AcademiaContext();
+                var usuarioRepo = new UsuarioRepository(context);
+                var users = await usuarioRepo.GetAllAsync();
+                Console.WriteLine($"Found {users.Count} users in database");
                 
                 foreach (var user in users)
                 {
@@ -25,7 +26,7 @@ namespace AcademiaAPI
                 }
 
                 Console.WriteLine("\n=== TESTING USER LOOKUP ===");
-                var adminUser = usuarioRepo.GetByUsername("admin");
+                var adminUser = await usuarioRepo.GetByUsernameAsync("admin");
                 if (adminUser != null)
                 {
                     Console.WriteLine($"✓ Found admin user: ID={adminUser.Id}, Username='{adminUser.UsuarioNombre}'");

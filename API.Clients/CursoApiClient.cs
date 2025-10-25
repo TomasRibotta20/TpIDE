@@ -1,83 +1,115 @@
 using DTOs;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace API.Clients
 {
-    public class CursoApiClient
+    public class CursoApiClient : BaseApiClient
     {
-        private readonly HttpClient _httpClient;
-        private readonly JsonSerializerOptions _jsonOptions;
-
-        public CursoApiClient()
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://localhost:7229/");
-            _jsonOptions = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-        }
+            PropertyNameCaseInsensitive = true
+        };
 
         public async Task<IEnumerable<CursoDto>> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync("cursos");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<CursoDto>>(json, _jsonOptions) ?? new List<CursoDto>();
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync("cursos");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<CursoDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<CursoDto>();
+            }
+            
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener lista de cursos. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<CursoDto?> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"cursos/{id}");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"cursos/{id}");
+            
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return null;
             
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CursoDto>(json, _jsonOptions);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<CursoDto>(_jsonOptions);
+            }
+            
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<CursoDto> CreateAsync(CursoDto curso)
         {
-            var json = JsonSerializer.Serialize(curso, _jsonOptions);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.PostAsJsonAsync("cursos", curso, _jsonOptions);
             
-            var response = await _httpClient.PostAsync("cursos", content);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al crear curso. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
             
-            var responseJson = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<CursoDto>(responseJson, _jsonOptions) ?? throw new Exception("Error al deserializar la respuesta");
+            return await response.Content.ReadFromJsonAsync<CursoDto>(_jsonOptions)
+                   ?? throw new InvalidOperationException("No se pudo crear el curso");
         }
 
         public async Task UpdateAsync(CursoDto curso)
         {
-            var json = JsonSerializer.Serialize(curso, _jsonOptions);
-            var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+            using var client = await CreateHttpClientAsync();
+            var response = await client.PutAsJsonAsync($"cursos/{curso.IdCurso}", curso, _jsonOptions);
             
-            var response = await _httpClient.PutAsync($"cursos/{curso.IdCurso}", content);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al actualizar curso con Id {curso.IdCurso}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"cursos/{id}");
-            response.EnsureSuccessStatusCode();
+            using var client = await CreateHttpClientAsync();
+            var response = await client.DeleteAsync($"cursos/{id}");
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al eliminar curso con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
         }
 
         public async Task<IEnumerable<CursoDto>> GetByComisionAsync(int idComision)
         {
-            var response = await _httpClient.GetAsync($"cursos/comision/{idComision}");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<CursoDto>>(json, _jsonOptions) ?? new List<CursoDto>();
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"cursos/comision/{idComision}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<CursoDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<CursoDto>();
+            }
+            
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener cursos de la comisión {idComision}. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
 
         public async Task<IEnumerable<CursoDto>> GetByAnioCalendarioAsync(int anioCalendario)
         {
-            var response = await _httpClient.GetAsync($"cursos/anio/{anioCalendario}");
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<IEnumerable<CursoDto>>(json, _jsonOptions) ?? new List<CursoDto>();
+            using var client = await CreateHttpClientAsync();
+            var response = await client.GetAsync($"cursos/anio/{anioCalendario}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<CursoDto>>(_jsonOptions)
+                       ?? Enumerable.Empty<CursoDto>();
+            }
+            
+            string errorContent = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Error al obtener cursos del año {anioCalendario}. Status: {response.StatusCode}, Detalle: {errorContent}");
         }
     }
 }

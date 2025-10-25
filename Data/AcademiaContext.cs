@@ -12,6 +12,8 @@ namespace Data
         private static string DefaultConnectionString = "Server=localhost,1433;Database=Universidad;User Id=sa;Password=TuContraseñaFuerte123;TrustServerCertificate=True";
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Modulo> Modulos { get; set; }
+        public DbSet<ModulosUsuarios> ModulosUsuarios { get; set; }
         public DbSet<Especialidad> Especialidades { get; set; }
         public DbSet<Plan> Planes { get; set; }
         public DbSet<Comision> Comisiones { get; set; }
@@ -76,19 +78,27 @@ namespace Data
             // Configuración de Usuario
             modelBuilder.Entity<Usuario>(entity =>
             {
+                entity.ToTable("Usuarios");
                 entity.HasKey(u => u.Id);
                 entity.Property(u => u.Id).ValueGeneratedOnAdd();
                 entity.Property(u => u.Nombre).IsRequired().HasMaxLength(100);
                 entity.Property(u => u.Apellido).IsRequired().HasMaxLength(100);
                 entity.Property(u => u.UsuarioNombre).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.PasswordHash).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.Salt).IsRequired().HasMaxLength(255);
                 entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
-                entity.Property(u => u.Habilitado).IsRequired();
+                entity.Property(u => u.PasswordHash).IsRequired().HasMaxLength(255);
+                entity.Property(u => u.Salt).IsRequired().HasMaxLength(255);
+                entity.Property(u => u.Habilitado).IsRequired().HasDefaultValue(true);
+
+                // Relación bidireccional con Persona (opcional)
+                entity.HasOne(u => u.Persona)           // Un usuario tiene una persona
+                      .WithMany(p => p.Usuarios)         // Una persona tiene muchos usuarios
+                      .HasForeignKey(u => u.PersonaId)   // FK es PersonaId
+                      .OnDelete(DeleteBehavior.SetNull)  // Si se elimina persona, PersonaId = null
+                      .IsRequired(false);                // Relación opcional
 
                 // Índices únicos
-                entity.HasIndex(e => e.UsuarioNombre).IsUnique();
-                entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(u => u.UsuarioNombre).IsUnique();
+                entity.HasIndex(u => u.Email).IsUnique();
             });
 
             // Configuración de Plan
@@ -145,6 +155,43 @@ namespace Data
                 
                 // Índice único para evitar inscripciones duplicadas
                 entity.HasIndex(ac => new { ac.IdAlumno, ac.IdCurso }).IsUnique();
+            });
+
+            modelBuilder.Entity<Modulo>(entity =>
+            {
+                entity.ToTable("Modulos");
+                entity.HasKey(m => m.Id_Modulo);
+                entity.Property(m => m.Id_Modulo).ValueGeneratedOnAdd();
+                entity.Property(m => m.Desc_Modulo).IsRequired().HasMaxLength(100);
+                entity.Property(m => m.Ejecuta).IsRequired().HasMaxLength(200);
+            });
+
+            modelBuilder.Entity<ModulosUsuarios>(entity =>
+            {
+                entity.ToTable("ModulosUsuarios");
+                entity.HasKey(mu => mu.Id_ModuloUsuario);
+                entity.Property(mu => mu.Id_ModuloUsuario).ValueGeneratedOnAdd();
+                entity.Property(mu => mu.UsuarioId).IsRequired();
+                entity.Property(mu => mu.ModuloId).IsRequired();
+                entity.Property(mu => mu.alta).IsRequired().HasDefaultValue(false);
+                entity.Property(mu => mu.baja).IsRequired().HasDefaultValue(false);
+                entity.Property(mu => mu.modificacion).IsRequired().HasDefaultValue(false);
+                entity.Property(mu => mu.consulta).IsRequired().HasDefaultValue(false);
+
+                // Relación con Usuario (uno-a-muchos)
+                entity.HasOne(mu => mu.Usuario)
+                    .WithMany(u => u.ModulosUsuarios)
+                    .HasForeignKey(mu => mu.UsuarioId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                // Relación con Modulo (uno-a-muchos)
+                entity.HasOne(mu => mu.Modulo)
+                    .WithMany(m => m.ModulosUsuarios)
+                    .HasForeignKey(mu => mu.ModuloId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Índice único para evitar duplicados Usuario-Modulo
+                entity.HasIndex(mu => new { mu.UsuarioId, mu.ModuloId }).IsUnique();
             });
         }
     }

@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace API.Clients
 {
@@ -46,6 +48,36 @@ namespace API.Clients
                     return envUrl;
                 }
 
+                // Intentar leer desde appsettings.json
+                try
+                {
+                    string appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG] Buscando appsettings.json en: {appSettingsPath}");
+                    
+                    if (File.Exists(appSettingsPath))
+                    {
+                        var configuration = new ConfigurationBuilder()
+                            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                            .Build();
+
+                        var baseUrl = configuration["ApiSettings:BaseUrl"];
+                        if (!string.IsNullOrEmpty(baseUrl))
+                        {
+                            System.Diagnostics.Debug.WriteLine($"[DEBUG] URL desde appsettings.json: {baseUrl}");
+                            return baseUrl;
+                        }
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[DEBUG] Archivo appsettings.json no encontrado");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG] Error leyendo appsettings.json: {ex.Message}");
+                }
+
                 
                 string runtimeInfo = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] Runtime: {runtimeInfo}");
@@ -62,7 +94,7 @@ namespace API.Clients
             }
 
             // URL por defecto para Windows/otras plataformas
-            string defaultUrl = "https://localhost:7229/";
+            string defaultUrl = "http://localhost:5000/";
             System.Diagnostics.Debug.WriteLine($"[DEBUG] Usando URL por defecto: {defaultUrl}");
             return defaultUrl;
         }
