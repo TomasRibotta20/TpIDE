@@ -19,25 +19,28 @@ namespace WIndowsForm
         {
             InitializeComponent();
             
-            // Obtener datos del usuario logeado
             _personaId = WindowsFormsAuthService.GetCurrentPersonaId() ?? 0;
             _usuarioNombre = WindowsFormsAuthService.GetCurrentUserId().ToString() ?? "Usuario";
             
-            this.Text = $"Sistema Académico - Profesor";
-            this.WindowState = FormWindowState.Maximized;
+            this.Text = "Sistema Academico - Profesor";
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void InitializeComponent()
         {
             this.SuspendLayout();
             
-            // Configuración del Form
+            // Configuracion del Form
             this.AutoScaleDimensions = new SizeF(8F, 16F);
             this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(1200, 700);
+            this.ClientSize = new Size(900, 650);
             this.Name = "MenuProfesor";
-            this.Text = "Sistema Académico - Portal del Profesor";
+            this.Text = "Sistema Academico - Portal del Profesor";
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.WindowState = FormWindowState.Normal;
+            this.BackColor = Color.FromArgb(236, 240, 245);
             this.Load += new EventHandler(this.MenuProfesor_Load);
             
             // Panel principal
@@ -51,29 +54,28 @@ namespace WIndowsForm
             headerPanel = new Panel
             {
                 BackColor = Color.FromArgb(155, 89, 182),
-                Location = new Point(40, 40),
-                Size = new Size(1120, 120),
-                Name = "headerPanel"
+                Dock = DockStyle.Top,
+                Height = 100
             };
 
-            // Título principal
+            // Titulo principal
             lblTitulo = new Label
             {
-                Text = "????? Portal del Profesor",
-                Font = new Font("Segoe UI", 32, FontStyle.Bold),
+                Text = "Portal del Profesor",
+                Font = new Font("Segoe UI", 28, FontStyle.Bold),
                 ForeColor = Color.White,
                 AutoSize = true,
-                Location = new Point(40, 30)
+                Location = new Point(30, 20)
             };
 
             // Mensaje de bienvenida
             lblBienvenida = new Label
             {
                 Text = $"Bienvenido, {_usuarioNombre}",
-                Font = new Font("Segoe UI", 14),
+                Font = new Font("Segoe UI", 13),
                 ForeColor = Color.FromArgb(236, 240, 245),
                 AutoSize = true,
-                Location = new Point(45, 80)
+                Location = new Point(35, 65)
             };
 
             headerPanel.Controls.Add(lblTitulo);
@@ -81,28 +83,28 @@ namespace WIndowsForm
 
             // Botones principales estilo cards
             var btnMisCursos = CrearBotonCard(
-                "?? Mis Cursos",
+                "Mis Cursos",
                 "Ver cursos que dicto",
                 Color.FromArgb(52, 152, 219),
-                new Point(150, 220),
+                new Point(120, 170),
                 BtnMisCursos_Click
             );
 
             var btnCargarNotas = CrearBotonCard(
-                "?? Cargar Notas",
+                "Cargar Notas",
                 "Cargar notas y condiciones de alumnos",
                 Color.FromArgb(46, 204, 113),
-                new Point(550, 220),
+                new Point(480, 170),
                 BtnCargarNotas_Click
             );
 
-            // Botón de cerrar sesión
+            // Boton de cerrar sesion
             var btnCerrarSesion = new Button
             {
-                Text = "?? Cerrar Sesión",
-                Size = new Size(220, 55),
-                Location = new Point(490, 500),
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Text = "Cerrar Sesion",
+                Size = new Size(200, 45),
+                Location = new Point(350, 480),
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
                 BackColor = Color.FromArgb(231, 76, 60),
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
@@ -111,12 +113,12 @@ namespace WIndowsForm
             btnCerrarSesion.FlatAppearance.BorderSize = 0;
             btnCerrarSesion.Click += BtnCerrarSesion_Click;
 
-            mainPanel.Controls.Add(headerPanel);
             mainPanel.Controls.Add(btnMisCursos);
             mainPanel.Controls.Add(btnCargarNotas);
             mainPanel.Controls.Add(btnCerrarSesion);
             
             this.Controls.Add(mainPanel);
+            this.Controls.Add(headerPanel);
             this.ResumeLayout(false);
         }
 
@@ -124,7 +126,7 @@ namespace WIndowsForm
         {
             var card = new Panel
             {
-                Size = new Size(320, 200),
+                Size = new Size(280, 180),
                 Location = ubicacion,
                 BackColor = colorFondo,
                 Cursor = Cursors.Hand
@@ -133,29 +135,28 @@ namespace WIndowsForm
             var lblTituloCard = new Label
             {
                 Text = titulo,
-                Font = new Font("Segoe UI", 18, FontStyle.Bold),
+                Font = new Font("Segoe UI", 16, FontStyle.Bold),
                 ForeColor = Color.White,
-                Location = new Point(20, 60),
+                Location = new Point(20, 50),
                 AutoSize = false,
-                Size = new Size(280, 40),
+                Size = new Size(240, 35),
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
             var lblDescripcion = new Label
             {
                 Text = descripcion,
-                Font = new Font("Segoe UI", 11),
+                Font = new Font("Segoe UI", 10),
                 ForeColor = Color.FromArgb(236, 240, 245),
-                Location = new Point(20, 110),
+                Location = new Point(20, 95),
                 AutoSize = false,
-                Size = new Size(280, 60),
+                Size = new Size(240, 50),
                 TextAlign = ContentAlignment.MiddleCenter
             };
 
             card.Controls.Add(lblTituloCard);
             card.Controls.Add(lblDescripcion);
             
-            // Eventos para hover
             card.MouseEnter += (s, e) =>
             {
                 card.BackColor = ControlPaint.Light(colorFondo, 0.2f);
@@ -177,7 +178,7 @@ namespace WIndowsForm
             // Verificar que el profesor tenga PersonaId
             if (_personaId == 0)
             {
-                MessageBox.Show("Error: No se pudo obtener la información del profesor.", 
+                MessageBox.Show("Error: No se pudo obtener la informacion del profesor.", 
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
@@ -215,7 +216,7 @@ namespace WIndowsForm
 
         private async void BtnCerrarSesion_Click(object? sender, EventArgs e)
         {
-            var result = MessageBox.Show("¿Está seguro que desea cerrar sesión?", 
+            var result = MessageBox.Show("Esta seguro que desea cerrar sesion?", 
                 "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             
             if (result == DialogResult.Yes)

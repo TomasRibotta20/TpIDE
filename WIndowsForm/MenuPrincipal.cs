@@ -101,6 +101,22 @@ public partial class MenuPrincipal : Form
                 }
             };
 
+            // NUEVO - Botón Materias
+            btnMaterias.Click += (s, e) =>
+            {
+                try
+                {
+                    var formMaterias = new FormMaterias(this);
+                    formMaterias.Show();
+                    this.Hide();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al abrir formulario de materias: {ex.Message}", 
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
             btnComisiones.Click += (s, e) =>
             {
                 try
@@ -524,6 +540,20 @@ public partial class MenuPrincipal : Form
         }
     }
 
+    private void gestionarDocentesCursosToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formGestionarDocentes = new FormGestionarDocentesCurso();
+            formGestionarDocentes.ShowDialog();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al abrir gestión de docentes por curso: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
     private async void nuevoProfesorToolStripMenuItem_Click(object sender, EventArgs e)
     {
         try
@@ -556,6 +586,91 @@ public partial class MenuPrincipal : Form
         {
             MessageBox.Show($"Error al crear nuevo profesor: {ex.Message}", 
                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    // NUEVOS métodos para Materias
+    private async void nuevaMateriaToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formNuevaMateria = new EditarMateriaForm();
+            formNuevaMateria.ShowDialog();
+
+            if (formNuevaMateria.Guardado && formNuevaMateria.MateriaEditada != null)
+            {
+                try
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    var materiaApiClient = new MateriaApiClient();
+                    await materiaApiClient.CreateAsync(formNuevaMateria.MateriaEditada);
+                    var formMaterias = new FormMaterias(this);
+                    formMaterias.Show();
+                    this.Hide();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al guardar materia: {ex.Message}",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    Cursor.Current = Cursors.Default;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al crear nueva materia: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void listarMateriasToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var formMaterias = new FormMaterias(this);
+            formMaterias.Show();
+            this.Hide();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error al listar materias: {ex.Message}", 
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    // Nuevo método para cerrar sesión
+    private async void BtnCerrarSesion_Click(object sender, EventArgs e)
+    {
+        var result = MessageBox.Show(
+            "¿Esta seguro que desea cerrar sesion?", 
+            "Confirmar Cierre de Sesion", 
+            MessageBoxButtons.YesNo, 
+            MessageBoxIcon.Question);
+        
+        if (result == DialogResult.Yes)
+        {
+            try
+            {
+                var authService = AuthServiceProvider.Instance;
+                await authService.LogoutAsync();
+                
+                // Cerrar este formulario
+                this.Close();
+                
+                // Reiniciar la aplicación para volver al login
+                Application.Restart();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Error al cerrar sesion: {ex.Message}", 
+                    "Error", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }

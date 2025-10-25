@@ -2,15 +2,8 @@
 {
     partial class FormUsuarios
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,119 +13,135 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            gridPanel = new Panel();
+            headerPanel = new Panel();
+            lblTitle = new Label();
+            contentPanel = new Panel();
             dataGridViewUsuarios = new DataGridView();
             buttonPanel = new Panel();
             btnNuevo = new Button();
             btnEditar = new Button();
             btnEliminar = new Button();
             btnVolver = new Button();
-            gridPanel.SuspendLayout();
+            headerPanel.SuspendLayout();
+            contentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewUsuarios).BeginInit();
             buttonPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // gridPanel
-            // 
-            gridPanel.Controls.Add(buttonPanel);
-            gridPanel.Controls.Add(dataGridViewUsuarios);
-            gridPanel.Dock = DockStyle.Fill;
-            gridPanel.Location = new Point(0, 0);
-            gridPanel.Name = "gridPanel";
-            gridPanel.Padding = new Padding(10);
-            gridPanel.Size = new Size(784, 561);
-            gridPanel.TabIndex = 0;
-            // 
+            
+            // headerPanel
+            headerPanel.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Size = new Size(1000, 80);
+            
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblTitle.ForeColor = System.Drawing.Color.White;
+            lblTitle.Location = new Point(20, 20);
+            lblTitle.Text = "Gestion de Usuarios";
+            
+            // contentPanel
+            contentPanel.BackColor = System.Drawing.Color.White;
+            contentPanel.Controls.Add(dataGridViewUsuarios);
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(20);
+            
             // dataGridViewUsuarios
-            // 
             dataGridViewUsuarios.AllowUserToAddRows = false;
+            dataGridViewUsuarios.AllowUserToDeleteRows = false;
             dataGridViewUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewUsuarios.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewUsuarios.BorderStyle = BorderStyle.None;
+            dataGridViewUsuarios.ColumnHeadersHeight = 40;
             dataGridViewUsuarios.Dock = DockStyle.Fill;
-            dataGridViewUsuarios.Location = new Point(10, 10);
+            dataGridViewUsuarios.EnableHeadersVisualStyles = false;
             dataGridViewUsuarios.MultiSelect = false;
-            dataGridViewUsuarios.Name = "dataGridViewUsuarios";
             dataGridViewUsuarios.ReadOnly = true;
+            dataGridViewUsuarios.RowHeadersVisible = false;
+            dataGridViewUsuarios.RowTemplate.Height = 35;
             dataGridViewUsuarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewUsuarios.Size = new Size(764, 541);
-            dataGridViewUsuarios.TabIndex = 0;
-            // 
+            
             // buttonPanel
-            // 
+            buttonPanel.BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
             buttonPanel.Controls.Add(btnVolver);
             buttonPanel.Controls.Add(btnEliminar);
             buttonPanel.Controls.Add(btnEditar);
             buttonPanel.Controls.Add(btnNuevo);
             buttonPanel.Dock = DockStyle.Bottom;
-            buttonPanel.Location = new Point(10, 491);
-            buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(764, 60);
-            buttonPanel.TabIndex = 1;
-            // 
+            buttonPanel.Size = new Size(1000, 70);
+            
             // btnNuevo
-            // 
-            btnNuevo.Location = new Point(10, 15);
-            btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(120, 30);
-            btnNuevo.TabIndex = 0;
+            btnNuevo.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnNuevo.ForeColor = System.Drawing.Color.White;
+            btnNuevo.Location = new Point(20, 15);
+            btnNuevo.Size = new Size(150, 40);
             btnNuevo.Text = "Nuevo Usuario";
-            btnNuevo.UseVisualStyleBackColor = true;
-            // 
+            btnNuevo.Cursor = Cursors.Hand;
+            
             // btnEditar
-            // 
-            btnEditar.Location = new Point(140, 15);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(100, 30);
-            btnEditar.TabIndex = 1;
+            btnEditar.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEditar.ForeColor = System.Drawing.Color.White;
+            btnEditar.Location = new Point(190, 15);
+            btnEditar.Size = new Size(130, 40);
             btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            // 
+            btnEditar.Cursor = Cursors.Hand;
+            
             // btnEliminar
-            // 
-            btnEliminar.Location = new Point(250, 15);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(100, 30);
-            btnEliminar.TabIndex = 2;
+            btnEliminar.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEliminar.ForeColor = System.Drawing.Color.White;
+            btnEliminar.Location = new Point(340, 15);
+            btnEliminar.Size = new Size(130, 40);
             btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
-            // 
+            btnEliminar.Cursor = Cursors.Hand;
+            
             // btnVolver
-            // 
-            btnVolver.Anchor = AnchorStyles.Right;
-            btnVolver.Location = new Point(640, 15);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(120, 30);
-            btnVolver.TabIndex = 3;
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(127, 140, 141);
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVolver.ForeColor = System.Drawing.Color.White;
+            btnVolver.Location = new Point(840, 15);
+            btnVolver.Size = new Size(140, 40);
             btnVolver.Text = "Volver al Menu";
-            btnVolver.UseVisualStyleBackColor = true;
-            // 
+            btnVolver.Cursor = Cursors.Hand;
+            
             // FormUsuarios
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
-            Controls.Add(gridPanel);
-            Name = "FormUsuarios";
+            BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
+            ClientSize = new Size(1000, 670);
+            Controls.Add(contentPanel);
+            Controls.Add(buttonPanel);
+            Controls.Add(headerPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestion de Usuarios";
+            WindowState = FormWindowState.Normal;
             Load += this.FormUsuarios_Load;
-            gridPanel.ResumeLayout(false);
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            contentPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewUsuarios).EndInit();
             buttonPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
-        #endregion
-
-        private Panel gridPanel;
+        private Panel headerPanel;
+        private Label lblTitle;
+        private Panel contentPanel;
         private Panel buttonPanel;
         private DataGridView dataGridViewUsuarios;
         private Button btnVolver;

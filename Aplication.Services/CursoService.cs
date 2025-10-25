@@ -11,11 +11,14 @@ namespace Aplication.Services
     {
         private readonly CursoRepository _cursoRepository;
         private readonly ComisionRepository _comisionRepository;
+        private readonly MateriaRepository _materiaRepository; // NUEVO
 
         public CursoService()
         {
             _cursoRepository = new CursoRepository();
             _comisionRepository = new ComisionRepository();
+            // NUEVO - usando la misma connection string que AcademiaContext
+            _materiaRepository = new MateriaRepository("Server=localhost,1433;Database=Universidad;User Id=sa;Password=TuContraseñaFuerte123;TrustServerCertificate=True");
         }
 
         public async Task<IEnumerable<CursoDto>> GetAllAsync()
@@ -27,12 +30,20 @@ namespace Aplication.Services
             {
                 var comision = await _comisionRepository.GetByIdAsync(curso.IdComision);
                 var inscriptos = await _cursoRepository.GetInscriptosCountAsync(curso.IdCurso);
+                
+                // MODIFICADO - Obtener nombre real de la materia
+                string nombreMateria = "Sin Materia";
+                if (curso.IdMateria.HasValue)
+                {
+                    var materia = _materiaRepository.GetById(curso.IdMateria.Value);
+                    nombreMateria = materia?.Descripcion ?? "Materia no encontrada";
+                }
 
                 result.Add(new CursoDto
                 {
                     IdCurso = curso.IdCurso,
                     IdMateria = curso.IdMateria,
-                    NombreMateria = curso.IdMateria.HasValue ? "Materia TBD" : "Sin Materia", // Temporal
+                    NombreMateria = nombreMateria, // MODIFICADO
                     IdComision = curso.IdComision,
                     DescComision = comision?.DescComision ?? "Comisión no encontrada",
                     AnioCalendario = curso.AnioCalendario,
@@ -52,11 +63,19 @@ namespace Aplication.Services
             var comision = await _comisionRepository.GetByIdAsync(curso.IdComision);
             var inscriptos = await _cursoRepository.GetInscriptosCountAsync(curso.IdCurso);
 
+            // MODIFICADO - Obtener nombre real de la materia
+            string nombreMateria = "Sin Materia";
+            if (curso.IdMateria.HasValue)
+            {
+                var materia = _materiaRepository.GetById(curso.IdMateria.Value);
+                nombreMateria = materia?.Descripcion ?? "Materia no encontrada";
+            }
+
             return new CursoDto
             {
                 IdCurso = curso.IdCurso,
                 IdMateria = curso.IdMateria,
-                NombreMateria = curso.IdMateria.HasValue ? "Materia TBD" : "Sin Materia", // Temporal
+                NombreMateria = nombreMateria, // MODIFICADO
                 IdComision = curso.IdComision,
                 DescComision = comision?.DescComision ?? "Comisión no encontrada",
                 AnioCalendario = curso.AnioCalendario,
@@ -69,6 +88,13 @@ namespace Aplication.Services
         {
             // Validaciones de negocio
             await ValidateComisionExistsAsync(cursoDto.IdComision);
+            
+            // NUEVO - Validar que la materia exista si se especifica
+            if (cursoDto.IdMateria.HasValue)
+            {
+                ValidateMateriaExists(cursoDto.IdMateria.Value);
+            }
+            
             ValidateAnioCalendario(cursoDto.AnioCalendario);
             ValidateCupo(cursoDto.Cupo);
 
@@ -91,6 +117,13 @@ namespace Aplication.Services
 
             // Validaciones de negocio
             await ValidateComisionExistsAsync(cursoDto.IdComision);
+            
+            // NUEVO - Validar que la materia exista si se especifica
+            if (cursoDto.IdMateria.HasValue)
+            {
+                ValidateMateriaExists(cursoDto.IdMateria.Value);
+            }
+            
             ValidateAnioCalendario(cursoDto.AnioCalendario);
             ValidateCupo(cursoDto.Cupo);
 
@@ -127,11 +160,19 @@ namespace Aplication.Services
                 var comision = await _comisionRepository.GetByIdAsync(curso.IdComision);
                 var inscriptos = await _cursoRepository.GetInscriptosCountAsync(curso.IdCurso);
 
+                // MODIFICADO - Obtener nombre real de la materia
+                string nombreMateria = "Sin Materia";
+                if (curso.IdMateria.HasValue)
+                {
+                    var materia = _materiaRepository.GetById(curso.IdMateria.Value);
+                    nombreMateria = materia?.Descripcion ?? "Materia no encontrada";
+                }
+
                 result.Add(new CursoDto
                 {
                     IdCurso = curso.IdCurso,
                     IdMateria = curso.IdMateria,
-                    NombreMateria = curso.IdMateria.HasValue ? "Materia TBD" : "Sin Materia",
+                    NombreMateria = nombreMateria, // MODIFICADO
                     IdComision = curso.IdComision,
                     DescComision = comision?.DescComision ?? "Comisión no encontrada",
                     AnioCalendario = curso.AnioCalendario,
@@ -153,11 +194,19 @@ namespace Aplication.Services
                 var comision = await _comisionRepository.GetByIdAsync(curso.IdComision);
                 var inscriptos = await _cursoRepository.GetInscriptosCountAsync(curso.IdCurso);
 
+                // MODIFICADO - Obtener nombre real de la materia
+                string nombreMateria = "Sin Materia";
+                if (curso.IdMateria.HasValue)
+                {
+                    var materia = _materiaRepository.GetById(curso.IdMateria.Value);
+                    nombreMateria = materia?.Descripcion ?? "Materia no encontrada";
+                }
+
                 result.Add(new CursoDto
                 {
                     IdCurso = curso.IdCurso,
                     IdMateria = curso.IdMateria,
-                    NombreMateria = curso.IdMateria.HasValue ? "Materia TBD" : "Sin Materia",
+                    NombreMateria = nombreMateria, // MODIFICADO
                     IdComision = curso.IdComision,
                     DescComision = comision?.DescComision ?? "Comisión no encontrada",
                     AnioCalendario = curso.AnioCalendario,
@@ -175,6 +224,14 @@ namespace Aplication.Services
             var comision = await _comisionRepository.GetByIdAsync(idComision);
             if (comision == null)
                 throw new Exception("La comisión especificada no existe");
+        }
+
+        // NUEVO - Validar que la materia exista
+        private void ValidateMateriaExists(int idMateria)
+        {
+            var materia = _materiaRepository.GetById(idMateria);
+            if (materia == null)
+                throw new Exception("La materia especificada no existe");
         }
 
         private void ValidateAnioCalendario(int anioCalendario)

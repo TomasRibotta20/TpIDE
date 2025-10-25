@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AcademiaContext))]
-    partial class AcademiaContextModelSnapshot : ModelSnapshot
+    [Migration("20251025191638_AgregarTablaMaterias")]
+    partial class AgregarTablaMaterias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,38 +101,6 @@ namespace Data.Migrations
                     b.HasKey("IdCurso");
 
                     b.ToTable("Cursos");
-                });
-
-            modelBuilder.Entity("Domain.Model.DocenteCurso", b =>
-                {
-                    b.Property<int>("IdDictado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_dictado");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdDictado"));
-
-                    b.Property<string>("Cargo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("cargo");
-
-                    b.Property<int>("IdCurso")
-                        .HasColumnType("int")
-                        .HasColumnName("id_curso");
-
-                    b.Property<int>("IdDocente")
-                        .HasColumnType("int")
-                        .HasColumnName("id_docente");
-
-                    b.HasKey("IdDictado");
-
-                    b.HasIndex("IdDocente");
-
-                    b.HasIndex("IdCurso", "IdDocente", "Cargo")
-                        .IsUnique();
-
-                    b.ToTable("docentes_cursos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Model.Especialidad", b =>
@@ -389,25 +360,6 @@ namespace Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Usuarios", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Model.DocenteCurso", b =>
-                {
-                    b.HasOne("Domain.Model.Curso", "Curso")
-                        .WithMany()
-                        .HasForeignKey("IdCurso")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Model.Persona", "Docente")
-                        .WithMany()
-                        .HasForeignKey("IdDocente")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Curso");
-
-                    b.Navigation("Docente");
                 });
 
             modelBuilder.Entity("Domain.Model.ModulosUsuarios", b =>

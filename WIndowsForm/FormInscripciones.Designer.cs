@@ -3,6 +3,8 @@ namespace WIndowsForm
     partial class FormInscripciones
     {
         private System.ComponentModel.IContainer components = null;
+        private Panel headerPanel;
+        private Label lblTitle;
         private Panel panelIzquierdo;
         private Panel panelCentral;
         private Panel panelDerecho;
@@ -31,6 +33,8 @@ namespace WIndowsForm
 
         private void InitializeComponent()
         {
+            headerPanel = new Panel();
+            lblTitle = new Label();
             panelIzquierdo = new Panel();
             panelCentral = new Panel();
             panelDerecho = new Panel();
@@ -47,108 +51,91 @@ namespace WIndowsForm
             btnEditarCondicion = new Button();
             btnVolver = new Button();
             btnReporteCursos = new Button();
+            headerPanel.SuspendLayout();
             panelIzquierdo.SuspendLayout();
             panelCentral.SuspendLayout();
             panelDerecho.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInscripciones).BeginInit();
             SuspendLayout();
-            // 
+            
+            // headerPanel
+            headerPanel.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Size = new Size(1200, 70);
+            
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblTitle.ForeColor = System.Drawing.Color.White;
+            lblTitle.Location = new Point(20, 15);
+            lblTitle.Text = "Gestion de Inscripciones";
+            
             // panelIzquierdo
-            // 
-            panelIzquierdo.BackColor = Color.FromArgb(240, 248, 255);
-            panelIzquierdo.BorderStyle = BorderStyle.FixedSingle;
+            panelIzquierdo.BackColor = System.Drawing.Color.White;
             panelIzquierdo.Controls.Add(txtBuscarAlumno);
             panelIzquierdo.Controls.Add(lblBuscar);
             panelIzquierdo.Controls.Add(listBoxAlumnos);
             panelIzquierdo.Controls.Add(lblAlumnos);
             panelIzquierdo.Dock = DockStyle.Left;
-            panelIzquierdo.Location = new Point(0, 0);
-            panelIzquierdo.Name = "panelIzquierdo";
-            panelIzquierdo.Size = new Size(280, 700);
-            panelIzquierdo.TabIndex = 0;
-            // 
+            panelIzquierdo.Location = new Point(0, 70);
+            panelIzquierdo.Padding = new Padding(10);
+            panelIzquierdo.Size = new Size(300, 630);
+            
             // lblAlumnos
-            // 
-            lblAlumnos.BackColor = Color.FromArgb(70, 130, 180);
+            lblAlumnos.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
             lblAlumnos.Dock = DockStyle.Top;
             lblAlumnos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblAlumnos.ForeColor = Color.White;
-            lblAlumnos.Location = new Point(0, 0);
-            lblAlumnos.Name = "lblAlumnos";
-            lblAlumnos.Padding = new Padding(10, 8, 0, 8);
-            lblAlumnos.Size = new Size(278, 35);
-            lblAlumnos.TabIndex = 0;
+            lblAlumnos.ForeColor = System.Drawing.Color.White;
+            lblAlumnos.Location = new Point(10, 10);
+            lblAlumnos.Size = new Size(280, 35);
             lblAlumnos.Text = "ALUMNOS";
             lblAlumnos.TextAlign = ContentAlignment.MiddleLeft;
-            // 
+            lblAlumnos.Padding = new Padding(10, 0, 0, 0);
+            
             // lblBuscar
-            // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblBuscar.Location = new Point(10, 45);
-            lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(52, 15);
-            lblBuscar.TabIndex = 1;
+            lblBuscar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblBuscar.Location = new Point(20, 55);
             lblBuscar.Text = "Buscar:";
-            // 
+            
             // txtBuscarAlumno
-            // 
             txtBuscarAlumno.Font = new Font("Segoe UI", 10F);
-            txtBuscarAlumno.Location = new Point(10, 65);
-            txtBuscarAlumno.Name = "txtBuscarAlumno";
+            txtBuscarAlumno.Location = new Point(20, 75);
+            txtBuscarAlumno.Size = new Size(260, 25);
             txtBuscarAlumno.PlaceholderText = "Nombre o legajo...";
-            txtBuscarAlumno.Size = new Size(258, 25);
-            txtBuscarAlumno.TabIndex = 2;
-            // 
+            
             // listBoxAlumnos
-            // 
-            listBoxAlumnos.Font = new Font("Segoe UI", 9F);
-            listBoxAlumnos.ItemHeight = 15;
-            listBoxAlumnos.Location = new Point(10, 95);
-            listBoxAlumnos.Name = "listBoxAlumnos";
-            listBoxAlumnos.Size = new Size(258, 590);
-            listBoxAlumnos.TabIndex = 3;
-            // 
+            listBoxAlumnos.Font = new Font("Segoe UI", 10F);
+            listBoxAlumnos.Location = new Point(20, 110);
+            listBoxAlumnos.Size = new Size(260, 500);
+            
             // panelCentral
-            // 
-            panelCentral.BackColor = Color.FromArgb(245, 255, 250);
-            panelCentral.BorderStyle = BorderStyle.FixedSingle;
+            panelCentral.BackColor = System.Drawing.Color.White;
             panelCentral.Controls.Add(panelCursos);
             panelCentral.Controls.Add(lblCursos);
             panelCentral.Dock = DockStyle.Fill;
-            panelCentral.Location = new Point(280, 0);
-            panelCentral.Name = "panelCentral";
-            panelCentral.Size = new Size(620, 700);
-            panelCentral.TabIndex = 1;
-            // 
+            panelCentral.Padding = new Padding(10);
+            
             // lblCursos
-            // 
-            lblCursos.BackColor = Color.FromArgb(34, 139, 34);
+            lblCursos.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
             lblCursos.Dock = DockStyle.Top;
             lblCursos.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblCursos.ForeColor = Color.White;
-            lblCursos.Location = new Point(0, 0);
-            lblCursos.Name = "lblCursos";
-            lblCursos.Padding = new Padding(10, 8, 0, 8);
-            lblCursos.Size = new Size(618, 35);
-            lblCursos.TabIndex = 0;
-            lblCursos.Text = "CURSOS DISPONIBLES - Click para inscribir";
+            lblCursos.ForeColor = System.Drawing.Color.White;
+            lblCursos.Location = new Point(10, 10);
+            lblCursos.Size = new Size(300, 35);
+            lblCursos.Text = "CURSOS DISPONIBLES";
             lblCursos.TextAlign = ContentAlignment.MiddleLeft;
-            // 
+            lblCursos.Padding = new Padding(10, 0, 0, 0);
+            
             // panelCursos
-            // 
             panelCursos.AutoScroll = true;
             panelCursos.Dock = DockStyle.Fill;
-            panelCursos.Location = new Point(0, 35);
-            panelCursos.Name = "panelCursos";
-            panelCursos.Padding = new Padding(10);
-            panelCursos.Size = new Size(618, 663);
-            panelCursos.TabIndex = 1;
-            // 
+            panelCursos.Location = new Point(10, 45);
+            panelCursos.Padding = new Padding(5);
+            
             // panelDerecho
-            // 
-            panelDerecho.BackColor = Color.FromArgb(255, 248, 220);
-            panelDerecho.BorderStyle = BorderStyle.FixedSingle;
+            panelDerecho.BackColor = System.Drawing.Color.White;
             panelDerecho.Controls.Add(btnReporteCursos);
             panelDerecho.Controls.Add(btnVolver);
             panelDerecho.Controls.Add(btnEditarCondicion);
@@ -157,107 +144,105 @@ namespace WIndowsForm
             panelDerecho.Controls.Add(lblInscripciones);
             panelDerecho.Controls.Add(lblAlumnoSeleccionado);
             panelDerecho.Dock = DockStyle.Right;
-            panelDerecho.Location = new Point(900, 0);
-            panelDerecho.Name = "panelDerecho";
-            panelDerecho.Size = new Size(400, 700);
-            panelDerecho.TabIndex = 2;
-            // 
+            panelDerecho.Location = new Point(800, 70);
+            panelDerecho.Padding = new Padding(10);
+            panelDerecho.Size = new Size(400, 630);
+            
             // lblAlumnoSeleccionado
-            // 
-            lblAlumnoSeleccionado.BackColor = Color.FromArgb(255, 165, 0);
+            lblAlumnoSeleccionado.BackColor = System.Drawing.Color.FromArgb(241, 196, 15);
             lblAlumnoSeleccionado.Dock = DockStyle.Top;
-            lblAlumnoSeleccionado.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblAlumnoSeleccionado.ForeColor = Color.White;
-            lblAlumnoSeleccionado.Location = new Point(0, 0);
-            lblAlumnoSeleccionado.Name = "lblAlumnoSeleccionado";
-            lblAlumnoSeleccionado.Padding = new Padding(5, 8, 5, 8);
-            lblAlumnoSeleccionado.Size = new Size(398, 35);
-            lblAlumnoSeleccionado.TabIndex = 0;
+            lblAlumnoSeleccionado.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblAlumnoSeleccionado.ForeColor = System.Drawing.Color.White;
+            lblAlumnoSeleccionado.Location = new Point(10, 10);
+            lblAlumnoSeleccionado.Size = new Size(380, 35);
             lblAlumnoSeleccionado.Text = "Seleccione un alumno";
             lblAlumnoSeleccionado.TextAlign = ContentAlignment.MiddleLeft;
-            // 
+            lblAlumnoSeleccionado.Padding = new Padding(10, 0, 0, 0);
+            
             // lblInscripciones
-            // 
-            lblInscripciones.BackColor = Color.FromArgb(178, 34, 34);
+            lblInscripciones.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
             lblInscripciones.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblInscripciones.ForeColor = Color.White;
-            lblInscripciones.Location = new Point(0, 45);
-            lblInscripciones.Name = "lblInscripciones";
-            lblInscripciones.Padding = new Padding(5, 5, 5, 5);
-            lblInscripciones.Size = new Size(398, 30);
-            lblInscripciones.TabIndex = 1;
+            lblInscripciones.ForeColor = System.Drawing.Color.White;
+            lblInscripciones.Location = new Point(10, 50);
+            lblInscripciones.Size = new Size(380, 30);
             lblInscripciones.Text = "INSCRIPCIONES ACTUALES";
             lblInscripciones.TextAlign = ContentAlignment.MiddleLeft;
-            // 
+            lblInscripciones.Padding = new Padding(10, 0, 0, 0);
+            
             // dataGridViewInscripciones
-            // 
             dataGridViewInscripciones.AllowUserToAddRows = false;
             dataGridViewInscripciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewInscripciones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewInscripciones.Location = new Point(5, 80);
+            dataGridViewInscripciones.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewInscripciones.BorderStyle = BorderStyle.None;
+            dataGridViewInscripciones.ColumnHeadersHeight = 35;
+            dataGridViewInscripciones.EnableHeadersVisualStyles = false;
+            dataGridViewInscripciones.Location = new Point(10, 85);
             dataGridViewInscripciones.MultiSelect = false;
-            dataGridViewInscripciones.Name = "dataGridViewInscripciones";
             dataGridViewInscripciones.ReadOnly = true;
+            dataGridViewInscripciones.RowHeadersVisible = false;
             dataGridViewInscripciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewInscripciones.Size = new Size(388, 510);
-            dataGridViewInscripciones.TabIndex = 2;
-            // 
+            dataGridViewInscripciones.Size = new Size(380, 480);
+            
             // btnDesinscribir
-            // 
-            btnDesinscribir.BackColor = Color.LightCoral;
-            btnDesinscribir.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnDesinscribir.Location = new Point(10, 600);
-            btnDesinscribir.Name = "btnDesinscribir";
-            btnDesinscribir.Size = new Size(90, 30);
-            btnDesinscribir.TabIndex = 3;
+            btnDesinscribir.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnDesinscribir.FlatStyle = FlatStyle.Flat;
+            btnDesinscribir.FlatAppearance.BorderSize = 0;
+            btnDesinscribir.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnDesinscribir.ForeColor = System.Drawing.Color.White;
+            btnDesinscribir.Location = new Point(10, 575);
+            btnDesinscribir.Size = new Size(85, 35);
             btnDesinscribir.Text = "Eliminar";
-            btnDesinscribir.UseVisualStyleBackColor = false;
-            // 
+            btnDesinscribir.Cursor = Cursors.Hand;
+            
             // btnEditarCondicion
-            // 
-            btnEditarCondicion.BackColor = Color.LightBlue;
-            btnEditarCondicion.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnEditarCondicion.Location = new Point(105, 600);
-            btnEditarCondicion.Name = "btnEditarCondicion";
-            btnEditarCondicion.Size = new Size(90, 30);
-            btnEditarCondicion.TabIndex = 4;
+            btnEditarCondicion.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnEditarCondicion.FlatStyle = FlatStyle.Flat;
+            btnEditarCondicion.FlatAppearance.BorderSize = 0;
+            btnEditarCondicion.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnEditarCondicion.ForeColor = System.Drawing.Color.White;
+            btnEditarCondicion.Location = new Point(105, 575);
+            btnEditarCondicion.Size = new Size(85, 35);
             btnEditarCondicion.Text = "Editar";
-            btnEditarCondicion.UseVisualStyleBackColor = false;
-            // 
+            btnEditarCondicion.Cursor = Cursors.Hand;
+            
             // btnReporteCursos
-            // 
-            btnReporteCursos.BackColor = Color.LightGreen;
-            btnReporteCursos.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnReporteCursos.Location = new Point(200, 600);
-            btnReporteCursos.Name = "btnReporteCursos";
-            btnReporteCursos.Size = new Size(90, 30);
-            btnReporteCursos.TabIndex = 5;
+            btnReporteCursos.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnReporteCursos.FlatStyle = FlatStyle.Flat;
+            btnReporteCursos.FlatAppearance.BorderSize = 0;
+            btnReporteCursos.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnReporteCursos.ForeColor = System.Drawing.Color.White;
+            btnReporteCursos.Location = new Point(200, 575);
+            btnReporteCursos.Size = new Size(90, 35);
             btnReporteCursos.Text = "Reportes";
-            btnReporteCursos.UseVisualStyleBackColor = false;
-            // 
+            btnReporteCursos.Cursor = Cursors.Hand;
+            
             // btnVolver
-            // 
-            btnVolver.BackColor = Color.LightGray;
-            btnVolver.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnVolver.Location = new Point(295, 600);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(90, 30);
-            btnVolver.TabIndex = 6;
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(127, 140, 141);
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnVolver.ForeColor = System.Drawing.Color.White;
+            btnVolver.Location = new Point(300, 575);
+            btnVolver.Size = new Size(90, 35);
             btnVolver.Text = "Volver";
-            btnVolver.UseVisualStyleBackColor = false;
-            // 
+            btnVolver.Cursor = Cursors.Hand;
+            
             // FormInscripciones
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1300, 700);
+            BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
+            ClientSize = new Size(1200, 700);
             Controls.Add(panelCentral);
             Controls.Add(panelDerecho);
             Controls.Add(panelIzquierdo);
-            Name = "FormInscripciones";
+            Controls.Add(headerPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Centro de Inscripciones - Sistema Académico";
-            WindowState = FormWindowState.Maximized;
+            Text = "Gestion de Inscripciones";
+            WindowState = FormWindowState.Normal;
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
             panelIzquierdo.ResumeLayout(false);
             panelIzquierdo.PerformLayout();
             panelCentral.ResumeLayout(false);

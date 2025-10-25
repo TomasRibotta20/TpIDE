@@ -2,15 +2,8 @@
 {
     partial class FormPlanes
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,134 +13,149 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            gridPanel = new Panel();
+            headerPanel = new Panel();
+            lblTitle = new Label();
+            contentPanel = new Panel();
+            dataGridViewPlanes = new DataGridView();
             buttonPanel = new Panel();
+            btnNuevo = new Button();
+            btnEditar = new Button();
+            btnEliminar = new Button();
             btnVerEspecialidad = new Button();
             btnVolver = new Button();
-            btnEliminar = new Button();
-            btnEditar = new Button();
-            btnNuevo = new Button();
-            dataGridViewPlanes = new DataGridView();
-            gridPanel.SuspendLayout();
-            buttonPanel.SuspendLayout();
+            headerPanel.SuspendLayout();
+            contentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewPlanes).BeginInit();
+            buttonPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // gridPanel
-            // 
-            gridPanel.Controls.Add(buttonPanel);
-            gridPanel.Controls.Add(dataGridViewPlanes);
-            gridPanel.Dock = DockStyle.Fill;
-            gridPanel.Location = new Point(0, 0);
-            gridPanel.Name = "gridPanel";
-            gridPanel.Padding = new Padding(10);
-            gridPanel.Size = new Size(784, 561);
-            gridPanel.TabIndex = 0;
-            // 
+            
+            // headerPanel
+            headerPanel.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Size = new Size(1000, 80);
+            
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblTitle.ForeColor = System.Drawing.Color.White;
+            lblTitle.Location = new Point(20, 20);
+            lblTitle.Text = "Gestion de Planes";
+            
+            // contentPanel
+            contentPanel.BackColor = System.Drawing.Color.White;
+            contentPanel.Controls.Add(dataGridViewPlanes);
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(20);
+            
+            // dataGridViewPlanes
+            dataGridViewPlanes.AllowUserToAddRows = false;
+            dataGridViewPlanes.AllowUserToDeleteRows = false;
+            dataGridViewPlanes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewPlanes.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewPlanes.BorderStyle = BorderStyle.None;
+            dataGridViewPlanes.ColumnHeadersHeight = 40;
+            dataGridViewPlanes.Dock = DockStyle.Fill;
+            dataGridViewPlanes.EnableHeadersVisualStyles = false;
+            dataGridViewPlanes.MultiSelect = false;
+            dataGridViewPlanes.ReadOnly = true;
+            dataGridViewPlanes.RowHeadersVisible = false;
+            dataGridViewPlanes.RowTemplate.Height = 35;
+            dataGridViewPlanes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewPlanes.SelectionChanged += DataGridViewPlanes_SelectionChanged;
+            
             // buttonPanel
-            // 
-            buttonPanel.Controls.Add(btnVerEspecialidad);
+            buttonPanel.BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
             buttonPanel.Controls.Add(btnVolver);
+            buttonPanel.Controls.Add(btnVerEspecialidad);
             buttonPanel.Controls.Add(btnEliminar);
             buttonPanel.Controls.Add(btnEditar);
             buttonPanel.Controls.Add(btnNuevo);
             buttonPanel.Dock = DockStyle.Bottom;
-            buttonPanel.Location = new Point(10, 491);
-            buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(764, 60);
-            buttonPanel.TabIndex = 1;
-            // 
-            // btnVerEspecialidad
-            // 
-            btnVerEspecialidad.Location = new Point(380, 15);
-            btnVerEspecialidad.Name = "btnVerEspecialidad";
-            btnVerEspecialidad.Size = new Size(120, 30);
-            btnVerEspecialidad.TabIndex = 4;
-            btnVerEspecialidad.Text = "Ver Especialidad";
-            btnVerEspecialidad.UseVisualStyleBackColor = true;
-            btnVerEspecialidad.Enabled = false;
-            // 
-            // btnVolver
-            // 
-            btnVolver.Anchor = AnchorStyles.Right;
-            btnVolver.Location = new Point(640, 15);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(120, 30);
-            btnVolver.TabIndex = 3;
-            btnVolver.Text = "Volver al Menu";
-            btnVolver.UseVisualStyleBackColor = true;
-            // 
-            // btnEliminar
-            // 
-            btnEliminar.Location = new Point(270, 15);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(100, 30);
-            btnEliminar.TabIndex = 2;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnEditar
-            // 
-            btnEditar.Location = new Point(160, 15);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(100, 30);
-            btnEditar.TabIndex = 1;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            // 
+            buttonPanel.Size = new Size(1000, 70);
+            
             // btnNuevo
-            // 
-            btnNuevo.Location = new Point(10, 15);
-            btnNuevo.Name = "btnNuevo";
-            btnNuevo.Size = new Size(140, 30);
-            btnNuevo.TabIndex = 0;
+            btnNuevo.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnNuevo.FlatStyle = FlatStyle.Flat;
+            btnNuevo.FlatAppearance.BorderSize = 0;
+            btnNuevo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnNuevo.ForeColor = System.Drawing.Color.White;
+            btnNuevo.Location = new Point(20, 15);
+            btnNuevo.Size = new Size(130, 40);
             btnNuevo.Text = "Nuevo Plan";
-            btnNuevo.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewPlanes
-            // 
-            dataGridViewPlanes.AllowUserToAddRows = false;
-            dataGridViewPlanes.AllowUserToDeleteRows = false;
-            dataGridViewPlanes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewPlanes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewPlanes.Dock = DockStyle.Fill;
-            dataGridViewPlanes.Location = new Point(10, 10);
-            dataGridViewPlanes.MultiSelect = false;
-            dataGridViewPlanes.Name = "dataGridViewPlanes";
-            dataGridViewPlanes.ReadOnly = true;
-            dataGridViewPlanes.RowHeadersVisible = false;
-            dataGridViewPlanes.RowTemplate.Height = 25;
-            dataGridViewPlanes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewPlanes.Size = new Size(764, 481);
-            dataGridViewPlanes.TabIndex = 0;
-            dataGridViewPlanes.SelectionChanged += DataGridViewPlanes_SelectionChanged;
-            // 
+            btnNuevo.Cursor = Cursors.Hand;
+            
+            // btnEditar
+            btnEditar.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEditar.ForeColor = System.Drawing.Color.White;
+            btnEditar.Location = new Point(170, 15);
+            btnEditar.Size = new Size(130, 40);
+            btnEditar.Text = "Editar";
+            btnEditar.Cursor = Cursors.Hand;
+            
+            // btnEliminar
+            btnEliminar.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEliminar.ForeColor = System.Drawing.Color.White;
+            btnEliminar.Location = new Point(320, 15);
+            btnEliminar.Size = new Size(130, 40);
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.Cursor = Cursors.Hand;
+            
+            // btnVerEspecialidad
+            btnVerEspecialidad.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnVerEspecialidad.FlatStyle = FlatStyle.Flat;
+            btnVerEspecialidad.FlatAppearance.BorderSize = 0;
+            btnVerEspecialidad.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVerEspecialidad.ForeColor = System.Drawing.Color.White;
+            btnVerEspecialidad.Location = new Point(470, 15);
+            btnVerEspecialidad.Size = new Size(170, 40);
+            btnVerEspecialidad.Text = "Ver Especialidad";
+            btnVerEspecialidad.Cursor = Cursors.Hand;
+            btnVerEspecialidad.Enabled = false;
+            
+            // btnVolver
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(127, 140, 141);
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVolver.ForeColor = System.Drawing.Color.White;
+            btnVolver.Location = new Point(840, 15);
+            btnVolver.Size = new Size(140, 40);
+            btnVolver.Text = "Volver al Menu";
+            btnVolver.Cursor = Cursors.Hand;
+            
             // FormPlanes
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
-            Controls.Add(gridPanel);
-            Name = "FormPlanes";
+            BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
+            ClientSize = new Size(1000, 670);
+            Controls.Add(contentPanel);
+            Controls.Add(buttonPanel);
+            Controls.Add(headerPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestion de Planes";
-            gridPanel.ResumeLayout(false);
+            WindowState = FormWindowState.Normal;
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            contentPanel.ResumeLayout(false);
             buttonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewPlanes).EndInit();
             ResumeLayout(false);
         }
 
-        #endregion
-
-        private Panel gridPanel;
+        private Panel headerPanel;
+        private Label lblTitle;
+        private Panel contentPanel;
         private DataGridView dataGridViewPlanes;
         private Panel buttonPanel;
         private Button btnVolver;

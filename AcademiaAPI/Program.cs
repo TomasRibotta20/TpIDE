@@ -13,6 +13,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpLogging(o => { });
 
+// Register MateriaRepository with hardcoded connection string (same as AcademiaContext)
+builder.Services.AddScoped(provider => 
+    new MateriaRepository("Server=localhost,1433;Database=Universidad;User Id=sa;Password=TuContraseñaFuerte123;TrustServerCertificate=True"));
+
+// Register PlanService for MateriaService dependency
+builder.Services.AddScoped(provider => new PlanService());
+
 // Add CORS for all origins (for development)
 builder.Services.AddCors(options =>
 {
@@ -86,9 +93,11 @@ app.MapAuthEndpoints();
 app.MapEspecialidadEndpoints();
 app.MapUsuariosEndpoints();
 app.MapPlanEndpoints();
+app.MapMateriaEndpoints();
 app.MapComisionesEndpoints();
 app.MapPersonasEndpoints();
 app.MapCursosEndpoints();
 app.MapInscripcionesEndpoints();
+app.MapDocenteCursoEndpoints();
 
 app.Run();

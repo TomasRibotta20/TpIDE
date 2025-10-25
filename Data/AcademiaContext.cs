@@ -16,10 +16,12 @@ namespace Data
         public DbSet<ModulosUsuarios> ModulosUsuarios { get; set; }
         public DbSet<Especialidad> Especialidades { get; set; }
         public DbSet<Plan> Planes { get; set; }
+        public DbSet<Materia> Materias { get; set; } // NUEVO
         public DbSet<Comision> Comisiones { get; set; }
         public DbSet<Persona> Personas { get; set; }
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<AlumnoCurso> AlumnoCursos { get; set; }
+        public DbSet<DocenteCurso> DocenteCursos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -110,6 +112,18 @@ namespace Data
                 entity.Property(p => p.EspecialidadId).IsRequired();
             });
 
+            // Configuración de Materia - NUEVO
+            modelBuilder.Entity<Materia>(entity =>
+            {
+                entity.ToTable("Materias");
+                entity.HasKey(m => m.Id);
+                entity.Property(m => m.Id).ValueGeneratedOnAdd();
+                entity.Property(m => m.Descripcion).IsRequired().HasMaxLength(100);
+                entity.Property(m => m.HorasSemanales).IsRequired();
+                entity.Property(m => m.HorasTotales).IsRequired();
+                entity.Property(m => m.IdPlan).IsRequired();
+            });
+
             // Configuración de Comisión
             modelBuilder.Entity<Comision>(entity =>
             {
@@ -155,6 +169,40 @@ namespace Data
                 
                 // Índice único para evitar inscripciones duplicadas
                 entity.HasIndex(ac => new { ac.IdAlumno, ac.IdCurso }).IsUnique();
+            });
+
+            // Configuración de DocenteCurso
+            modelBuilder.Entity<DocenteCurso>(entity =>
+            {
+                entity.ToTable("docentes_cursos");
+                entity.HasKey(dc => dc.IdDictado);
+                entity.Property(dc => dc.IdDictado)
+                    .HasColumnName("id_dictado")
+                    .ValueGeneratedOnAdd();
+                entity.Property(dc => dc.IdCurso)
+                    .HasColumnName("id_curso")
+                    .IsRequired();
+                entity.Property(dc => dc.IdDocente)
+                    .HasColumnName("id_docente")
+                    .IsRequired();
+                entity.Property(dc => dc.Cargo)
+                    .HasColumnName("cargo")
+                    .HasConversion<string>()
+                    .IsRequired();
+
+                // Relaciones
+                entity.HasOne(dc => dc.Curso)
+                    .WithMany()
+                    .HasForeignKey(dc => dc.IdCurso)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(dc => dc.Docente)
+                    .WithMany()
+                    .HasForeignKey(dc => dc.IdDocente)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                // Índice único para evitar duplicados Curso-Docente-Cargo
+                entity.HasIndex(dc => new { dc.IdCurso, dc.IdDocente, dc.Cargo }).IsUnique();
             });
 
             modelBuilder.Entity<Modulo>(entity =>

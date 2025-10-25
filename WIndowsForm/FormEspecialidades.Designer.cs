@@ -2,15 +2,8 @@
 {
     partial class FormEspecialidades
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,119 +13,135 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            gridPanel = new Panel();
-            buttonPanel = new Panel();
-            btnVolver = new Button();
-            btnEliminar = new Button();
-            btnEditar = new Button();
-            btnNueva = new Button();
+            headerPanel = new Panel();
+            lblTitle = new Label();
+            contentPanel = new Panel();
             dataGridViewEspecialidades = new DataGridView();
-            gridPanel.SuspendLayout();
-            buttonPanel.SuspendLayout();
+            buttonPanel = new Panel();
+            btnNueva = new Button();
+            btnEditar = new Button();
+            btnEliminar = new Button();
+            btnVolver = new Button();
+            headerPanel.SuspendLayout();
+            contentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEspecialidades).BeginInit();
+            buttonPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // gridPanel
-            // 
-            gridPanel.Controls.Add(buttonPanel);
-            gridPanel.Controls.Add(dataGridViewEspecialidades);
-            gridPanel.Dock = DockStyle.Fill;
-            gridPanel.Location = new Point(0, 0);
-            gridPanel.Name = "gridPanel";
-            gridPanel.Padding = new Padding(10);
-            gridPanel.Size = new Size(784, 561);
-            gridPanel.TabIndex = 0;
-            // 
+            
+            // headerPanel
+            headerPanel.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Size = new Size(1000, 80);
+            
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblTitle.ForeColor = System.Drawing.Color.White;
+            lblTitle.Location = new Point(20, 20);
+            lblTitle.Text = "Gestion de Especialidades";
+            
+            // contentPanel
+            contentPanel.BackColor = System.Drawing.Color.White;
+            contentPanel.Controls.Add(dataGridViewEspecialidades);
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(20);
+            
+            // dataGridViewEspecialidades
+            dataGridViewEspecialidades.AllowUserToAddRows = false;
+            dataGridViewEspecialidades.AllowUserToDeleteRows = false;
+            dataGridViewEspecialidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewEspecialidades.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewEspecialidades.BorderStyle = BorderStyle.None;
+            dataGridViewEspecialidades.ColumnHeadersHeight = 40;
+            dataGridViewEspecialidades.Dock = DockStyle.Fill;
+            dataGridViewEspecialidades.EnableHeadersVisualStyles = false;
+            dataGridViewEspecialidades.MultiSelect = false;
+            dataGridViewEspecialidades.ReadOnly = true;
+            dataGridViewEspecialidades.RowHeadersVisible = false;
+            dataGridViewEspecialidades.RowTemplate.Height = 35;
+            dataGridViewEspecialidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            
             // buttonPanel
-            // 
+            buttonPanel.BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
             buttonPanel.Controls.Add(btnVolver);
             buttonPanel.Controls.Add(btnEliminar);
             buttonPanel.Controls.Add(btnEditar);
             buttonPanel.Controls.Add(btnNueva);
             buttonPanel.Dock = DockStyle.Bottom;
-            buttonPanel.Location = new Point(10, 491);
-            buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(764, 60);
-            buttonPanel.TabIndex = 1;
-            // 
-            // btnVolver
-            // 
-            btnVolver.Anchor = AnchorStyles.Right;
-            btnVolver.Location = new Point(640, 15);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(120, 30);
-            btnVolver.TabIndex = 3;
-            btnVolver.Text = "Volver al menu";
-            btnVolver.UseVisualStyleBackColor = true;
-            // 
-            // btnEliminar
-            // 
-            btnEliminar.Location = new Point(270, 15);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(100, 30);
-            btnEliminar.TabIndex = 2;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnEditar
-            // 
-            btnEditar.Location = new Point(160, 15);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(100, 30);
-            btnEditar.TabIndex = 1;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            // 
+            buttonPanel.Size = new Size(1000, 70);
+            
             // btnNueva
-            // 
-            btnNueva.Location = new Point(10, 15);
-            btnNueva.Name = "btnNueva";
-            btnNueva.Size = new Size(140, 30);
-            btnNueva.TabIndex = 0;
+            btnNueva.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnNueva.FlatStyle = FlatStyle.Flat;
+            btnNueva.FlatAppearance.BorderSize = 0;
+            btnNueva.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnNueva.ForeColor = System.Drawing.Color.White;
+            btnNueva.Location = new Point(20, 15);
+            btnNueva.Size = new Size(180, 40);
             btnNueva.Text = "Nueva Especialidad";
-            btnNueva.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewEspecialidades
-            // 
-            dataGridViewEspecialidades.AllowUserToAddRows = false;
-            dataGridViewEspecialidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewEspecialidades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewEspecialidades.Dock = DockStyle.Fill;
-            dataGridViewEspecialidades.Location = new Point(10, 10);
-            dataGridViewEspecialidades.MultiSelect = false;
-            dataGridViewEspecialidades.Name = "dataGridViewEspecialidades";
-            dataGridViewEspecialidades.ReadOnly = true;
-            dataGridViewEspecialidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewEspecialidades.Size = new Size(764, 541);
-            dataGridViewEspecialidades.TabIndex = 0;
-            // 
+            btnNueva.Cursor = Cursors.Hand;
+            
+            // btnEditar
+            btnEditar.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEditar.ForeColor = System.Drawing.Color.White;
+            btnEditar.Location = new Point(220, 15);
+            btnEditar.Size = new Size(130, 40);
+            btnEditar.Text = "Editar";
+            btnEditar.Cursor = Cursors.Hand;
+            
+            // btnEliminar
+            btnEliminar.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEliminar.ForeColor = System.Drawing.Color.White;
+            btnEliminar.Location = new Point(370, 15);
+            btnEliminar.Size = new Size(130, 40);
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.Cursor = Cursors.Hand;
+            
+            // btnVolver
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(127, 140, 141);
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVolver.ForeColor = System.Drawing.Color.White;
+            btnVolver.Location = new Point(840, 15);
+            btnVolver.Size = new Size(140, 40);
+            btnVolver.Text = "Volver al Menu";
+            btnVolver.Cursor = Cursors.Hand;
+            
             // FormEspecialidades
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
-            Controls.Add(gridPanel);
-            Name = "FormEspecialidades";
+            BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
+            ClientSize = new Size(1000, 670);
+            Controls.Add(contentPanel);
+            Controls.Add(buttonPanel);
+            Controls.Add(headerPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestion de Especialidades";
+            WindowState = FormWindowState.Normal;
             Load += FormEspecialidades_Load;
-            gridPanel.ResumeLayout(false);
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            contentPanel.ResumeLayout(false);
             buttonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewEspecialidades).EndInit();
             ResumeLayout(false);
         }
 
-        #endregion
-
-        private Panel gridPanel;
+        private Panel headerPanel;
+        private Label lblTitle;
+        private Panel contentPanel;
         private DataGridView dataGridViewEspecialidades;
         private Panel buttonPanel;
         private Button btnVolver;

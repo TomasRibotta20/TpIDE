@@ -2,15 +2,8 @@ namespace WIndowsForm
 {
     partial class FormComisiones
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,134 +13,149 @@ namespace WIndowsForm
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            gridPanel = new Panel();
+            headerPanel = new Panel();
+            lblTitle = new Label();
+            contentPanel = new Panel();
+            dataGridViewComisiones = new DataGridView();
             buttonPanel = new Panel();
+            btnNueva = new Button();
+            btnEditar = new Button();
+            btnEliminar = new Button();
             btnVerPlan = new Button();
             btnVolver = new Button();
-            btnEliminar = new Button();
-            btnEditar = new Button();
-            btnNueva = new Button();
-            dataGridViewComisiones = new DataGridView();
-            gridPanel.SuspendLayout();
-            buttonPanel.SuspendLayout();
+            headerPanel.SuspendLayout();
+            contentPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewComisiones).BeginInit();
+            buttonPanel.SuspendLayout();
             SuspendLayout();
-            // 
-            // gridPanel
-            // 
-            gridPanel.Controls.Add(buttonPanel);
-            gridPanel.Controls.Add(dataGridViewComisiones);
-            gridPanel.Dock = DockStyle.Fill;
-            gridPanel.Location = new Point(0, 0);
-            gridPanel.Name = "gridPanel";
-            gridPanel.Padding = new Padding(10);
-            gridPanel.Size = new Size(784, 561);
-            gridPanel.TabIndex = 0;
-            // 
+            
+            // headerPanel
+            headerPanel.BackColor = System.Drawing.Color.FromArgb(41, 128, 185);
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.Size = new Size(1000, 80);
+            
+            // lblTitle
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lblTitle.ForeColor = System.Drawing.Color.White;
+            lblTitle.Location = new Point(20, 20);
+            lblTitle.Text = "Gestion de Comisiones";
+            
+            // contentPanel
+            contentPanel.BackColor = System.Drawing.Color.White;
+            contentPanel.Controls.Add(dataGridViewComisiones);
+            contentPanel.Dock = DockStyle.Fill;
+            contentPanel.Padding = new Padding(20);
+            
+            // dataGridViewComisiones
+            dataGridViewComisiones.AllowUserToAddRows = false;
+            dataGridViewComisiones.AllowUserToDeleteRows = false;
+            dataGridViewComisiones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewComisiones.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewComisiones.BorderStyle = BorderStyle.None;
+            dataGridViewComisiones.ColumnHeadersHeight = 40;
+            dataGridViewComisiones.Dock = DockStyle.Fill;
+            dataGridViewComisiones.EnableHeadersVisualStyles = false;
+            dataGridViewComisiones.MultiSelect = false;
+            dataGridViewComisiones.ReadOnly = true;
+            dataGridViewComisiones.RowHeadersVisible = false;
+            dataGridViewComisiones.RowTemplate.Height = 35;
+            dataGridViewComisiones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewComisiones.SelectionChanged += DataGridViewComisiones_SelectionChanged;
+            
             // buttonPanel
-            // 
-            buttonPanel.Controls.Add(btnVerPlan);
+            buttonPanel.BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
             buttonPanel.Controls.Add(btnVolver);
+            buttonPanel.Controls.Add(btnVerPlan);
             buttonPanel.Controls.Add(btnEliminar);
             buttonPanel.Controls.Add(btnEditar);
             buttonPanel.Controls.Add(btnNueva);
             buttonPanel.Dock = DockStyle.Bottom;
-            buttonPanel.Location = new Point(10, 491);
-            buttonPanel.Name = "buttonPanel";
-            buttonPanel.Size = new Size(764, 60);
-            buttonPanel.TabIndex = 1;
-            // 
-            // btnVerPlan
-            // 
-            btnVerPlan.Location = new Point(380, 15);
-            btnVerPlan.Name = "btnVerPlan";
-            btnVerPlan.Size = new Size(120, 30);
-            btnVerPlan.TabIndex = 4;
-            btnVerPlan.Text = "Ver Plan";
-            btnVerPlan.UseVisualStyleBackColor = true;
-            btnVerPlan.Enabled = false;
-            // 
-            // btnVolver
-            // 
-            btnVolver.Anchor = AnchorStyles.Right;
-            btnVolver.Location = new Point(640, 15);
-            btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(120, 30);
-            btnVolver.TabIndex = 3;
-            btnVolver.Text = "Volver al Menu";
-            btnVolver.UseVisualStyleBackColor = true;
-            // 
-            // btnEliminar
-            // 
-            btnEliminar.Location = new Point(270, 15);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(100, 30);
-            btnEliminar.TabIndex = 2;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnEditar
-            // 
-            btnEditar.Location = new Point(160, 15);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(100, 30);
-            btnEditar.TabIndex = 1;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            // 
+            buttonPanel.Size = new Size(1000, 70);
+            
             // btnNueva
-            // 
-            btnNueva.Location = new Point(10, 15);
-            btnNueva.Name = "btnNueva";
-            btnNueva.Size = new Size(140, 30);
-            btnNueva.TabIndex = 0;
-            btnNueva.Text = "Nueva Comisión";
-            btnNueva.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewComisiones
-            // 
-            dataGridViewComisiones.AllowUserToAddRows = false;
-            dataGridViewComisiones.AllowUserToDeleteRows = false;
-            dataGridViewComisiones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewComisiones.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewComisiones.Dock = DockStyle.Fill;
-            dataGridViewComisiones.Location = new Point(10, 10);
-            dataGridViewComisiones.MultiSelect = false;
-            dataGridViewComisiones.Name = "dataGridViewComisiones";
-            dataGridViewComisiones.ReadOnly = true;
-            dataGridViewComisiones.RowHeadersVisible = false;
-            dataGridViewComisiones.RowTemplate.Height = 25;
-            dataGridViewComisiones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewComisiones.Size = new Size(764, 481);
-            dataGridViewComisiones.TabIndex = 0;
-            dataGridViewComisiones.SelectionChanged += DataGridViewComisiones_SelectionChanged;
-            // 
+            btnNueva.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnNueva.FlatStyle = FlatStyle.Flat;
+            btnNueva.FlatAppearance.BorderSize = 0;
+            btnNueva.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnNueva.ForeColor = System.Drawing.Color.White;
+            btnNueva.Location = new Point(20, 15);
+            btnNueva.Size = new Size(160, 40);
+            btnNueva.Text = "Nueva Comision";
+            btnNueva.Cursor = Cursors.Hand;
+            
+            // btnEditar
+            btnEditar.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
+            btnEditar.FlatStyle = FlatStyle.Flat;
+            btnEditar.FlatAppearance.BorderSize = 0;
+            btnEditar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEditar.ForeColor = System.Drawing.Color.White;
+            btnEditar.Location = new Point(200, 15);
+            btnEditar.Size = new Size(130, 40);
+            btnEditar.Text = "Editar";
+            btnEditar.Cursor = Cursors.Hand;
+            
+            // btnEliminar
+            btnEliminar.BackColor = System.Drawing.Color.FromArgb(231, 76, 60);
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnEliminar.ForeColor = System.Drawing.Color.White;
+            btnEliminar.Location = new Point(350, 15);
+            btnEliminar.Size = new Size(130, 40);
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.Cursor = Cursors.Hand;
+            
+            // btnVerPlan
+            btnVerPlan.BackColor = System.Drawing.Color.FromArgb(155, 89, 182);
+            btnVerPlan.FlatStyle = FlatStyle.Flat;
+            btnVerPlan.FlatAppearance.BorderSize = 0;
+            btnVerPlan.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVerPlan.ForeColor = System.Drawing.Color.White;
+            btnVerPlan.Location = new Point(500, 15);
+            btnVerPlan.Size = new Size(130, 40);
+            btnVerPlan.Text = "Ver Plan";
+            btnVerPlan.Cursor = Cursors.Hand;
+            btnVerPlan.Enabled = false;
+            
+            // btnVolver
+            btnVolver.BackColor = System.Drawing.Color.FromArgb(127, 140, 141);
+            btnVolver.FlatStyle = FlatStyle.Flat;
+            btnVolver.FlatAppearance.BorderSize = 0;
+            btnVolver.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnVolver.ForeColor = System.Drawing.Color.White;
+            btnVolver.Location = new Point(840, 15);
+            btnVolver.Size = new Size(140, 40);
+            btnVolver.Text = "Volver al Menu";
+            btnVolver.Cursor = Cursors.Hand;
+            
             // FormComisiones
-            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
-            Controls.Add(gridPanel);
-            Name = "FormComisiones";
+            BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
+            ClientSize = new Size(1000, 670);
+            Controls.Add(contentPanel);
+            Controls.Add(buttonPanel);
+            Controls.Add(headerPanel);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestion de Comisiones";
-            gridPanel.ResumeLayout(false);
+            WindowState = FormWindowState.Normal;
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            contentPanel.ResumeLayout(false);
             buttonPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewComisiones).EndInit();
             ResumeLayout(false);
         }
 
-        #endregion
-
-        private Panel gridPanel;
+        private Panel headerPanel;
+        private Label lblTitle;
+        private Panel contentPanel;
         private DataGridView dataGridViewComisiones;
         private Panel buttonPanel;
         private Button btnVolver;

@@ -1,6 +1,6 @@
 namespace WIndowsForm
 {
-    partial class FormCursos
+    partial class FormMaterias
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -18,15 +18,15 @@ namespace WIndowsForm
             headerPanel = new Panel();
             lblTitle = new Label();
             contentPanel = new Panel();
-            dataGridViewCursos = new DataGridView();
+            dataGridViewMaterias = new DataGridView();
             buttonPanel = new Panel();
-            btnNuevo = new Button();
+            btnNueva = new Button();
             btnEditar = new Button();
             btnEliminar = new Button();
             btnVolver = new Button();
             headerPanel.SuspendLayout();
             contentPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewCursos).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewMaterias).BeginInit();
             buttonPanel.SuspendLayout();
             SuspendLayout();
             
@@ -41,48 +41,48 @@ namespace WIndowsForm
             lblTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             lblTitle.ForeColor = System.Drawing.Color.White;
             lblTitle.Location = new Point(20, 20);
-            lblTitle.Text = "Gestion de Cursos";
+            lblTitle.Text = "Gestion de Materias";
             
             // contentPanel
             contentPanel.BackColor = System.Drawing.Color.White;
-            contentPanel.Controls.Add(dataGridViewCursos);
+            contentPanel.Controls.Add(dataGridViewMaterias);
             contentPanel.Dock = DockStyle.Fill;
             contentPanel.Padding = new Padding(20);
             
-            // dataGridViewCursos
-            dataGridViewCursos.AllowUserToAddRows = false;
-            dataGridViewCursos.AllowUserToDeleteRows = false;
-            dataGridViewCursos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCursos.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCursos.BorderStyle = BorderStyle.None;
-            dataGridViewCursos.ColumnHeadersHeight = 40;
-            dataGridViewCursos.Dock = DockStyle.Fill;
-            dataGridViewCursos.EnableHeadersVisualStyles = false;
-            dataGridViewCursos.MultiSelect = false;
-            dataGridViewCursos.ReadOnly = true;
-            dataGridViewCursos.RowHeadersVisible = false;
-            dataGridViewCursos.RowTemplate.Height = 35;
-            dataGridViewCursos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            // dataGridViewMaterias
+            dataGridViewMaterias.AllowUserToAddRows = false;
+            dataGridViewMaterias.AllowUserToDeleteRows = false;
+            dataGridViewMaterias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewMaterias.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewMaterias.BorderStyle = BorderStyle.None;
+            dataGridViewMaterias.ColumnHeadersHeight = 40;
+            dataGridViewMaterias.Dock = DockStyle.Fill;
+            dataGridViewMaterias.EnableHeadersVisualStyles = false;
+            dataGridViewMaterias.MultiSelect = false;
+            dataGridViewMaterias.ReadOnly = true;
+            dataGridViewMaterias.RowHeadersVisible = false;
+            dataGridViewMaterias.RowTemplate.Height = 35;
+            dataGridViewMaterias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             
             // buttonPanel
             buttonPanel.BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
             buttonPanel.Controls.Add(btnVolver);
             buttonPanel.Controls.Add(btnEliminar);
             buttonPanel.Controls.Add(btnEditar);
-            buttonPanel.Controls.Add(btnNuevo);
+            buttonPanel.Controls.Add(btnNueva);
             buttonPanel.Dock = DockStyle.Bottom;
             buttonPanel.Size = new Size(1000, 70);
             
-            // btnNuevo
-            btnNuevo.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
-            btnNuevo.FlatStyle = FlatStyle.Flat;
-            btnNuevo.FlatAppearance.BorderSize = 0;
-            btnNuevo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            btnNuevo.ForeColor = System.Drawing.Color.White;
-            btnNuevo.Location = new Point(20, 15);
-            btnNuevo.Size = new Size(140, 40);
-            btnNuevo.Text = "Nuevo Curso";
-            btnNuevo.Cursor = Cursors.Hand;
+            // btnNueva
+            btnNueva.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
+            btnNueva.FlatStyle = FlatStyle.Flat;
+            btnNueva.FlatAppearance.BorderSize = 0;
+            btnNueva.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            btnNueva.ForeColor = System.Drawing.Color.White;
+            btnNueva.Location = new Point(20, 15);
+            btnNueva.Size = new Size(150, 40);
+            btnNueva.Text = "Nueva Materia";
+            btnNueva.Cursor = Cursors.Hand;
             
             // btnEditar
             btnEditar.BackColor = System.Drawing.Color.FromArgb(52, 152, 219);
@@ -90,7 +90,7 @@ namespace WIndowsForm
             btnEditar.FlatAppearance.BorderSize = 0;
             btnEditar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnEditar.ForeColor = System.Drawing.Color.White;
-            btnEditar.Location = new Point(180, 15);
+            btnEditar.Location = new Point(190, 15);
             btnEditar.Size = new Size(130, 40);
             btnEditar.Text = "Editar";
             btnEditar.Cursor = Cursors.Hand;
@@ -101,7 +101,7 @@ namespace WIndowsForm
             btnEliminar.FlatAppearance.BorderSize = 0;
             btnEliminar.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnEliminar.ForeColor = System.Drawing.Color.White;
-            btnEliminar.Location = new Point(330, 15);
+            btnEliminar.Location = new Point(340, 15);
             btnEliminar.Size = new Size(130, 40);
             btnEliminar.Text = "Eliminar";
             btnEliminar.Cursor = Cursors.Hand;
@@ -117,7 +117,7 @@ namespace WIndowsForm
             btnVolver.Text = "Volver al Menu";
             btnVolver.Cursor = Cursors.Hand;
             
-            // FormCursos
+            // FormMaterias
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = System.Drawing.Color.FromArgb(236, 240, 245);
@@ -128,24 +128,24 @@ namespace WIndowsForm
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestion de Cursos";
+            Text = "Gestion de Materias";
             WindowState = FormWindowState.Normal;
             headerPanel.ResumeLayout(false);
             headerPanel.PerformLayout();
             contentPanel.ResumeLayout(false);
             buttonPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewCursos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewMaterias).EndInit();
             ResumeLayout(false);
         }
 
         private Panel headerPanel;
         private Label lblTitle;
         private Panel contentPanel;
+        private DataGridView dataGridViewMaterias;
         private Panel buttonPanel;
-        private DataGridView dataGridViewCursos;
         private Button btnVolver;
         private Button btnEliminar;
         private Button btnEditar;
-        private Button btnNuevo;
+        private Button btnNueva;
     }
 }
